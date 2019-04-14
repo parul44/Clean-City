@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const app = express();
 
 const userRoutes = require("./routes/userRoutes");
+const adminRoutes = require("./routes/adminRoutes");
 
 const PORT = process.env.PORT || 5000;
 
@@ -19,10 +20,13 @@ app.use(express.static(path.join(__dirname, "client")));
 // User route
 app.use("/user", userRoutes);
 
+// Admin route
+app.use("/admin", adminRoutes);
+
 app.get("/", (req, res, next) => {
   res.sendFile(__dirname + "/client/index.html");
 });
 
 app.listen(PORT, () => {
-  console.log("Server has started");
+  console.log(`Server has started on port ${PORT}`);
 });

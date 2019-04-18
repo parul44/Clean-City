@@ -113,23 +113,10 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
         <form action="#">
         
         <div class="container">
-            <div class="row">
-                <div class="col">
-                        <b>Name&emsp;&emsp;</b><input id="name" placeholder="Your name here"><br><br>
+            <div class="row">                                 <b>Name&emsp;&emsp;</b><input id="name" placeholder="Optional"><br><br>
                 </div>
-                <div class="col">
-                        <b>Location&emsp;&emsp;</b><input id="location" placeholder="Location(area,state)"><br><br>
-                </div>
-            </div><br>
+                <br>
             <div class="row">
-                            
-                            <label><b>&emsp;Description of the report&emsp;&emsp;</b></label>
-                            <textarea placeholder="Short Description" id="description" rows="2" cols="50"></textarea>
-                            <br><br>
-            </div>
-            <br>
-            <div class="row">
-                <div class="col">
                         <div class="form-group">
                                 <label><b>Select type of report</b></label>
                                 <select class="form-control" id="problemtype">
@@ -139,18 +126,34 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
                                   <option>Electricity cut off</option>
                                   <option>Crime</option>
                                 </select>
+
                               </div>
-                </div>
-                <div class="col">
+             <br> 
+
+            <div class="col">
                     
                         <div class="form-group">
-                                <label for="picfile"><b>Upload Image</b></label>
+                                <label for="picfile"><b>&emsp;&emsp;Upload Image</b></label>
                                 <input type="file" class="form-control-file" id="picfile">
                               </div>
-                </div>  
+                </div>
+            <br><br><br>
+            <div class="row">
+                            
+                            <label><b>&emsp;Description of the report&emsp;&emsp;</b></label>
+                            <textarea placeholder="Short Description" id="description" rows="2" cols="50"></textarea>
+                            <br><br>
+            </div> 
+
+            <br> <br> 
+
+            <div class="row">
+                        <b>&emsp;Location&emsp;&emsp;</b><input id="location" placeholder="Location(area,state)">
+                </div>
+             
             </div>
-        </div>
-        
+
+        <br>
         <button style="margin-left: 4em" type ="submit" class="btn btn-primary">Submit</button>
         
         <button style="margin-left: 4em" type="reset" class="btn btn-primary">Reset</button>

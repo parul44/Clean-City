@@ -2,3 +2,12 @@
     width: 800px;
     margin: 0 auto;
 }
+.footer {
+  position: center;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #8f5c00;
+  color: white;
+  text-align: center;
+}

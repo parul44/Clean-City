@@ -1,6 +1,7 @@
 // Main server file
 const express = require('express');
 const path = require('path');
+require('./db/mongoose');
 const bodyParser = require('body-parser');
 const userRoutes = require('./routes/userRoutes');
 const adminRoutes = require('./routes/adminRoutes');

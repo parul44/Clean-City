@@ -3,7 +3,14 @@ const router = express.Router();
 const userControllers = require('../controllers/userControllers');
 
 // final route is /user/test
-router.post('/submit', userControllers.postSubmit);
+router.post(
+  '/submit',
+  userControllers.upload.single('image'),
+  userControllers.postSubmitData,
+  (error, req, res, next) => {
+    res.status(400).send({ error: error.message });
+  }
+);
 
 router.get('/reports', userControllers.getReports);
 

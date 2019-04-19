@@ -31,7 +31,7 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
         <br>
         <div class="container">
         	
-            <div class="row">                                  <b style="font-size:150%;">Name&emsp;</b><input  id="name" placeholder="optional" size="60"><br><br>
+            <div class="row"><b style="font-size:150%;">Name&emsp;</b><input  id="name" placeholder="optional" size="60"><br><br>
                 </div>
                 <br>
             <div class="row">
@@ -67,7 +67,7 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
             <br> <br> 
 
             <div class="row">
-                        <b style="font-size:150%;">&emsp;Location&emsp;&emsp;</b><input style="height:35px" id="location" placeholder="Location(area,state)" size>
+                        <b style="font-size:150%;">&emsp;Location&emsp;&emsp;</b><button onclick="getLocation()">Access your Location</button>
                 </div>
              
             </div>
@@ -82,5 +82,21 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
         </div>
         <br><br>
     </section>
+
+    <script>
+      
+        function getLocation() {
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+          } else { 
+            x.innerHTML = "Geolocation is not supported by this browser.";
+          }
+        }
+        
+        function showPosition(position) {
+          console.log("Latitude: " + position.coords.latitude + 
+          "<br>Longitude: " + position.coords.longitude);
+        }
+        </script>
 </body>
 </html>

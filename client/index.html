@@ -18,6 +18,22 @@
 integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="style.css">
     <script src="main.js"></script>
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.css' rel='stylesheet' />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      #map {
+      position: inherit;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+        margin: auto;
+      }
+    </style>
 </head>
 
 <body>
@@ -49,7 +65,8 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
                     <a class="nav-link scrolly " href="#">Sign Up</a>
                   </ul>
             </div>
-           
+            <form action="form.html">
+</form>
           </nav>
     </header>
 
@@ -80,9 +97,8 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
               <span class="sr-only">Next</span>
             </a>
           </div>
-      
-            </div>
-            <br>
+      <br>
+
           <div class="container">
             <div class="row">
               <div class="column">
@@ -172,11 +188,120 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
           <br><br>
 
     </section>
-  <div class="footer">
-  	<p style="font-family:Oswald;"> Get connected and Stay Aware &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Follow us on Social Media</p>
-  <p style="font-family:Oswald;">© 2019 DevelopHowTo. All Rights Reserved &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; &emsp; Made with love in India</p>
+    <section id="heatmap">
+      <div id='map'></div>
+      <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiZXJyYWh1bDkzIiwiYSI6ImNqdW8wemlxODJwNzUzeXFqbnVibHZzYzUifQ.bZKWernpF2H1uvOVNp4DOA';
+        var map = new mapboxgl.Map({
+          container: 'map',
+          style: 'mapbox://styles/mapbox/dark-v10',
+          center: [77.10127830505371,28.681702723443177],
+          zoom: 11
+        });
+    
+        map.on('load', function() {
+    
+        map.addSource('trees', {
+        type: 'geojson',
+        data: 'map.geojson'
+        });
+        
+        map.addLayer({
+      id: 'trees-heat',
+      type: 'heatmap',
+      source: 'trees',
+      maxzoom: 15,
+      paint: {
+        // increase weight as diameter breast height increases
+        'heatmap-weight': {
+          property: 'dbh',
+          type: 'exponential',
+          stops: [
+            [1, 0],
+            [62, 1]
+          ]
+        },
+        // increase intensity as zoom level increases
+        'heatmap-intensity': {
+          stops: [
+            [11, 1],
+            [15, 3]
+          ]
+        },
+        // assign color values be applied to points depending on their density
+        'heatmap-color': [
+          'interpolate',
+          ['linear'],
+          ['heatmap-density'],
+          0, 'rgba(236,222,239,0)',
+          0.2, 'rgb(208,209,230)',
+          0.4, 'rgb(166,189,219)',
+          0.6, 'rgb(103,169,207)',
+          0.8, 'rgb(28,144,153)'
+        ],
+        // increase radius as zoom increases
+        'heatmap-radius': {
+          stops: [
+            [11, 15],
+            [15, 20]
+          ]
+        },
+        // decrease opacity to transition into the circle layer
+        'heatmap-opacity': {
+          default: 1,
+          stops: [
+            [14, 1],
+            [15, 0]
+          ]
+        },
+      }
+    }, 'waterway-label');
+    
+    map.addLayer({
+      id: 'trees-point',
+      type: 'circle',
+      source: 'trees',
+      minzoom: 14,
+      paint: {
+        // increase the radius of the circle as the zoom level and dbh value increases
+        'circle-radius': {
+          property: 'dbh',
+          type: 'exponential',
+          stops: [
+            [{ zoom: 15, value: 1 }, 5],
+            [{ zoom: 15, value: 62 }, 10],
+            [{ zoom: 22, value: 1 }, 20],
+            [{ zoom: 22, value: 62 }, 50],
+          ]
+        },
+        'circle-color': {
+          property: 'dbh',
+          type: 'exponential',
+          stops: [
+            [0, 'rgba(236,222,239,0)'],
+            [10, 'rgb(236,222,239)'],
+            [20, 'rgb(208,209,230)'],
+            [30, 'rgb(166,189,219)'],
+            [40, 'rgb(103,169,207)'],
+            [50, 'rgb(28,144,153)'],
+            [60, 'rgb(1,108,89)']
+          ]
+        },
+        'circle-stroke-color': 'white',
+        'circle-stroke-width': 1,
+        'circle-opacity': {
+          stops: [
+            [14, 0],
+            [15, 1]
+          ]
+        }
+      }
+    }, 'waterway-label');
+    }); 
+    
+      </script>
+    </section>
+  </body>
   
-  </div> 
 </body>
-
 </html>

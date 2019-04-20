@@ -35,7 +35,7 @@ const postSubmitData = async (req, res) => {
     };
     const report = new Report(req.body);
     await report.save();
-    res.status(201).send('Report added to DB!!!!');
+    res.status(201).send(`Report added to DB! with id ${report._id}`);
   } catch (e) {
     res.status(400).send(e);
   }

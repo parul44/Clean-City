@@ -27,17 +27,18 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
             <div style="padding: 20px">
                     <h3>Any problems in your area?
                     Post them here!</h3><br>
-        <form action="#">
+                    <p>(Allow acess to location if prompted)</p>
+        <form id="myForm" enctype="multipart/form-data" action="/user/submit" method="post">
         <br>
         <div class="container">
         	
-            <div class="row"><b style="font-size:150%;">Name&emsp;</b><input  id="name" placeholder="optional" size="60"><br><br>
+            <div class="row"><b style="font-size:150%;">Name&emsp;</b><input  id="name" placeholder="optional" size="60" name="name"><br>
                 </div>
                 <br>
             <div class="row">
                         <div class="form-group">
                                 <label><b style="font-size:150%;">Select type of report&emsp;</b></label>
-                                <select class="form-control" id="problemtype">
+                                <select class="form-control" id="problemtype" name="reportType" required>
                                   <option>Garbage Heap</option>
                                   <option>Accident</option>
                                   <option>Water Shortage</option>
@@ -53,27 +54,30 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
                     
                         <div class="form-group">
                                 <label for="picfile"><b style="font-size:150%;">&emsp;&emsp;Upload Image</b></label>
-                                <input type="file" class="form-control-file" id="picfile">
+                                <input type="file" class="form-control-file" id="picfile" name="image" required>
                               </div>
                 </div>
             <br><br><br>
             <div class="row">
                             
                             <label><b style="font-size:150%;">&emsp;Description of the report&emsp;&emsp;</b></label>
-                            <textarea style="height:30px " placeholder="Short Description" id="description" rows="2" cols="50"></textarea>
+                            <textarea style="height:30px " placeholder="Short Description" id="description" rows="2" cols="50" name="description" required></textarea>
                             <br><br>
             </div> 
 
             <br> <br> 
 
             <div class="row">
-                        <b style="font-size:150%;">&emsp;Location&emsp;&emsp;</b><button onclick="getLocation()">Access your Location</button>
-                </div>
-             
+                            
+                            <label><b style="font-size:150%;">&emsp;Location&emsp;&emsp;</b></label>
+                            <textarea style="height:30px " placeholder="Enter Location" id="location" rows="2" cols="50" name="location" required></textarea>
+                            <br><br>
             </div>
-
-        <br>
-        <button style="margin-left: 4em" type ="submit" class="btn btn-primary">Submit</button>
+            <br> <br>
+            <input type="hidden" id="longitude" placeholder="Press button to AutoDetect" size="30" name="longitude" required><br>
+            <input type="hidden" id="latitude" placeholder="Press button to AutoDetect" size="30" name="latitude" required><br>
+       </div>
+        <button style="margin-left: 4em" type ="submit" class="btn btn-primary">Submit Form</button>
         
         <button style="margin-left: 4em" type="reset" class="btn btn-primary">Reset</button>
     </fieldset>
@@ -84,19 +88,21 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
     </section>
 
     <script>
-      
+
         function getLocation() {
           if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showPosition);
+            navigator.geolocation.getCurrentPosition(setPosition);
           } else { 
             x.innerHTML = "Geolocation is not supported by this browser.";
           }
         }
         
-        function showPosition(position) {
-          console.log("Latitude: " + position.coords.latitude + 
-          " Longitude: " + position.coords.longitude);
+        function setPosition(position) {
+          document.getElementById('longitude').value=position.coords.longitude;
+          document.getElementById('latitude').value=position.coords.latitude;
         }
+
+        window.onload=getLocation;
         </script>
 </body>
 </html>

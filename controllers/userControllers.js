@@ -30,12 +30,31 @@ const postSubmitData = async (req, res) => {
       .toFormat('jpeg')
       .toBuffer();
     req.body.imageBuffer = buffer;
+    req.body.properties = {
+      brief: req.body.description.slice(0, 100)
+    };
     req.body.geometry = {
       coordinates: [req.body.longitude, req.body.latitude]
     };
     const report = new Report(req.body);
     await report.save();
     res.status(201).send(`Report added to DB! with id ${report._id}`);
+  } catch (e) {
+    res.status(400).send(e);
+  }
+};
+
+const getGeojson = async (req, res) => {
+  try {
+    features = await Report.find(
+      { reportType: req.params.reportType },
+      'geometry properties -_id'
+    );
+    featurecollection = {
+      type: 'FeatureCollection',
+      features: features
+    };
+    res.status(200).json(featurecollection);
   } catch (e) {
     res.status(400).send(e);
   }
@@ -60,6 +79,7 @@ const getReportsID = async (req, res) => {
 module.exports = {
   upload,
   postSubmitData,
+  getGeojson,
   getReports,
   getReportsID
 };

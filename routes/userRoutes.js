@@ -12,6 +12,8 @@ router.post(
   }
 );
 
+router.get('/geojson/:reportType', userControllers.getGeojson);
+
 router.get('/reports', userControllers.getReports);
 
 router.get('/reports/:id', userControllers.getReportsID);

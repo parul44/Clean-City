@@ -62,9 +62,11 @@ const getGeojson = async (req, res) => {
 
 const getReports = async (req, res) => {
   try {
-    res.status(200).send('Getting all reports!');
+    var allreports = await Report.find({},"location createdAt").sort({$natural:-1}).limit(6);
+    res.status(200).json(allreports);
   } catch (e) {
     res.status(400).send(e);
+  
   }
 };
 

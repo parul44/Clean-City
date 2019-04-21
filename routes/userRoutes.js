@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const userControllers = require('../controllers/userControllers');
+const Report= require("../models/reportModel");
 
 // final route is /user/test
 router.post(
@@ -12,7 +13,7 @@ router.post(
   }
 );
 
-router.get('/reports', userControllers.getReports);
+router.get('/reports',userControllers.getReports);
 
 router.get('/reports/:id', userControllers.getReportsID);
 

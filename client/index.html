@@ -381,11 +381,12 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
                   'interpolate',
                   ['linear'],
                   ['heatmap-density'],
-                  0, 'rgba(236,222,239,0)',
-                  0.2, 'rgb(208,209,230)',
-                  0.4, 'rgb(166,189,219)',
-                  0.6, 'rgb(103,169,207)',
-                  0.8, 'rgb(28,144,153)'
+                  0, "rgba(33,102,172,0)",
+                  0.2, "rgb(103,169,207)",
+                  0.4, "rgb(209,229,240)",
+                  0.6, "rgb(253,219,199)",
+                  0.8, "rgb(239,138,98)",
+                  1, "rgb(178,24,43)"
                 ],
                 // increase radius as zoom increases
                 'heatmap-radius': {
@@ -460,11 +461,19 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
       <br><br>
   </section>
 <br><br><br>
+<script>
+   fetch('http://localhost:5000/user/reports')
+      .then(res=>{
+        res.json()
+      .then(data=>{
+        console.log(data);
+      })
+    })
+</script>
   <h4 style="text-align:center;color:darkcyan">Latest Updates</h4>
       <div class="gallery">
         <div class="item">
            <img src="images/color1.jpg">
-
         </div>
         <div class="item">
                 <img src="images/color6.jpg">

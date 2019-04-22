@@ -3,6 +3,9 @@ const express = require('express');
 const path = require('path');
 require('./db/mongoose');
 const bodyParser = require('body-parser');
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
+const Admin = require("./models/adminModel");
 const userRoutes = require('./routes/userRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 
@@ -15,6 +18,18 @@ app.set("view engine","ejs");
 app.use(bodyParser.json());
 
 app.use(express.static(path.join(__dirname, 'client')));
+
+//passport configuration
+app.use(require("express-session")({
+  secret: "clean city is the best website",
+  resave: false,
+  saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(Admin.authenticate()));
+passport.serializeUser(Admin.serializeUser());
+passport.deserializeUser(Admin.deserializeUser());
 
 // Routes
 

@@ -62,11 +62,12 @@ const getGeojson = async (req, res) => {
 
 const getReports = async (req, res) => {
   try {
-    var allreports = await Report.find({},"location createdAt").sort({$natural:-1}).limit(6);
-    res.status(200).json(allreports);
+    var reports = await Report.find({}, 'location createdAt')
+      .sort({ $natural: -1 })
+      .limit(6);
+    res.status(200).send(reports);
   } catch (e) {
     res.status(400).send(e);
-  
   }
 };
 
@@ -78,10 +79,26 @@ const getReportsID = async (req, res) => {
   }
 };
 
+const getImage = async (req, res) => {
+  try {
+    const report = await Report.findById(req.params.id);
+
+    if (!report || !report.imageBuffer) {
+      throw new Error();
+    }
+
+    res.set('Content-Type', 'image/jpg');
+    res.send(report.imageBuffer);
+  } catch (e) {
+    res.status(404).send(e);
+  }
+};
+
 module.exports = {
   upload,
   postSubmitData,
   getGeojson,
   getReports,
-  getReportsID
+  getReportsID,
+  getImage
 };

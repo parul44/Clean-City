@@ -19,7 +19,6 @@
   "homepage": "https://github.com/DevelopHowTo/Clean-City#readme",
   "dependencies": {
     "body-parser": "^1.18.3",
-    "ejs": "^2.6.1",
     "express": "^4.16.4",
     "express-session": "^1.16.1",
     "mongodb": "^3.2.3",

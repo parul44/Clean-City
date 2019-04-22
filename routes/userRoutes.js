@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const userControllers = require('../controllers/userControllers');
-const Report= require("../models/reportModel");
+const Report = require('../models/reportModel');
 
 // final route is /user/test
 router.post(
@@ -18,5 +18,7 @@ router.get('/geojson/:reportType', userControllers.getGeojson);
 router.get('/reports', userControllers.getReports);
 
 router.get('/reports/:id', userControllers.getReportsID);
+
+router.get('/image/:id', userControllers.getImage);
 
 module.exports = router;

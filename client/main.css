@@ -44,18 +44,21 @@ body{
 
 .card{
   margin: 2%;
+  -webkit-transition: all .2s ease-in-out;
   transition: all .2s ease-in-out;
 }
 
   .iconimg img{
      height: 180px;
-      transition: all 0.4s;
+    
       width: 70%;
       margin: 0 auto;
       padding-top:2%;
       }
     .card:hover{
         transform: scale(1.1);
+        -webkit-transform: scale(1.1);
+        
       }
 
 .mapcontainer{
@@ -188,7 +191,6 @@ h4{
   }
   
 } 
-
 
 
 

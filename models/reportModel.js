@@ -1,19 +1,7 @@
 const mongoose = require('mongoose');
 // const validator = require('validator');
 
-//Defining geocheme as subschema for report schema
-const GeoSchema = new mongoose.Schema({
-  type: {
-    type: String,
-    default: 'Point'
-  },
-  coordinates: {
-    type: [Number],
-    index: '2dsphere'
-  }
-});
-
-//Defining Report Schema
+//Defining reportSchema
 const reportSchema = new mongoose.Schema(
   {
     name: {
@@ -28,8 +16,8 @@ const reportSchema = new mongoose.Schema(
     description: {
       type: String,
       required: true,
-      minlength: 7,
-      maxlength: 100,
+      minlength: 10,
+      maxlength: 800,
       trim: true
     },
     location: {
@@ -42,7 +30,22 @@ const reportSchema = new mongoose.Schema(
     imageBuffer: {
       type: Buffer
     },
-    geometry: GeoSchema
+    properties: {
+      brief: {
+        type: String,
+        default: 'Not specified'
+      }
+    },
+    geometry: {
+      type: {
+        type: String,
+        default: 'Point'
+      },
+      coordinates: {
+        type: [Number],
+        index: '2dsphere'
+      }
+    }
   },
   {
     timestamps: true

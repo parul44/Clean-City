@@ -30,6 +30,9 @@ const postSubmitData = async (req, res) => {
       .toFormat('jpeg')
       .toBuffer();
     req.body.imageBuffer = buffer;
+    req.body.properties = {
+      brief: req.body.description.slice(0, 100)
+    };
     req.body.geometry = {
       coordinates: [req.body.longitude, req.body.latitude]
     };
@@ -41,9 +44,28 @@ const postSubmitData = async (req, res) => {
   }
 };
 
+const getGeojson = async (req, res) => {
+  try {
+    features = await Report.find(
+      { reportType: req.params.reportType },
+      'geometry properties -_id'
+    );
+    featurecollection = {
+      type: 'FeatureCollection',
+      features: features
+    };
+    res.status(200).json(featurecollection);
+  } catch (e) {
+    res.status(400).send(e);
+  }
+};
+
 const getReports = async (req, res) => {
   try {
-    res.status(200).send('Getting all reports!');
+    var reports = await Report.find({}, 'location createdAt')
+      .sort({ $natural: -1 })
+      .limit(6);
+    res.status(200).send(reports);
   } catch (e) {
     res.status(400).send(e);
   }
@@ -57,9 +79,26 @@ const getReportsID = async (req, res) => {
   }
 };
 
+const getImage = async (req, res) => {
+  try {
+    const report = await Report.findById(req.params.id);
+
+    if (!report || !report.imageBuffer) {
+      throw new Error();
+    }
+
+    res.set('Content-Type', 'image/jpg');
+    res.send(report.imageBuffer);
+  } catch (e) {
+    res.status(404).send(e);
+  }
+};
+
 module.exports = {
   upload,
   postSubmitData,
+  getGeojson,
   getReports,
-  getReportsID
+  getReportsID,
+  getImage
 };

@@ -37,34 +37,26 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
             </button>
           
             <div class="collapse navbar-collapse" id="navbarSupportedContent" >
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active ">
-                      <a class="nav-link scrolly" style="color:darkcyan;font-weight: 500;font-size:1.1em" href="index.html">Home <span class="sr-only"></span></a>
-                    </li>
-                    <li class="nav-item active">
-                      <a class="nav-link scrolly" style="color:darkcyan;font-weight: 500;font-size:1.1em" href="form.html">Upload</a>
-                    </li>
-                    <li class="nav-item active">
-                        <a class="nav-link scrolly " style="color:darkcyan;font-weight: 500;font-size:1.1em" href="#">About Us</a>
-                      </li>
-                    
-                  </ul>
-                  <ul class="navbar-nav mr-right" >
-                        <a class="nav-link scrolly " style="color:darkcyan;font-weight: 500;font-size:1.1em" href="#">Login</a>
-                      </ul>
-                      <ul class="navbar-nav mr-right" >
-                        <a class="nav-link scrolly " style="color:darkcyan;font-weight: 500;font-size:1.1em" href="#">Sign Up</a>
-                      </ul>
-               
-            </div>
-            
-          </nav>
-    </header>
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item active ">
+                  <a class="nav-link scrolly" style="color:darkcyan;font-weight: 500;font-size:1.1em" href="index.html">Home <span class="sr-only"></span></a>
+                </li>
+                <li class="nav-item active">
+                  <a class="nav-link scrolly" id="navupload" style="font-weight: 500;" href="form.html"> Upload </a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link scrolly " style="color:darkcyan;font-weight: 500;font-size:1.1em" href="#">About Us</a>
+                  </li>
+                
+              </ul>
+             </div>
+           
+          </nav> </header>
     <br><Br>
 
 	  <section id="upload">
 
-        <div class="uploadform "></span>
+        <div class="uploadform ">
                       
         
             <div style="padding: 20px">
@@ -73,13 +65,17 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
                     <p>(Allow acess to location if prompted)</p>
         <form id="myForm" enctype="multipart/form-data" action="/user/submit" method="post">
         <br>
-        <div class="container">
+        <div class="container formcontainer">
         	
-            <div class="row"><label>Name&emsp;</label><input  id="name" placeholder=" Optional" size="60" name="name"><br>
-                </div>
-                <br>
             <div class="row">
-                        <div class="form-group">
+              
+              <div class="col col-10 col-sm-10">
+                  <label>Name&emsp;</label><input  id="name" placeholder=" Optional" size="60" name="name"><br>
+                
+              </div></div>
+                <br>
+            <div class=" mix">
+                        <div class="form-group col-10 col-sm-6  ">
                                 <label>Select type of report&emsp;</label>
                                 <select class="form-control" id="problemtype" name="reportType" required>
                                   <option>Garbage Heap</option>
@@ -90,39 +86,42 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
                                 </select>
 
                               </div>
-             <br> 
-              <br>
+             
 
-            <div class="col">
+            <div class="col-sm-6 col-10">
                     
-                        <div class="form-group">
-                                <label for="picfile">&emsp;&emsp;Upload Image</label>
+                        <div class="form-group" id="uploadimage">
+                                <label for="picfile">Upload Image</label>
                                 <input type="file" class="form-control-file" id="picfile" name="image" required>
                               </div>
                 </div>
-            <br><br><br>
+            
             <div class="row">
+                            <div class=" col-10 col-sm-10">
+                                <label>Description of the report&emsp;&emsp;</label>
+                                <textarea style="height:40px " placeholder=" Short Description" id="description" rows="2" cols="50" name="description" required></textarea>
+                               
+                            </div>
                             
-                            <label>&emsp;Description of the report&emsp;&emsp;</label>
-                            <textarea style="height:40px " placeholder=" Short Description" id="description" rows="2" cols="50" name="description" required></textarea>
-                            <br><br>
             </div> 
 
-            <br> <br> 
+            <br> 
 
             <div class="row">
+                            <div class="col-10 col-sm-10 ">
+                                <label>Location&emsp;&emsp;</label>
+                                <textarea style="height:40px " placeholder=" Enter Location" id="location" rows="2" cols="50" name="location" required></textarea>
+                              
+                            </div>
                             
-                            <label>&emsp;Location&emsp;&emsp;</label>
-                            <textarea style="height:40px " placeholder=" Enter Location" id="location" rows="2" cols="50" name="location" required></textarea>
-                            <br><br>
             </div>
-            <br> <br>
+            
             <input type="hidden" id="longitude" placeholder="Press button to AutoDetect" size="30" name="longitude" required><br>
             <input type="hidden" id="latitude" placeholder="Press button to AutoDetect" size="30" name="latitude" required><br>
        </div>
-        <button style="margin-left: 4em" type ="submit" class="btn btn-secondary">Submit Form</button>
+        <button style="margin: 1em " type ="submit" class="btn btn-secondary col-10 col-sm-6 col-md-4 ">Submit Form</button>
         
-        <button style="margin-left: 4em" type="reset" class="btn btn-secondary">Reset</button>
+        <button style="margin: 1em" type="reset" class="btn btn-secondary col-10 col-sm-6 col-md-4">Reset</button>
     </fieldset>
     </form>
         </div>

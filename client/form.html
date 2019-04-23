@@ -14,7 +14,8 @@
  integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" 
 integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    
+<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.css' rel='stylesheet' />
     <script src="main.js"></script>
     <style>
     label{
@@ -24,6 +25,32 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
     h3{
       color: darkcyan;
     }
+    .coordinates {
+      background: rgba(0,0,0,0.5);
+      color: #fff;
+      position: absolute;
+      bottom: 40px;
+      left: 10px;
+      padding:5px 10px;
+      margin: 0;
+      font-size: 11px;
+      line-height: 18px;
+      border-radius: 3px;
+      display: none;
+    }
+    body {
+        margin: 0;
+        padding: 0;
+      }
+
+      #map {
+      position: inherit;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+        margin: auto;
+        height: 100%;
+      }
     </style>
 </head>
 
@@ -53,6 +80,41 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
            
           </nav> </header>
     <br><Br>
+
+      
+
+    <section>
+      <div class="mapcontainer">
+        <div id='map'></div>
+        <pre id='coordinates' class='coordinates'></pre>
+        <script>
+            mapboxgl.accessToken = 'pk.eyJ1IjoiZXJyYWh1bDkzIiwiYSI6ImNqdW8wemlxODJwNzUzeXFqbnVibHZzYzUifQ.bZKWernpF2H1uvOVNp4DOA';
+            var coordinates = document.getElementById('coordinates');
+            var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: [77.10127830505371,28.681702723443177],
+            zoom: 2
+            });
+             
+            var marker = new mapboxgl.Marker({
+            draggable: true
+            })
+            .setLngLat([77.10127830505371,28.681702723443177])
+            .addTo(map);
+             
+            function onDragEnd() {
+            var lngLat = marker.getLngLat();
+            coordinates.style.display = 'block';
+            coordinates.innerHTML = 'Longitude: ' + lngLat.lng + '<br />Latitude: ' + lngLat.lat;
+            document.getElementById('longitude').value=lngLat.lng;
+            document.getElementById('latitude').value=lngLat.lat;
+            }
+             
+            marker.on('dragend', onDragEnd);
+            </script>
+      </div>
+    </section>
 
 	  <section id="upload">
 
@@ -131,20 +193,20 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
 
     <script>
 
-        function getLocation() {
-          if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(setPosition);
-          } else { 
-            x.innerHTML = "Geolocation is not supported by this browser.";
-          }
-        }
+        // function getLocation() {
+        //   if (navigator.geolocation) {
+        //     navigator.geolocation.getCurrentPosition(setPosition);
+        //   } else { 
+        //     x.innerHTML = "Geolocation is not supported by this browser.";
+        //   }
+        // }
         
-        function setPosition(position) {
-          document.getElementById('longitude').value=position.coords.longitude;
-          document.getElementById('latitude').value=position.coords.latitude;
-        }
+        // function setPosition(position) {
+        //   document.getElementById('longitude').value=position.coords.longitude;
+        //   document.getElementById('latitude').value=position.coords.latitude;
+        // }
 
-        window.onload=getLocation;
+        // window.onload=getLocation;
         </script>
 </body>
 </html>

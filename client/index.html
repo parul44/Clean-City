@@ -48,6 +48,7 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
         bottom: 0;
         width: 100%;
         margin: auto;
+        height: 100%;
       }
       .item {
   position: relative;
@@ -103,23 +104,17 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
             <div class="collapse navbar-collapse" id="navbarSupportedContent" >
               <ul class="navbar-nav mr-auto">
                 <li class="nav-item active ">
-                  <a class="nav-link scrolly" style="color:darkcyan;font-weight: 500;font-size:1.1em" href="#home">Home <span class="sr-only"></span></a>
+                  <a class="nav-link  " style="color:darkcyan;font-weight: 500;font-size:1.1em" href="#home">Home <span class="sr-only"></span></a>
                 </li>
                 <li class="nav-item active">
-                  <a class="nav-link scrolly" style="color:darkcyan;font-weight: 500;font-size:1.1em" href="form.html">Upload</a>
+                  <a class="nav-link  " id="navupload" style="font-weight: 500;" href="form.html"> Upload </a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link scrolly " style="color:darkcyan;font-weight: 500;font-size:1.1em" href="#">About Us</a>
+                    <a class="nav-link   " style="color:darkcyan;font-weight: 500;font-size:1.1em" href="#">About Us</a>
                   </li>
                 
               </ul>
-              <ul class="navbar-nav mr-right" >
-                    <a class="nav-link scrolly " style="color:darkcyan;font-weight: 500;font-size:1.1em" href="#">Login</a>
-                  </ul>
-                  <ul class="navbar-nav mr-right" >
-                    <a class="nav-link scrolly " style="color:darkcyan;font-weight: 500;font-size:1.1em" href="#">Sign Up</a>
-                  </ul>
-            </div>
+             </div>
             <form action="form.html">
 </form>
           </nav>
@@ -513,7 +508,7 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
         </script></div>
         
       </div>
-      <br><br>
+      <br><br><br>
   </section>
 <br><br><br>
 
@@ -557,78 +552,43 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
                </div>
     </div>
 
-              <br><br>
-              <!-- <div class="icons">
-                <div class="item">
-                   <img src="images/garbage.jpg">
-                   <h4>Garbage</h4>
-                   <p>Garbage reports </p>
-                   <button type="button" class="btn btn-secondary">View Details</button>
-                </div>
-                <div class="item">
-                        <img src="images/electricity.jpg">
-                        <h4>Electricity</h4>
-                   <p>Electricity cutoff reports </p>
-                   <button type="button" class="btn btn-secondary">View Details</button>
-                </div>
-                    <div class="item">
-                            <img src="images/water.jpg">
-                            <h4>Water</h4>
-                            <p>Water shortage reports </p>
-                            <button type="button" class="btn btn-secondary">View Details</button>
-                            
-                    </div>
-                    <div class="item">
-                      <img src="images/accident.jpg">
-                      <h4>Accidents</h4>
-                   <p>Accident reports </p>
-                   <button type="button" class="btn btn-secondary">View Details</button>
-                   </div>
-                   <div class="item">
-                           <img src="images/crime.jpg">
-                           <h4>Crime</h4>
-                           <p>Violence & other crime reports </p>
-                           <button type="button" class="btn btn-secondary">View Details</button>
-                   </div>
-            </div>
-            <br><br><br> -->
 
-            <div class="card-group text-center">
-                <div class="card border-0">
+            <div class="card-group text-center iconimg">
+                <div class="card border border-info">
                   <img class="card-img-top" src="images/garbage.jpg" alt="Card image cap">
                   <div class="card-body">
                       <h4>Garbage</h4>
                       <p>Garbage reports </p>
-                      <button type="button" class="btn btn-secondary">View Details</button> </div>
+                      <button type="button" class="btn btn-secondary">View Reports</button> </div>
                 </div>
-                <div class="card border-0">
+                <div class="card border border-info">
                   <img class="card-img-top" src="images/electricity.jpg" alt="Card image cap">
                   <div class="card-body">
                       <h4>Electricity</h4>
-                      <p>Electricity cutoff reports </p>
-                      <button type="button" class="btn btn-secondary">View Details</button></div>
+                      <p>Cutoff reports </p>
+                      <button type="button" class="btn btn-secondary">View Reports</button></div>
                 </div>
-                <div class="card border-0">
+                <div class="card border border-info">
                   <img class="card-img-top" src="images/water.jpg" alt="Card image cap">
                   <div class="card-body">
                       <h4>Water</h4>
-                      <p>Water shortage reports </p>
-                      <button type="button" class="btn btn-secondary">View Details</button>
+                      <p>Water reports </p>
+                      <button type="button" class="btn btn-secondary">View Reports</button>
                       </div>
                 </div>
-                <div class="card border-0">
+                <div class="card border border-info">
                     <img class="card-img-top" src="images/accident.jpg" alt="Card image cap">
                     <div class="card-body">
                         <h4>Accidents</h4>
                         <p>Accident reports </p>
-                        <button type="button" class="btn btn-secondary">View Details</button>
+                        <button type="button" class="btn btn-secondary">View Reports</button>
                      </div>
-                  </div><div class="card border-0">
+                  </div><div class="card border border-info">
                       <img class="card-img-top" src="images/crime.jpg" alt="Card image cap">
                       <div class="card-body">
                         <h4>Crime</h4>
-                           <p>Violence & other crime reports </p>
-                           <button type="button" class="btn btn-secondary">View Details</button>
+                           <p>Crime reports </p>
+                           <button type="button" class="btn btn-secondary">View Reports</button>
                  </div>
                     </div>
               </div>

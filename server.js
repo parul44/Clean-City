@@ -20,8 +20,7 @@ app.use(express.static(path.join(__dirname, 'client')));
 // User routes
 app.use('/user', userRoutes);
 
-// Admin routes
-app.use('/admin', adminRoutes);
+
 
 //html routes
 app.get('/about', (req, res, next) => {

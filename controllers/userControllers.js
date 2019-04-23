@@ -60,11 +60,32 @@ const getGeojson = async (req, res) => {
   }
 };
 
+// GET /reports?reportType=xyz
+// GET /reports?limit=10&skip=20
+// GET /reports?sortBy=createdAt:desc
 const getReports = async (req, res) => {
+  const match = {};
+  const options = { sort: {} };
+
+  if (req.query.reportType) {
+    match.reportType = req.query.reportType;
+  }
+
+  if (req.query.sortBy) {
+    const parts = req.query.sortBy.split(':');
+    options.sort[parts[0]] = parts[1] === 'desc' ? -1 : 1;
+  }
+
+  if (req.query.limit) {
+    options.limit = parseInt(req.query.limit);
+  }
+
+  if (req.query.skip) {
+    options.skip = parseInt(req.query.skip);
+  }
+
   try {
-    var reports = await Report.find({}, 'location createdAt')
-      .sort({ $natural: -1 })
-      .limit(6);
+    var reports = await Report.find(match, '-imageBuffer', options);
     res.status(200).send(reports);
   } catch (e) {
     res.status(400).send(e);
@@ -72,10 +93,15 @@ const getReports = async (req, res) => {
 };
 
 const getReportsID = async (req, res) => {
+  const _id = req.params.id;
   try {
-    res.status(200).send(`Getting report with id ${req.params.id}`);
+    const report = await Report.findOne({ _id }, '-imageBuffer');
+    if (!report) {
+      return res.status(404).json({ error: 'Report not found' });
+    }
+    res.send(report);
   } catch (e) {
-    res.status(400).send(e);
+    res.status(404).send();
   }
 };
 

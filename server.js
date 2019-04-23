@@ -4,7 +4,6 @@ const path = require('path');
 require('./db/mongoose');
 const bodyParser = require('body-parser');
 const userRoutes = require('./routes/userRoutes');
-const adminRoutes = require('./routes/adminRoutes');
 
 const app = express();
 
@@ -15,13 +14,13 @@ app.use(bodyParser.json());
 
 app.use(express.static(path.join(__dirname, 'client')));
 
+
 // Routes
 
 // User routes
 app.use('/user', userRoutes);
 
-// Admin routes
-app.use('/admin', adminRoutes);
+
 
 //html routes
 app.get('/about', (req, res, next) => {

@@ -20,12 +20,16 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.js'></script>
     <script>
       var latest6;
-      fetch('/user/reports')
+      fetch('/user/reports?limit=6&sortBy=createdAt:desc')
       .then(res => {
         res.json().then(data => {
         latest6 = document.getElementsByClassName("latest");
         for(i=0; i<6; i++){
           latest6[i].src=`/user/image/${data[i]._id}`
+        }
+        latestprop = document.getElementsByClassName("text");
+        for(i=0;i<6;i++){
+          latestprop[i].innerHTML = `Location : ${data[i].location} <br> Date Created  : ${data[i].createdAt.slice(0,10)}`
         }
         });
       });
@@ -45,6 +49,45 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
         width: 100%;
         margin: auto;
       }
+      .item {
+  position: relative;
+  width: 100%;
+}
+
+.latest {
+  opacity: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: .5s ease;
+  backface-visibility: hidden;
+}
+
+.middle {
+  transition: .5s ease;
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.item:hover .latest {
+  opacity: 0.3;
+}
+
+.item:hover .middle {
+  opacity: 1;
+}
+
+.text {
+  background-color: #4CAF50;
+  color: white;
+  font-size: 16px;
+  padding: 16px 32px;
+}
     </style>
 </head>
 
@@ -478,26 +521,39 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
       <div class="gallery">
         <div class="item">
            <img src="images/color1.jpg" class="latest">
+           <div class="middle">
+            <div class="text"></div>
+          </div>
         </div>
         <div class="item">
                 <img src="images/color6.jpg" class="latest">
-                
+                <div class="middle">
+                  <div class="text"></div>
+                </div>
         </div>
             <div class="item">
                     <img src="images/color4.jpg" class="latest">
-                    
+                    <div class="middle">
+                      <div class="text"></div>
+                    </div>
             </div>
             <div class="item">
               <img src="images/color9.jpg" class="latest">
-   
+              <div class="middle">
+                <div class="text"></div>
+              </div>
            </div>
            <div class="item">
                    <img src="images/color10.jpg" class="latest">
-                   
+                   <div class="middle">
+                    <div class="text"></div>
+                  </div>
            </div>
                <div class="item">
                        <img src="images/color5.jpg" class="latest">
-                       
+                       <div class="middle">
+                        <div class="text"></div>
+                      </div>
                </div>
     </div>
 

@@ -42,21 +42,24 @@ body {
 
 .card {
   margin: 2%;
-  transition: all 0.2s ease-in-out;
+  -webkit-transition: all .2s ease-in-out;
+  transition: all .2s ease-in-out;
 }
 
-.iconimg img {
-  height: 180px;
-  transition: all 0.4s;
-  width: 70%;
-  margin: 0 auto;
-  padding-top: 2%;
-}
-.card:hover {
-  transform: scale(1.1);
-}
+  .iconimg img{
+     height: 180px;
+    
+      width: 70%;
+      margin: 0 auto;
+      padding-top:2%;
+      }
+    .card:hover{
+        transform: scale(1.1);
+        -webkit-transform: scale(1.1);
+        
+      }
 
-.mapcontainer {
+.mapcontainer{
   width: 90%;
   border: 3px gray solid;
   border-spacing: 2px;
@@ -83,7 +86,7 @@ h4 {
 #navupload {
   background-color: darkcyan;
   color: rgb(220, 248, 248);
-  border-radius: 12%;
+  border-radius: 20px;
   font-size: 1rem;
 }
 
@@ -173,4 +176,10 @@ h4 {
   #problemtype {
     width: 11rem;
   }
+  
+} 
+footer{
+  background-color: rgb(220, 248, 248);
 }
+
+

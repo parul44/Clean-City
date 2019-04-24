@@ -25,6 +25,9 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
     h3{
       color: darkcyan;
     }
+    .mapcontainer{
+      position: relative
+    }
     .coordinates {
       background: rgba(0,0,0,0.5);
       color: #fff;
@@ -37,6 +40,7 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
       line-height: 18px;
       border-radius: 3px;
       display: none;
+      z-index: 5;
     }
     body {
         margin: 0;
@@ -44,13 +48,56 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
       }
 
       #map {
-      position: inherit;
+      position: absolute;
         top: 0;
         bottom: 0;
         width: 100%;
         margin: auto;
         height: 100%;
       }
+
+      #menu {
+      background: #fff;
+      position: absolute;
+      z-index: 1;
+      top: 10px;
+      right: 10px;
+      border-radius: 3px;
+      width: 120px;
+      border: 1px solid rgba(0,0,0,0.4);
+      font-family: 'Open Sans', sans-serif;
+      }
+      
+      #menu a {
+      font-size: 13px;
+      color: #404040;
+      display: block;
+      margin: 0;
+      padding: 0;
+      padding: 10px;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(0,0,0,0.25);
+      text-align: center;
+      }
+      
+      #menu a:last-child {
+      border: none;
+      }
+      
+      #menu a:hover {
+      background-color: #f8f8f8;
+      color: #404040;
+      }
+      
+      #menu a.active {
+      background-color: #3887be;
+      color: #ffffff;
+      }
+      
+      #menu a.active:hover {
+      background: #3074a4;
+      }
+
     </style>
 </head>
 
@@ -85,22 +132,24 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
 
     <section>
       <div class="mapcontainer">
-        <div id='map'></div>
-        <pre id='coordinates' class='coordinates'></pre>
+        <div id='map'>
+        </div>
+        <pre id='coordinates' class='coordinates'></pre>          
+        
         <script>
             mapboxgl.accessToken = 'pk.eyJ1IjoiZXJyYWh1bDkzIiwiYSI6ImNqdW8wemlxODJwNzUzeXFqbnVibHZzYzUifQ.bZKWernpF2H1uvOVNp4DOA';
             var coordinates = document.getElementById('coordinates');
             var map = new mapboxgl.Map({
             container: 'map',
             style: 'mapbox://styles/mapbox/streets-v11',
-            center: [77.10127830505371,28.681702723443177],
-            zoom: 2
+            center: [77.146721,28.644800],
+            zoom: 11
             });
              
             var marker = new mapboxgl.Marker({
             draggable: true
             })
-            .setLngLat([77.10127830505371,28.681702723443177])
+            .setLngLat([77.146721,28.644800])
             .addTo(map);
              
             function onDragEnd() {

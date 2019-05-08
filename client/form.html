@@ -98,6 +98,20 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
       background: #3074a4;
       }
 
+      #fly {
+      display: block;
+      position: relative;
+      margin: 0px auto;
+      width: 35%;
+      height: 40px;
+      padding: 5px;
+      border: none;
+      border-radius: 3px;
+      font-size: 12px;
+      text-align: center;
+      color: #fff;
+      background: #ee8a65;
+      }
     </style>
 </head>
 
@@ -134,6 +148,8 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
       <div class="mapcontainer">
         <div id='map'>
         </div>
+        <br/>
+        <button id='fly'>Set to Current Location</button>
         <pre id='coordinates' class='coordinates'></pre>          
         
         <script>
@@ -151,7 +167,30 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
             })
             .setLngLat([77.146721,28.644800])
             .addTo(map);
+
+            function setPosition(position) {
+                marker.setLngLat([position.coords.longitude,
+                position.coords.latitude]).addTo(map);
+
+                onDragEnd();
+                
+                //Fly animation
+                map.flyTo({
+                center: [
+                position.coords.longitude,
+                position.coords.latitude],
+                zoom: 15
+                });
+              }              
              
+            document.getElementById('fly').addEventListener('click', function () {
+                if (navigator.geolocation) {
+                  navigator.geolocation.getCurrentPosition(setPosition);
+                } else { 
+                  console.log("Geolocation is not supported by this browser.");
+                }
+            });
+
             function onDragEnd() {
             var lngLat = marker.getLngLat();
             coordinates.style.display = 'block';
@@ -246,7 +285,7 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
         //   if (navigator.geolocation) {
         //     navigator.geolocation.getCurrentPosition(setPosition);
         //   } else { 
-        //     x.innerHTML = "Geolocation is not supported by this browser.";
+        //     console.log("Geolocation is not supported by this browser.");
         //   }
         // }
         

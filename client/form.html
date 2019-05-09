@@ -14,7 +14,8 @@
  integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" 
 integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    
+<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.css' rel='stylesheet' />
     <script src="main.js"></script>
     <style>
     label{
@@ -24,6 +25,93 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
     h3{
       color: darkcyan;
     }
+    .mapcontainer{
+      position: relative
+    }
+    .coordinates {
+      background: rgba(0,0,0,0.5);
+      color: #fff;
+      position: absolute;
+      bottom: 40px;
+      left: 10px;
+      padding:5px 10px;
+      margin: 0;
+      font-size: 11px;
+      line-height: 18px;
+      border-radius: 3px;
+      display: none;
+      z-index: 5;
+    }
+    body {
+        margin: 0;
+        padding: 0;
+      }
+
+      #map {
+      position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+        margin: auto;
+        height: 100%;
+      }
+
+      #menu {
+      background: #fff;
+      position: absolute;
+      z-index: 1;
+      top: 10px;
+      right: 10px;
+      border-radius: 3px;
+      width: 120px;
+      border: 1px solid rgba(0,0,0,0.4);
+      font-family: 'Open Sans', sans-serif;
+      }
+      
+      #menu a {
+      font-size: 13px;
+      color: #404040;
+      display: block;
+      margin: 0;
+      padding: 0;
+      padding: 10px;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(0,0,0,0.25);
+      text-align: center;
+      }
+      
+      #menu a:last-child {
+      border: none;
+      }
+      
+      #menu a:hover {
+      background-color: #f8f8f8;
+      color: #404040;
+      }
+      
+      #menu a.active {
+      background-color: #3887be;
+      color: #ffffff;
+      }
+      
+      #menu a.active:hover {
+      background: #3074a4;
+      }
+
+      #fly {
+      display: block;
+      position: relative;
+      margin: 0px auto;
+      width: 35%;
+      height: 40px;
+      padding: 5px;
+      border: none;
+      border-radius: 3px;
+      font-size: 12px;
+      text-align: center;
+      color: #fff;
+      background: #ee8a65;
+      }
     </style>
 </head>
 
@@ -53,6 +141,68 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
            
           </nav> </header>
     <br><Br>
+
+      
+
+    <section>
+      <div class="mapcontainer">
+        <div id='map'>
+        </div>
+        <br/>
+        <button id='fly'>Set to Current Location</button>
+        <pre id='coordinates' class='coordinates'></pre>          
+        
+        <script>
+            mapboxgl.accessToken = 'pk.eyJ1IjoiZXJyYWh1bDkzIiwiYSI6ImNqdW8wemlxODJwNzUzeXFqbnVibHZzYzUifQ.bZKWernpF2H1uvOVNp4DOA';
+            var coordinates = document.getElementById('coordinates');
+            var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: [77.146721,28.644800],
+            zoom: 11
+            });
+             
+            var marker = new mapboxgl.Marker({
+            draggable: true
+            })
+            .setLngLat([77.146721,28.644800])
+            .addTo(map);
+
+            function setPosition(position) {
+                marker.setLngLat([position.coords.longitude,
+                position.coords.latitude]).addTo(map);
+
+                onDragEnd();
+                
+                //Fly animation
+                map.flyTo({
+                center: [
+                position.coords.longitude,
+                position.coords.latitude],
+                zoom: 15
+                });
+              }              
+             
+            document.getElementById('fly').addEventListener('click', function () {
+                if (navigator.geolocation) {
+                  navigator.geolocation.getCurrentPosition(setPosition);
+                } else { 
+                  console.log("Geolocation is not supported by this browser.");
+                }
+            });
+
+            function onDragEnd() {
+            var lngLat = marker.getLngLat();
+            coordinates.style.display = 'block';
+            coordinates.innerHTML = 'Longitude: ' + lngLat.lng + '<br />Latitude: ' + lngLat.lat;
+            document.getElementById('longitude').value=lngLat.lng;
+            document.getElementById('latitude').value=lngLat.lat;
+            }
+             
+            marker.on('dragend', onDragEnd);
+            </script>
+      </div>
+    </section>
 
 	  <section id="upload">
 
@@ -131,20 +281,20 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
 
     <script>
 
-        function getLocation() {
-          if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(setPosition);
-          } else { 
-            x.innerHTML = "Geolocation is not supported by this browser.";
-          }
-        }
+        // function getLocation() {
+        //   if (navigator.geolocation) {
+        //     navigator.geolocation.getCurrentPosition(setPosition);
+        //   } else { 
+        //     console.log("Geolocation is not supported by this browser.");
+        //   }
+        // }
         
-        function setPosition(position) {
-          document.getElementById('longitude').value=position.coords.longitude;
-          document.getElementById('latitude').value=position.coords.latitude;
-        }
+        // function setPosition(position) {
+        //   document.getElementById('longitude').value=position.coords.longitude;
+        //   document.getElementById('latitude').value=position.coords.latitude;
+        // }
 
-        window.onload=getLocation;
+        // window.onload=getLocation;
         </script>
 </body>
 </html>

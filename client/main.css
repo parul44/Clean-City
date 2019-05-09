@@ -36,6 +36,70 @@ body {
   height: 300px;
 }
 
+.item {
+  position: relative;
+  width: 100%;
+}
+
+.latest {
+  opacity: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  backface-visibility: hidden;
+}
+
+.middle {
+  border-radius: 25px;
+  opacity: 0.85;
+  width: 97%;
+  min-height: 15%;
+  height: auto;
+  background-color: #c7f7f7;
+  position: absolute;
+  margin: 0px 10px 10px 10px;
+  bottom: 0%;
+  left: 0%;
+  text-align: center;
+}
+
+.text1 {
+  color: rgb(0, 0, 0);
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 5px 15px;
+  animation-name: text;
+  animation-duration: 7s;
+  animation-direction: linear;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+.text2 {
+  color: rgb(0, 0, 0);
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 5px 15px;
+  animation-name: text;
+  animation-duration: 7s;
+  animation-direction: linear;
+  animation-delay: 3.5s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+@keyframes text {
+  from {
+    opacity: 1;
+    height: auto;
+  }
+  to {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    height: 0;
+    overflow: hidden;
+  }
+}
+
 .card-group {
   margin: 40px;
 }

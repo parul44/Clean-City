@@ -28,21 +28,26 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
           }
 
           var flag=1;
-          text6 = document.getElementsByClassName("text");
-          var text6date = data.map(data=>data.createdAt.slice(0,10));
+          text1 = document.getElementsByClassName("text1");
+          text2 = document.getElementsByClassName("text2");
+          for(i=0;i<6;i++){
+            text1[i].innerHTML = `Location : ${data[i].location}`
+            text2[i].innerHTML = `Date Created  : ${data[i].createdAt.slice(0,10)}`
+          }
           
-          
-          window.setInterval(function() {
-            for(i=0;i<6;i++){
-              if(flag===1){
-                text6[i].innerHTML = `Location: ${data[i].location} `
-              }
-              else if(flag===-1){
-                text6[i].innerHTML = `Date Created: ${text6date[i]}`
-              }
-            }
-            flag=flag*(-1);
-          }, 2500);
+          // var text6date = data.map(data=>data.createdAt.slice(0,10));
+
+          // window.setInterval(function() {
+          //   for(i=0;i<6;i++){
+          //     if(flag===1){
+          //       text6[i].innerHTML = `Location: ${data[i].location} `
+          //     }
+          //     else if(flag===-1){
+          //       text6[i].innerHTML = `Date Created: ${text6date[i]}`
+          //     }
+          //   }
+          //   flag=flag*(-1);
+          // }, 2500);
           
         });
       }).catch();
@@ -110,37 +115,7 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
         background: #3074a4;
       }
 
-      .item {
-        position: relative;
-        width: 100%;
-      }
-
-      .latest {
-        opacity: 1;
-        display: block;
-        width: 100%;
-        height: auto;
-        backface-visibility: hidden;
-      }
-
-      .middle {
-        border-radius: 20px;
-        opacity: 0.7;
-        width:75%;
-        background-color: #dcf8f8;
-        position: absolute;
-        margin-bottom:5px;
-        margin-left:5px;
-        bottom: 0%;
-        left: 0%;
-      }
-
-      .text {
-        color: rgb(0, 0, 0);
-        font-size: 15px;
-        font-weight: bold;
-        padding: 7px 15px;
-      }
+   
     </style>
 </head>
 
@@ -601,38 +576,44 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
         <div class="item">
           <img src="" class="latest">
           <div class="middle">
-            <div class="text">No data</div>
+            <div class="text1">No data</div>
+            <div class="text2">No data</div>
           </div>
        </div>
 
         <div class="item">
                 <img src="" class="latest">
                 <div class="middle">
-                  <div class="text">No data</div>
+                  <div class="text1">No data</div>
+                  <div class="text2">No data</div>
                 </div>
         </div>
             <div class="item">
                     <img src="" class="latest">
                     <div class="middle">
-                      <div class="text">No data</div>
+                      <div class="text1">No data</div>
+                      <div class="text2">No data</div>
                     </div>
             </div>
             <div class="item">
               <img src="" class="latest">
               <div class="middle">
-                <div class="text">No data</div>
+                <div class="text1">No data</div>
+                <div class="text2">No data</div>
               </div>
            </div>
            <div class="item">
                    <img src="" class="latest">
                    <div class="middle">
-                    <div class="text">No data</div>
+                    <div class="text1">No data</div>
+                    <div class="text2">No data</div>
                   </div>
            </div>
                <div class="item">
                        <img src="" class="latest">
                        <div class="middle">
-                        <div class="text">No data</div>
+                        <div class="text1">No data</div>
+                        <div class="text2">No data</div>
                       </div>
                </div>
     </div>

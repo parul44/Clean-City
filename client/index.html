@@ -22,35 +22,23 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
       fetch('/user/reports?limit=6&sortBy=createdAt:desc')
       .then(res => {
         res.json().then(data => {
+
           latest6 = document.getElementsByClassName("latest");
           for(i=0; i<6; i++){
             latest6[i].src=`/user/image/${data[i]._id}`
           }
 
-          var flag=1;
           text1 = document.getElementsByClassName("text1");
           text2 = document.getElementsByClassName("text2");
+          
           for(i=0;i<6;i++){
-            text1[i].innerHTML = `Location : ${data[i].location}`
-            text2[i].innerHTML = `Date Created  : ${data[i].createdAt.slice(0,10)}`
+            text1[i].innerHTML = `${data[i].location.slice(0,50)}`
+            date= new Date(data[i].createdAt)
+            text2[i].innerHTML = `${date.toLocaleString()}`
           }
           
-          // var text6date = data.map(data=>data.createdAt.slice(0,10));
-
-          // window.setInterval(function() {
-          //   for(i=0;i<6;i++){
-          //     if(flag===1){
-          //       text6[i].innerHTML = `Location: ${data[i].location} `
-          //     }
-          //     else if(flag===-1){
-          //       text6[i].innerHTML = `Date Created: ${text6date[i]}`
-          //     }
-          //   }
-          //   flag=flag*(-1);
-          // }, 2500);
-          
         });
-      }).catch();
+      }).catch(console.log());
       
     </script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.css' rel='stylesheet' />

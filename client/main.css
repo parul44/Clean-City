@@ -35,6 +35,19 @@ body {
   width: 100%;
   height: 300px;
 }
+.item div{
+  background-color: darkcyan;
+  position:absolute;
+  left:0;
+  bottom:0;
+  opacity:0.6;
+  width: 100%;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 2rem;
+  padding:3px;
+  font-weight: 900;
+  text-align: center;
+}
 
 .card-group {
   margin: 40px;
@@ -178,10 +191,6 @@ h4 {
   }
   
 } 
-footer{
-  background-color: rgb(220, 248, 248);
-}
-
 
 /* footer design */
 

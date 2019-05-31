@@ -14,13 +14,10 @@ app.use(bodyParser.json());
 
 app.use(express.static(path.join(__dirname, 'client')));
 
-
 // Routes
 
 // User routes
 app.use('/user', userRoutes);
-
-
 
 //html routes
 app.get('/about', (req, res, next) => {

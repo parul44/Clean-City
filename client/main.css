@@ -36,6 +36,72 @@ body {
   height: 300px;
 }
 
+.item {
+  position: relative;
+  width: 100%;
+}
+
+.latest {
+  opacity: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  backface-visibility: hidden;
+}
+
+.middle {
+  border-radius: 0px;
+  opacity: 0.85;
+  width: 100%;
+  min-height: 20%;
+  height: auto;
+  background-color: #000000;
+  position: absolute;
+  bottom: 0%;
+  left: 0%;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.text1 {
+  position: absolute;
+  color: rgb(255, 255, 255);
+  overflow: hidden;
+  font-size: 1rem;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-weight: bold;
+  padding: 10px 15px;
+  animation-name: text;
+  animation-duration: 5s;
+  animation-fill-mode: both;
+  animation-direction: alternate-reverse;
+  animation-iteration-count: infinite;
+}
+.text2 {
+  position: absolute;
+  color: rgb(255, 255, 255);
+  overflow: hidden;
+  font-size: 1.3rem;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-weight: 500px;
+  padding: 10px 15px;
+  animation-name: text;
+  animation-duration: 5s;
+  animation-fill-mode: both;
+  animation-direction: alternate;
+  animation-iteration-count: infinite;
+}
+
+@keyframes text {
+  0%,
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 .card-group {
   margin: 40px;
 }
@@ -99,7 +165,7 @@ h4 {
 
   .gallery {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(2, 200px);
     background-color: aquamarine;
   }
@@ -109,6 +175,12 @@ h4 {
   }
   .iconimg img {
     height: 150px;
+  }
+  .text1 {
+    font-size: 0.7rem;
+  }
+  .text2 {
+    font-size: 0.7rem;
   }
 }
 

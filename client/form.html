@@ -44,7 +44,6 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
         margin: 0;
         padding: 0;
       }
-
       #map {
       position: absolute;
         top: 0;
@@ -53,7 +52,6 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
         margin: auto;
         height: 100%;
       }
-
       #menu {
       background: #fff;
       position: absolute;
@@ -95,7 +93,6 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
       #menu a.active:hover {
       background: #3074a4;
       }
-
       #fly {
       display: block;
       position: relative;
@@ -164,7 +161,7 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
       <div style="padding: 20px;color:whitesmoke">
           <h1 style="text-align: center">Any problems in your area?
           Post them here!</h1><br>
-          <p>(Allow acess to location if prompted)</p>
+          <p>(Allow access to location if prompted)</p>
 
 
     <section>
@@ -190,11 +187,9 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
             })
             .setLngLat([77.146721,28.644800])
             .addTo(map);
-
             function setPosition(position) {
                 marker.setLngLat([position.coords.longitude,
                 position.coords.latitude]).addTo(map);
-
                 onDragEnd();
                 
                 //Fly animation
@@ -213,7 +208,6 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
                   console.log("Geolocation is not supported by this browser.");
                 }
             });
-
             function onDragEnd() {
             var lngLat = marker.getLngLat();
             coordinates.style.display = 'block';
@@ -230,10 +224,12 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
 	  <section id="upload">
 
         <div class="uploadform ">
-                      
+<div class="card text-dark bg-light ">
+<div class="card-body">                      
         
             <form id="myForm" enctype="multipart/form-data" action="/user/submit" method="post">
         <br>
+
         <div class="container formcontainer">
         	
             <div class="row">
@@ -243,8 +239,8 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
                 
               </div></div>
                 <br>
-            <div class=" mix">
-                        <div class="form-group col-10 col-sm-6  ">
+            <div class="row">
+                        <div class="form-group  col-6 col-sm-10  ">
                                 <label>Select type of report&emsp;</label>
                                 <select class="form-control" id="problemtype" name="reportType" required>
                                   <option>Garbage Heap</option>
@@ -255,16 +251,18 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
                                 </select>
 
                               </div>
-             
-
-            <div class="col-sm-6 col-10">
+             </div>
+            <div class="row">
+            <div class="col-sm-10 col-6">
                     
                         <div class="form-group" id="uploadimage">
+
                                 <label for="picfile">Upload Image</label>
+
                                 <input type="file" class="form-control-file" id="picfile" name="image" required>
                               </div>
                 </div>
-            
+            </div>
             <div class="row">
                             <div class=" col-10 col-sm-10">
                                 <label>Description of the report&emsp;&emsp;</label>
@@ -293,6 +291,8 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
         <button style="margin: 1em" type="reset" class="btn btn-secondary col-10 col-sm-6 col-md-4">Reset</button>
     </fieldset>
     </form>
+</div>
+</div>
         </div>
         </div>
         <br><br>

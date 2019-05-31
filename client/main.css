@@ -25,7 +25,16 @@ background-image: linear-gradient(315deg, #63d471 0%, #2b4d38 74%);
   color: whitesmoke;
   margin: 0% 5% 5% -2%;
   font-size: 10rem;
-  
+}
+
+.cleancitytext2{
+  font-family: fantasy;
+  color: whitesmoke;
+  margin: -20% 0% 0% -2%;
+  font-size: 10rem;
+}
+.subtext{
+  font-family: auto;font-size: 1.3rem;color: whitesmoke;
 }
 #explorebtn{
   border: 1px solid whitesmoke;
@@ -47,6 +56,7 @@ background-image: linear-gradient(315deg, #63d471 0%, #2b4d38 74%);
   margin: 0 auto;
 
 }
+
 #garbagesection img{
   margin: 0 auto;
 }
@@ -62,10 +72,12 @@ background-image: linear-gradient(315deg, #63d471 0%, #2b4d38 74%);
   color: white;
   text-align: center;
 }
+
 .gallery {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(2, 300px);
+  background-color: transparent;
 
 }
 .gallery img {
@@ -192,7 +204,14 @@ h4 {
   .mapcontainer {
     height: 406px;
   }
-
+  .cleancitytext{
+    font-size:6rem;
+  }.cleancitytext2{
+    font-size:6rem;
+  }
+  .subtext{
+    font-size: 1rem;
+  }
   .gallery {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -220,9 +239,41 @@ h4 {
   }
   #carousel img {
     height: 350px;
+  }.cleancitytext{
+    font-size:4rem;
+  }.cleancitytext2{
+    font-size:4rem;
   }
+  
+  #poster{
+    height: 400px;
+   }
 }
-
+@media only screen and (max-width: 600px){
+  .cleancitytext{
+    font-size:7rem;
+    margin: 3%;
+  }.cleancitytext2{
+    font-size:7rem;
+    margin: -20% 0% 2% 3%;
+  }
+  #carousel{
+    margin: 5%;
+  }
+  .subtext{
+    padding: 3%;
+font-size: 1.2rem;
+  }
+  #explorebtn{
+    margin: 2% 10%;
+    font-size: 1rem;
+  }
+  #poster{
+   height:700px;
+    display: block;
+    margin: 0 auto;
+   } 
+}
 @media only screen and (max-width: 570px) {
   #carousel img {
     height: 250px;
@@ -231,7 +282,9 @@ h4 {
   .mapcontainer {
     height: 400px;
   }
-
+  .cleancitytext2{
+    margin: -20% 0% 2% 3%;
+  }
   .gallery {
     display: block;
     margin: 0 auto;
@@ -258,6 +311,50 @@ h4 {
   .mapcontainer {
     height: 256px;
   }
+}
+@media only screen and (max-width:425px){
+  .cleancitytext{
+    font-size:4rem;
+    margin: 3%;
+  }.cleancitytext2{
+    font-size:4rem;
+    margin: -15% 0% 2% 3%;
+  }
+  .subtext{
+    padding: 3%;
+font-size: 1.2rem;
+  }
+  #explorebtn{
+    margin: 2% 10%;
+    font-size: 1rem;
+  }
+  #poster{
+   height:540px;
+    display: block;
+    margin: 0 auto;
+   } 
+}
+@media only screen and (max-width:320px){
+  .cleancitytext{
+    font-size:4rem;
+    margin: 3%;
+  }.cleancitytext2{
+    font-size:4rem;
+    margin: -18% 0% 2% 3%;
+  }
+  .subtext{
+    padding: 3%;
+font-size: 1rem;
+  }
+  #explorebtn{
+    margin: 2% 10%;
+    font-size: .9rem;
+  }
+  #poster{
+   height:500px;
+    display: block;
+    margin: 0 auto;
+   } 
 }
 @media only screen and (max-width: 990px) {
   #navupload {

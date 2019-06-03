@@ -119,16 +119,16 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
             <div class="collapse navbar-collapse" id="navbarSupportedContent" >
               <ul class="navbar-nav mr-auto">
                 <li class="nav-item active ">
-                  <a class="nav-link  " style="color:whitesmoke;font-size:1.1em" href="#home">Home <span class="sr-only"></span></a>
+                  <a class="nav-link  " style="color:whitesmoke;font-size:1.1em;font-weight: bold;" href="index.html#home">HOME </a>
                 </li>
                 <li class="nav-item active">
-                  <a class="nav-link  " style="color:whitesmoke;font-size:1.1em" href="form.html"> Upload </a>
+                  <a class="nav-link  " style="color:whitesmoke;font-size:1.1em;font-weight: bold;" href="form.html"> UPLOAD </a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link  " style="color:whitesmoke;font-size:1.1em" href="viewreport.html"> View Report </a>
+                    <a class="nav-link  " style="color:whitesmoke;font-size:1.1em;font-weight: bold;" href="index.html#viewReports"> VIEW REPORTS </a>
                   </li>
                 <li class="nav-item active">
-                    <a class="nav-link   " style="color:whitesmoke;font-size:1.1em" href="aboutus.html"> About Us </a>
+                    <a class="nav-link   " style="color:whitesmoke;font-size:1.1em;font-weight: bold;" href="about.html"> ABOUT </a>
                   </li>
                 
               </ul>
@@ -155,20 +155,17 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
             </div>
              </div>
       <div >
-      <div class="cleancitytext" >Clean</div>
-          <div class="cleancitytext2" >City<i class="fa fa-leaf" aria-hidden="true"></i></div>
-          <div class="subtext">Lorem ipsum dolor sit amet
-            <br> Sea et meliore maluisset consequuntur.
-            <br> Aeque luptatum scribentur ex mel</div>
-            <button id="explorebtn">Upload Report</button>
-        </div>
-      
-   
+        <div class="cleancitytext" >Clean</div>
+        <div class="cleancitytext2" >City<i class="fa fa-leaf" aria-hidden="true"></i></div>
+            <div class="subtext">Lorem ipsum dolor sit amet
+              <br> Sea et meliore maluisset consequuntur.
+              <br> Aeque luptatum scribentur ex mel</div>
+              <button id="explorebtn" onclick="window.location.href = 'form.html';">Upload Report</button>
       </div>
-              <br>
+    </div>
       <section id="heatmap">
-      <br><br>
-          <h4 style="text-align:center"> Live HeatMap of Polluted Areas</h4>
+      <br><hr><br>
+          <h4 class="mainh4" style="text-align:center"> Live HeatMap of Reports</h4>
         <div class="mapcontainer">
         <nav id="menu"></nav>
         <div id='map'>
@@ -560,9 +557,10 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
       </div>
       <br><br><br>
   </section>
-<br><br><br>
 
-  <h4 style="text-align:center;color:whitesmoke">Latest Updates</h4>
+  <section id="latest">
+  <br><hr><br>
+  <h4 class="mainh4" style="text-align:center;color:whitesmoke">Latest Reports</h4>
       <div class="gallery">
         <div class="item">
           <img src="" class="latest">
@@ -608,9 +606,12 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
                       </div>
                </div>
     </div>
-<br><br><br>
-<h4 style="text-align:center;color:whitesmoke">View more Category wise Updates</h4>
-          <div style="background-color: transparent">
+  </section>
+
+  <section id="viewReports">
+  <br><hr><br>
+  <h4 class="mainh4" style="text-align:center;color:whitesmoke">View Category Wise Reports</h4>
+  <div style="background-color: transparent">
 
             <div class="card-group text-center iconimg">
                 <div class="card border border-info">
@@ -642,7 +643,8 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
                         <p>Accident reports </p>
                         <button type="button" class="btn btn-secondary" onclick='window.location = "accident.html"'>View Reports</button>
                      </div>
-                  </div><div class="card border border-info">
+                  </div>
+                  <div class="card border border-info">
                       <img class="card-img-top" src="images/crime.jpg" alt="Card image cap">
                       <div class="card-body">
                         <h4 style="color: #2b4d38">Crime</h4>
@@ -650,11 +652,12 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
                            <button type="button" class="btn btn-secondary" onclick='window.location = "crime.html"'>View Reports</button>
               
                           </div>
-                    </div>
+                  </div>
+  </section>
                     <br><br><br>
               </div>
               </div>
-    </section>
+</section>
     
     
     <footer class="footer-distributed">

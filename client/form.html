@@ -1,114 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" type="text/css" href="main.css">
     <title>Clean City</title>
+    <link rel="stylesheet" type="text/css" href="main.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.css' rel='stylesheet' />
+    <link rel="stylesheet" type="text/css" href="mapbox.css">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-     integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
- integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" 
-integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.js'></script>
-<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.css' rel='stylesheet' />
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" 
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="main.js"></script>
-    <style>
-    label{
-      font-size: 1.2em;
-      font-weight: 500;
-    }
-  
-    .mapcontainer{
-      position: relative
-    }
-    .coordinates {
-      background: rgba(0,0,0,0.5);
-      color: #fff;
-      position: absolute;
-      bottom: 40px;
-      left: 10px;
-      padding:5px 10px;
-      margin: 0;
-      font-size: 11px;
-      line-height: 18px;
-      border-radius: 3px;
-      display: none;
-      z-index: 5;
-    }
-    body {
-        margin: 0;
-        padding: 0;
-      }
-      #map {
-      position: absolute;
-        top: 0;
-        bottom: 0;
-        width: 100%;
-        margin: auto;
-        height: 100%;
-      }
-      #menu {
-      background: #fff;
-      position: absolute;
-      z-index: 1;
-      top: 10px;
-      right: 10px;
-      border-radius: 3px;
-      width: 120px;
-      border: 1px solid rgba(0,0,0,0.4);
-      font-family: 'Open Sans', sans-serif;
-      }
-      
-      #menu a {
-      font-size: 13px;
-      color: #404040;
-      display: block;
-      margin: 0;
-      padding: 0;
-      padding: 10px;
-      text-decoration: none;
-      border-bottom: 1px solid rgba(0,0,0,0.25);
-      text-align: center;
-      }
-      
-      #menu a:last-child {
-      border: none;
-      }
-      
-      #menu a:hover {
-      background-color: #f8f8f8;
-      color: #404040;
-      }
-      
-      #menu a.active {
-      background-color: #3887be;
-      color: #ffffff;
-      }
-      
-      #menu a.active:hover {
-      background: #3074a4;
-      }
-      #fly {
-      display: block;
-      position: relative;
-      margin: 0px auto;
-      width: 35%;
-      height: 40px;
-      padding: 5px;
-      border: none;
-      border-radius: 3px;
-      font-size: 12px;
-      text-align: center;
-      color: #fff;
-      background: #ee8a65;
-      }
-    </style>
-</head>
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.js'></script>
+  </head>
 
 <body>
     <header>
@@ -207,10 +117,10 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
 	  <section id="upload">
 
         <div class="uploadform ">
-<div class="card text-dark bg-light ">
-<div class="card-body">                      
+        <div class="card text-dark bg-light ">
+        <div class="card-body">                      
         
-            <form id="myForm" enctype="multipart/form-data" action="/user/submit" method="post">
+        <form id="myForm" enctype="multipart/form-data" action="/user/submit" method="post">
         <br>
 
         <div class="container formcontainer">
@@ -274,12 +184,11 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
         <button style="margin: 1em" type="reset" class="btn btn-secondary col-10 col-sm-6 col-md-4">Reset</button>
     </fieldset>
     </form>
-</div>
-</div>
-        </div>
+  </div>
+  </div>
         </div>
         <br><br>
-    </section>
+</section>
 
     
     <footer class="footer-distributed">

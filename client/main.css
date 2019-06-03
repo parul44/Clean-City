@@ -16,6 +16,12 @@ body {
   background-color: #63d471;
   background-image: linear-gradient(178deg, #21bb59 0%, #0b723e 74%);
 }
+
+label {
+  font-size: 1.2em;
+  font-weight: 500;
+}
+
 #poster {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -167,8 +173,8 @@ body {
 
 .card {
   margin: 2%;
-  -webkit-transition: all 0.2s ease-in-out;
-  transition: all 0.2s ease-in-out;
+  /* -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out; */
   background-color: transparent;
 }
 
@@ -179,20 +185,11 @@ body {
   margin: 0 auto;
   padding-top: 2%;
 }
-.card:hover {
+/* .card:hover {
   transform: scale(1.1);
   -webkit-transform: scale(1.1);
-}
+} */
 
-.mapcontainer {
-  width: 90%;
-  border: 3px gray solid;
-  border-spacing: 2px;
-  margin: 0 auto;
-  height: 506px;
-}
-#heatmap {
-}
 textarea,
 #name {
   border: 1px#DDDDDD solid;

@@ -67,7 +67,7 @@
                 <img src="images/slides/04.jpg" class="d-block w-100" alt="...">
               </div>
             </div>
-             </div>
+        </div>
       <div >
         <div class="cleancitytext" >Clean</div>
         <div class="cleancitytext2" >City<i class="fa fa-leaf" aria-hidden="true"></i></div>
@@ -78,7 +78,7 @@
       </div>
     </div>
   <section id="heatmap">
-      <br><hr><br>
+      <br><br>
           <h4 class="mainh4" style="text-align:center"> Live HeatMap of Reports</h4>
         <div class="mapcontainer">
         <nav id="menu"></nav>
@@ -89,7 +89,7 @@
   </section>
 
   <section id="latest">
-  <br><hr><br>
+  <br><br>
   <h4 class="mainh4" style="text-align:center;color:whitesmoke">Latest Reports</h4>
       <div class="gallery">
         <div class="item">
@@ -139,7 +139,7 @@
   </section>
 
   <section id="viewReports">
-  <br><hr><br>
+  <hr><br><br>
   <h4 class="mainh4" style="text-align:center;color:whitesmoke">View Category Wise Reports</h4>
   <div style="background-color: transparent">
 
@@ -183,13 +183,12 @@
               
                           </div>
                   </div>
+                  <br><br><br>
   </section>
-                    <br><br><br>
+                    
               </div>
               </div>
 </section>
-    
-    
     <footer class="footer-distributed">
 
       <div class="footer-left">
@@ -250,7 +249,7 @@
         </div>
       </div>
     </footer>
-    //map/layers creation script
+   <!-- map/layers creation script -->
     <script>
       mapboxgl.accessToken = 'pk.eyJ1IjoiZXJyYWh1bDkzIiwiYSI6ImNqdW8wemlxODJwNzUzeXFqbnVibHZzYzUifQ.bZKWernpF2H1uvOVNp4DOA';
       var map = new mapboxgl.Map({
@@ -634,7 +633,7 @@
       layers.appendChild(link);
     }
     </script>
-    //fetching latest reports script
+    <!-- fetching latest reports script -->
     <script>
       fetch('/user/reports?limit=6&sortBy=createdAt:desc')
       .then(res => {

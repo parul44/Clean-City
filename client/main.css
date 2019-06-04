@@ -22,6 +22,10 @@ label {
   font-weight: 500;
 }
 
+section#heatmap {
+  background-color: rgb(230, 230, 230);
+}
+
 #poster {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -173,8 +177,8 @@ label {
 
 .card {
   margin: 2%;
-  /* -webkit-transition: all 0.2s ease-in-out;
-  transition: all 0.2s ease-in-out; */
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
   background-color: transparent;
 }
 
@@ -185,10 +189,10 @@ label {
   margin: 0 auto;
   padding-top: 2%;
 }
-/* .card:hover {
-  transform: scale(1.1);
-  -webkit-transform: scale(1.1);
-} */
+section#viewReports .card:hover {
+  transform: scale(1.07);
+  -webkit-transform: scale(1.07);
+}
 
 textarea,
 #name {
@@ -240,6 +244,10 @@ textarea,
   .text2 {
     font-size: 0.7rem;
   }
+}
+
+label.btn {
+  background-color: rgb(43, 161, 78);
 }
 
 @media only screen and (max-width: 768px) {

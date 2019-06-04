@@ -86,96 +86,7 @@
         <form action="form.html"></form>
       </nav>
     </header>
-    <br />
-    <section id="garbagesection">
-      <br />
-      <div class="garbage">
-        <h4 class="text-center">
-          Latest Electricity Cut off Reports
-        </h4>
 
-        <div class="card-group">
-          <div class="card">
-            <img src="images/slides/04.jpg" class="card-img-top" alt="..." />
-            <div class="card-body">
-              <p class="card-text">
-                <small class="text-muted">Posted On DD/MM/YY at 00:00:00</small>
-              </p>
-
-              <p class="card-text text" style="font-size: 0.7rem">
-                Description
-              </p>
-            </div>
-          </div>
-          <div class="card">
-            <img src="images/slides/04.jpg" class="card-img-top" alt="..." />
-            <div class="card-body">
-              <p class="card-text">
-                <small class="text-muted">Posted On DD/MM/YY at 00:00:00</small>
-              </p>
-
-              <p class="card-text text" style="font-size: 0.7rem">
-                Description
-              </p>
-            </div>
-          </div>
-
-          <div class="card">
-            <img src="images/slides/04.jpg" class="card-img-top" alt="..." />
-            <div class="card-body">
-              <p class="card-text">
-                <small class="text-muted">Posted On DD/MM/YY at 00:00:00</small>
-              </p>
-
-              <p class="card-text text" style="font-size: 0.7rem">
-                Description
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="card-group">
-          <div class="card">
-            <img src="images/slides/04.jpg" class="card-img-top" alt="..." />
-            <div class="card-body">
-              <p class="card-text">
-                <small class="text-muted">Posted On DD/MM/YY at 00:00:00</small>
-              </p>
-
-              <p class="card-text text" style="font-size: 0.7rem">
-                Description
-              </p>
-            </div>
-          </div>
-          <div class="card">
-            <img src="images/slides/04.jpg" class="card-img-top" alt="..." />
-            <div class="card-body">
-              <p class="card-text">
-                <small class="text-muted">Posted On DD/MM/YY at 00:00:00</small>
-              </p>
-
-              <p class="card-text text" style="font-size: 0.7rem">
-                Description
-              </p>
-            </div>
-          </div>
-
-          <div class="card">
-            <img src="images/slides/04.jpg" class="card-img-top" alt="..." />
-            <div class="card-body">
-              <p class="card-text">
-                <small class="text-muted text"
-                  >Posted On DD/MM/YY at 00:00:00</small
-                >
-              </p>
-
-              <p class="card-text" style="font-size: 0.7rem">Description</p>
-            </div>
-          </div>
-        </div>
-        <br />
-      </div>
-    </section>
-    <br />
     <footer class="footer-distributed">
       <div class="footer-left">
         <h3>Develop<span>HowTo</span></h3>
@@ -240,24 +151,5 @@
         </div>
       </div>
     </footer>
-    <script>
-      fetch(
-        '/user/reports?reportType=Electricity%20cut%20off&limit=6&sortBy=createdAt:desc'
-      ).then(res => {
-        res.json().then(data => {
-          cardimg = document.getElementsByClassName('card-img-top');
-          cardtext = document.getElementsByClassName('text');
-          cardsmall = document.getElementsByClassName('text-muted');
-          for (i = 0; i < 6; i++) {
-            cardimg[i].src = `/user/image/${data[i]._id}`;
-            date = new Date(data[i].createdAt);
-            cardsmall[i].innerHTML = `${date.toLocaleString()} <br> ${
-              data[i].location
-            }`;
-            cardtext[i].innerHTML = `${data[i].description}`;
-          }
-        });
-      });
-    </script>
   </body>
 </html>

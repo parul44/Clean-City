@@ -1,108 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" type="text/css" href="main.css">
     <title>Clean City</title>
+    <link rel="stylesheet" type="text/css" href="main.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.css' rel='stylesheet' />
+    <link rel="stylesheet" type="text/css" href="mapbox.css">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-     integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
- integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" 
-integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.js'></script>
-<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.css' rel='stylesheet' />
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" 
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="main.js"></script>
-    <style>
-    label{
-      font-size: 1.2em;
-      font-weight: 500;
-    }
-    h3{
-      color: darkcyan;
-    }
-    .mapcontainer{
-      position: relative
-    }
-    .coordinates {
-      background: rgba(0,0,0,0.5);
-      color: #fff;
-      position: absolute;
-      bottom: 40px;
-      left: 10px;
-      padding:5px 10px;
-      margin: 0;
-      font-size: 11px;
-      line-height: 18px;
-      border-radius: 3px;
-      display: none;
-      z-index: 5;
-    }
-    body {
-        margin: 0;
-        padding: 0;
-      }
-
-      #map {
-      position: absolute;
-        top: 0;
-        bottom: 0;
-        width: 100%;
-        margin: auto;
-        height: 100%;
-      }
-
-      #menu {
-      background: #fff;
-      position: absolute;
-      z-index: 1;
-      top: 10px;
-      right: 10px;
-      border-radius: 3px;
-      width: 120px;
-      border: 1px solid rgba(0,0,0,0.4);
-      font-family: 'Open Sans', sans-serif;
-      }
-      
-      #menu a {
-      font-size: 13px;
-      color: #404040;
-      display: block;
-      margin: 0;
-      padding: 0;
-      padding: 10px;
-      text-decoration: none;
-      border-bottom: 1px solid rgba(0,0,0,0.25);
-      text-align: center;
-      }
-      
-      #menu a:last-child {
-      border: none;
-      }
-      
-      #menu a:hover {
-      background-color: #f8f8f8;
-      color: #404040;
-      }
-      
-      #menu a.active {
-      background-color: #3887be;
-      color: #ffffff;
-      }
-      
-      #menu a.active:hover {
-      background: #3074a4;
-      }
-
-    </style>
-</head>
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.js'></script>
+  </head>
 
 <body>
-
     <header>
         <nav class="navbar navbar-expand-lg navbar-light " >
             
@@ -113,27 +31,38 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
             <div class="collapse navbar-collapse" id="navbarSupportedContent" >
               <ul class="navbar-nav mr-auto">
                 <li class="nav-item active ">
-                  <a class="nav-link scrolly" style="color:darkcyan;font-weight: 500;font-size:1.1em" href="index.html">Home <span class="sr-only"></span></a>
+                  <a class="nav-link  " style="color:whitesmoke;font-size:1.1em;font-weight: bold;" href="index.html#home">HOME </a>
                 </li>
                 <li class="nav-item active">
-                  <a class="nav-link scrolly" id="navupload" style="font-weight: 500;" href="form.html"> Upload Report</a>
+                  <a class="nav-link  " style="color:whitesmoke;font-size:1.1em;font-weight: bold;" href="form.html"> UPLOAD </a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link scrolly " style="color:darkcyan;font-weight: 500;font-size:1.1em" href="#">About Us</a>
+                    <a class="nav-link  " style="color:whitesmoke;font-size:1.1em;font-weight: bold;" href="index.html#viewReports"> VIEW REPORTS </a>
+                  </li>
+                <li class="nav-item active">
+                    <a class="nav-link   " style="color:whitesmoke;font-size:1.1em;font-weight: bold;" href="about.html"> ABOUT </a>
                   </li>
                 
               </ul>
              </div>
-           
-          </nav> </header>
-    <br><Br>
+            <form action="form.html">
+</form>
+          </nav>
+    </header>
+<br><Br>
 
-      
+      <div style="padding: 20px;color:whitesmoke">
+          <h1 style="text-align: center">Any problems in your area?
+          Post them here!</h1><br>
+          <p style="text-align: center">(Allow access to location if prompted)</p>
+      </div>
 
     <section>
       <div class="mapcontainer">
         <div id='map'>
         </div>
+        <br/>
+        <button id='fly'>Set to Current Location</button>
         <pre id='coordinates' class='coordinates'></pre>          
         
         <script>
@@ -145,17 +74,42 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
             center: [77.146721,28.644800],
             zoom: 11
             });
-             
+
+            //Creating Draggable Marker
             var marker = new mapboxgl.Marker({
             draggable: true
             })
             .setLngLat([77.146721,28.644800])
             .addTo(map);
-             
+            //setPosition Function for current location
+            function setPosition(position) {
+                marker.setLngLat([position.coords.longitude,
+                position.coords.latitude]).addTo(map);
+                onDragEnd();
+                
+                //Fly animation
+                map.flyTo({
+                center: [
+                position.coords.longitude,
+                position.coords.latitude],
+                zoom: 15
+                });
+              }              
+            //Using Current Location
+            document.getElementById('fly').addEventListener('click', function () {
+                if (navigator.geolocation) {
+                  navigator.geolocation.getCurrentPosition(setPosition, function (){alert("can't locate")}, {maximumAge:6000, timeout:6000, enableHighAccuracy: true} );
+                } else { 
+                  alert("Geolocation is not supported by this browser");
+                }
+            });
+
+            //Set Coordinates on drag
             function onDragEnd() {
             var lngLat = marker.getLngLat();
             coordinates.style.display = 'block';
             coordinates.innerHTML = 'Longitude: ' + lngLat.lng + '<br />Latitude: ' + lngLat.lat;
+            //feeding location to form
             document.getElementById('longitude').value=lngLat.lng;
             document.getElementById('latitude').value=lngLat.lat;
             }
@@ -168,14 +122,12 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
 	  <section id="upload">
 
         <div class="uploadform ">
-                      
+        <div class="card text-dark bg-light ">
+        <div class="card-body">                      
         
-            <div style="padding: 20px">
-                    <h3>Any problems in your area?
-                    Post them here!</h3><br>
-                    <p>(Allow acess to location if prompted)</p>
         <form id="myForm" enctype="multipart/form-data" action="/user/submit" method="post">
         <br>
+
         <div class="container formcontainer">
         	
             <div class="row">
@@ -185,8 +137,8 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
                 
               </div></div>
                 <br>
-            <div class=" mix">
-                        <div class="form-group col-10 col-sm-6  ">
+            <div class="row">
+                        <div class="form-group  col-6 col-sm-10  ">
                                 <label>Select type of report&emsp;</label>
                                 <select class="form-control" id="problemtype" name="reportType" required>
                                   <option>Garbage Heap</option>
@@ -197,20 +149,22 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
                                 </select>
 
                               </div>
-             
-
-            <div class="col-sm-6 col-10">
+             </div>
+            <div class="row">
+            <div class="col-sm-10 col-6">
                     
                         <div class="form-group" id="uploadimage">
-                                <label for="picfile">Upload Image</label>
+
+                                <label for="picfile" class="btn btn-secondary">Upload Image</label>
+
                                 <input type="file" class="form-control-file" id="picfile" name="image" required>
                               </div>
                 </div>
-            
+            </div>
             <div class="row">
                             <div class=" col-10 col-sm-10">
-                                <label>Description of the report&emsp;&emsp;</label>
-                                <textarea style="height:40px " placeholder=" Short Description" id="description" rows="2" cols="50" name="description" minlength="10" maxlength="800" required></textarea>
+                                <!-- <label>Description of the report&emsp;&emsp;</label> -->
+                                <textarea style="height:70px " placeholder=" Short Description" id="description" rows="2" cols="50" name="description" minlength="10" maxlength="800" required></textarea>
                                
                             </div>
                             
@@ -220,8 +174,8 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
 
             <div class="row">
                             <div class="col-10 col-sm-10 ">
-                                <label>Location&emsp;&emsp;</label>
-                                <textarea style="height:40px " placeholder=" Enter Location" id="location" rows="2" cols="50" name="location" required></textarea>
+                                <!-- <label>Location&emsp;&emsp;</label> -->
+                                <textarea style="height:70px " placeholder=" Enter Location" id="location" rows="2" cols="50" name="location" required></textarea>
                               
                             </div>
                             
@@ -235,27 +189,72 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
         <button style="margin: 1em" type="reset" class="btn btn-secondary col-10 col-sm-6 col-md-4">Reset</button>
     </fieldset>
     </form>
-        </div>
+  </div>
+  </div>
         </div>
         <br><br>
-    </section>
+</section>
 
-    <script>
+    
+<footer class="footer-distributed">
 
-        // function getLocation() {
-        //   if (navigator.geolocation) {
-        //     navigator.geolocation.getCurrentPosition(setPosition);
-        //   } else { 
-        //     x.innerHTML = "Geolocation is not supported by this browser.";
-        //   }
-        // }
-        
-        // function setPosition(position) {
-        //   document.getElementById('longitude').value=position.coords.longitude;
-        //   document.getElementById('latitude').value=position.coords.latitude;
-        // }
+  <div class="footer-left">
 
-        // window.onload=getLocation;
-        </script>
+    <h3>Develop<span>HowTo</span></h3>
+
+    <p class="footer-links">
+      
+      <a href="#">Garbage</a>
+      ·
+      <a href="#">Electricity</a>
+      ·
+      <a href="#">Water</a>
+      ·
+      <a href="#">Accidents</a>
+      ·
+      <a href="#">Crime</a>
+    </p>
+
+    <p class="footer-company-name">All Rights Reserved &copy; 2019</p>
+    <br>
+    <p class="footer-company-name">Made with Love in India</p>
+  </div>
+
+  <div class="footer-center">
+
+    <div>
+      <i class="fa fa-map-marker"></i>
+      <p><span>Address line 1</span> Address line 2</p>
+    </div>
+
+    <div>
+      <i class="fa fa-phone"></i>
+      <p>phone number </p>
+    </div>
+
+    <div>
+      <i class="fa fa-envelope"></i>
+      <p><a href="https://develophowto.com/">https://develophowto.com/</a></p>
+    </div>
+
+  </div>
+
+  <div class="footer-right">
+
+    <p class="footer-company-about">
+      <span>About the company</span>
+      We deal with all type of issues. You can lodge your complaints here. Join us to make everyone aware.
+    </p>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <div class="footer-icons">
+
+      <a href="https://www.facebook.com" ><i class="fa fa-1x fa-facebook-square "></i></a>
+      <a href="https://www.twitter.com" ><i class="fa fa-1x fa-twitter-square"></i></a>
+      <a href="https://www.linkedin.com"><i class="fa fa-linkedin"></i></a>
+      <a href="https://www.google.com" ><i class="fa fa-1x fa-google-plus"></i></a>
+
+    </div>
+  </div>
+</footer>
 </body>
 </html>

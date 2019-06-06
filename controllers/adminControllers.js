@@ -1,11 +1,30 @@
-// name the controllers in this format '<method of request><Name of the route>'
-
+const passport = require('passport');
 const Admin = require('../models/adminModel');
 
-const getTest = (req, res, next) => {
-  res.send('Admin Test');
+const register = (req, res, next) => {
+  var newUser = new Admin({ username: req.body.username });
+  Admin.register(newUser, req.body.password, function(err, user) {
+    if (err) {
+      console.log(err);
+    }
+    passport.authenticate('local')(req, res, function() {
+      res.redirect('/');
+    });
+  });
+};
+
+const login = passport.authenticate('local', {
+  successRedirect: '/dashboard',
+  failureRedirect: '/login'
+});
+
+const logout = (req, res, next) => {
+  req.logout();
+  res.redirect('/');
 };
 
 module.exports = {
-  getTest
+  register,
+  login,
+  logout
 };

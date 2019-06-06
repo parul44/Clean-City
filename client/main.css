@@ -1,42 +1,64 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
   border: 0;
-  
   background-color: #63d471;
-background-image: linear-gradient(315deg, #63d471 0%, #2b4d38 74%);
+  background-image: linear-gradient(178deg, #21bb59 0%, #0b723e 74%);
 }
-#poster{
+
+label {
+  font-size: 1.2em;
+  font-weight: 500;
+}
+
+section#heatmap {
+  background-color: rgb(230, 230, 230);
+}
+
+#poster {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(1, 700px);
   margin: 0 auto;
-
 }
 
 #carousel img {
   height: 500px;
 }
 #carousel {
-  
   margin: 5% 5% 5% 10%;
 }
-.cleancitytext{
+
+.cleancitytext {
   font-family: fantasy;
   color: whitesmoke;
   margin: 0% 5% 5% -2%;
   font-size: 10rem;
 }
 
-.cleancitytext2{
+.cleancitytext2 {
   font-family: fantasy;
   color: whitesmoke;
   margin: -20% 0% 0% -2%;
   font-size: 10rem;
 }
-.subtext{
-  font-family: auto;font-size: 1.3rem;color: whitesmoke;
+.subtext {
+  font-family: auto;
+  font-size: 1.3rem;
+  color: whitesmoke;
 }
-#explorebtn{
+#explorebtn {
   border: 1px solid whitesmoke;
   background-color: whitesmoke;
   margin: 2% 0%;
@@ -44,23 +66,22 @@ background-image: linear-gradient(315deg, #63d471 0%, #2b4d38 74%);
   font-size: 1.2em;
   padding: 0.5% 1%;
   font-weight: 600;
-  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
- }
- #explorebtn:hover{
-   color: whitesmoke;
-   background-color: transparent;
- }
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+#explorebtn:hover {
+  color: whitesmoke;
+  background-color: transparent;
+}
 .uploadform,
 #garbagesection {
   width: 90%;
   margin: 0 auto;
-
 }
 
-#garbagesection img{
+#garbagesection img {
   margin: 0 auto;
 }
-#garbagesection .card{
+#garbagesection .card {
   border: none;
 }
 .footer {
@@ -78,7 +99,6 @@ background-image: linear-gradient(315deg, #63d471 0%, #2b4d38 74%);
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(2, 300px);
   background-color: transparent;
-
 }
 .gallery img {
   width: 100%;
@@ -100,11 +120,10 @@ background-image: linear-gradient(315deg, #63d471 0%, #2b4d38 74%);
 
 .middle {
   border-radius: 0px;
-  opacity: 0.75;
   width: 100%;
   min-height: 20%;
   height: auto;
-  background-color: #274633;
+  background-color: rgba(0, 0, 0, 0.7);
   position: absolute;
   bottom: 0%;
   left: 0%;
@@ -170,21 +189,11 @@ background-image: linear-gradient(315deg, #63d471 0%, #2b4d38 74%);
   margin: 0 auto;
   padding-top: 2%;
 }
-.card:hover {
-  transform: scale(1.1);
-  -webkit-transform: scale(1.1);
+section#viewReports .card:hover {
+  transform: scale(1.07);
+  -webkit-transform: scale(1.07);
 }
 
-.mapcontainer {
-  width: 90%;
-  border: 3px gray solid;
-  border-spacing: 2px;
-  margin: 0 auto;
-  height: 506px;
-}
-#heatmap {
-
-}
 textarea,
 #name {
   border: 1px#DDDDDD solid;
@@ -192,10 +201,13 @@ textarea,
   outline: none;
   resize: none;
 }
-h4 {
+.mainh4 {
+  padding: 5px;
   color: whitesmoke;
+  background-color: rgb(0, 0, 0, 0.6);
+  border: 0.7px double white;
+  text-shadow: 3px 3px 8px rgb(0, 0, 0);
 }
-
 
 @media only screen and (max-width: 1024px) {
   #carousel img {
@@ -204,12 +216,13 @@ h4 {
   .mapcontainer {
     height: 406px;
   }
-  .cleancitytext{
-    font-size:6rem;
-  }.cleancitytext2{
-    font-size:6rem;
+  .cleancitytext {
+    font-size: 6rem;
   }
-  .subtext{
+  .cleancitytext2 {
+    font-size: 6rem;
+  }
+  .subtext {
     font-size: 1rem;
   }
   .gallery {
@@ -233,46 +246,53 @@ h4 {
   }
 }
 
+label.btn {
+  background-color: rgb(43, 161, 78);
+}
+
 @media only screen and (max-width: 768px) {
   .card h4 {
     font-size: 1rem;
   }
   #carousel img {
     height: 350px;
-  }.cleancitytext{
-    font-size:4rem;
-  }.cleancitytext2{
-    font-size:4rem;
   }
-  
-  #poster{
+  .cleancitytext {
+    font-size: 4rem;
+  }
+  .cleancitytext2 {
+    font-size: 4rem;
+  }
+
+  #poster {
     height: 400px;
-   }
+  }
 }
-@media only screen and (max-width: 600px){
-  .cleancitytext{
-    font-size:7rem;
+@media only screen and (max-width: 600px) {
+  .cleancitytext {
+    font-size: 7rem;
     margin: 3%;
-  }.cleancitytext2{
-    font-size:7rem;
+  }
+  .cleancitytext2 {
+    font-size: 7rem;
     margin: -20% 0% 2% 3%;
   }
-  #carousel{
+  #carousel {
     margin: 5%;
   }
-  .subtext{
+  .subtext {
     padding: 3%;
-font-size: 1.2rem;
+    font-size: 1.2rem;
   }
-  #explorebtn{
+  #explorebtn {
     margin: 2% 10%;
     font-size: 1rem;
   }
-  #poster{
-   height:700px;
+  #poster {
+    height: 700px;
     display: block;
     margin: 0 auto;
-   } 
+  }
 }
 @media only screen and (max-width: 570px) {
   #carousel img {
@@ -282,7 +302,7 @@ font-size: 1.2rem;
   .mapcontainer {
     height: 400px;
   }
-  .cleancitytext2{
+  .cleancitytext2 {
     margin: -20% 0% 2% 3%;
   }
   .gallery {
@@ -312,49 +332,51 @@ font-size: 1.2rem;
     height: 256px;
   }
 }
-@media only screen and (max-width:425px){
-  .cleancitytext{
-    font-size:4rem;
+@media only screen and (max-width: 425px) {
+  .cleancitytext {
+    font-size: 4rem;
     margin: 3%;
-  }.cleancitytext2{
-    font-size:4rem;
+  }
+  .cleancitytext2 {
+    font-size: 4rem;
     margin: -15% 0% 2% 3%;
   }
-  .subtext{
+  .subtext {
     padding: 3%;
-font-size: 1.2rem;
+    font-size: 1.2rem;
   }
-  #explorebtn{
+  #explorebtn {
     margin: 2% 10%;
     font-size: 1rem;
   }
-  #poster{
-   height:540px;
+  #poster {
+    height: 540px;
     display: block;
     margin: 0 auto;
-   } 
+  }
 }
-@media only screen and (max-width:320px){
-  .cleancitytext{
-    font-size:4rem;
+@media only screen and (max-width: 320px) {
+  .cleancitytext {
+    font-size: 4rem;
     margin: 3%;
-  }.cleancitytext2{
-    font-size:4rem;
+  }
+  .cleancitytext2 {
+    font-size: 4rem;
     margin: -18% 0% 2% 3%;
   }
-  .subtext{
+  .subtext {
     padding: 3%;
-font-size: 1rem;
+    font-size: 1rem;
   }
-  #explorebtn{
+  #explorebtn {
     margin: 2% 10%;
-    font-size: .9rem;
+    font-size: 0.9rem;
   }
-  #poster{
-   height:500px;
+  #poster {
+    height: 500px;
     display: block;
     margin: 0 auto;
-   } 
+  }
 }
 @media only screen and (max-width: 990px) {
   #navupload {

@@ -8,11 +8,14 @@
     "dev": "env-cmd ./conf/dev.env nodemon src/server.js",
     "start": "node server.js"
   },
+  "engines": {
+    "node": "10.x"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/DevelopHowTo/Clean-City.git"
   },
-  "author": "",
+  "author": "Develophowto",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/DevelopHowTo/Clean-City/issues"

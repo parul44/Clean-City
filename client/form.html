@@ -82,22 +82,27 @@
             .addTo(map);
             //setPosition Function for current location
             function setPosition(position) {
-                marker.setLngLat([position.coords.longitude,
-                position.coords.latitude]).addTo(map);
+                accuracy = position.coords.accuracy
+                if (position.coords.accuracy>100){
+                  alert(`Accuracy:${accuracy}m . Please drag marker to exact location.`)
+                }
+                long = position.coords.longitude
+                lat = position.coords.latitude
+                marker.setLngLat([long , lat]).addTo(map);
                 onDragEnd();
                 
                 //Fly animation
                 map.flyTo({
                 center: [
-                position.coords.longitude,
-                position.coords.latitude],
+                long,
+                lat],
                 zoom: 15
                 });
               }              
             //Using Current Location
             document.getElementById('fly').addEventListener('click', function () {
                 if (navigator.geolocation) {
-                  navigator.geolocation.getCurrentPosition(setPosition, function (){alert("can't locate")}, {maximumAge:6000, timeout:6000, enableHighAccuracy: true} );
+                  navigator.geolocation.getCurrentPosition(setPosition, function (){alert("Can't Locate. Allow location acess")}, {maximumAge:0,timeout:9000, enableHighAccuracy: true} );
                 } else { 
                   alert("Geolocation is not supported by this browser");
                 }
@@ -140,11 +145,11 @@
                         <div class="form-group  col-6 col-sm-10  ">
                                 <label>Select type of report&emsp;</label>
                                 <select class="form-control" id="problemtype" name="reportType" required>
-                                  <option>Garbage Heap</option>
-                                  <option>Accident</option>
-                                  <option>Water Shortage</option>
-                                  <option>Electricity cut off</option>
-                                  <option>Crime</option>
+                                  <option value=garbage>Garbage Heap</option>
+                                  <option value=accident>Accident</option>
+                                  <option value=water>Water Shortage</option>
+                                  <option value=electricity>Electricity cut off</option>
+                                  <option value=crime>Crime</option>
                                 </select>
 
                               </div>

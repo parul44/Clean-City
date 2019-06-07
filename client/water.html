@@ -237,13 +237,14 @@
     </footer>
     <script>
       fetch(
-        '/user/reports?reportType=Water%20Shortage&limit=6&sortBy=createdAt:desc'
+        '/user/reports?reportType=water&limit=6&sortBy=createdAt:desc'
       ).then(res => {
         res.json().then(data => {
           cardimg = document.getElementsByClassName('card-img-top');
           cardtext = document.getElementsByClassName('text');
           cardsmall = document.getElementsByClassName('text-muted');
-          for (i = 0; i < 6; i++) {
+          length = data.length;
+          for (i = 0; i < length; i++) {
             cardimg[i].src = `/user/image/${data[i]._id}`;
             date = new Date(data[i].createdAt);
             cardsmall[i].innerHTML = `${date.toLocaleString()} <br> ${

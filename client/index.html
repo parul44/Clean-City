@@ -643,14 +643,11 @@
         res.json().then(data => {
 
           latest6 = document.getElementsByClassName("latest");
-          for(i=0; i<6; i++){
-            latest6[i].src=`/user/image/${data[i]._id}`
-          }
-
           text1 = document.getElementsByClassName("text1");
           text2 = document.getElementsByClassName("text2");
-          
-          for(i=0;i<6;i++){
+          length=data.length;
+          for(i=0;i<length;i++){
+            latest6[i].src=`/user/image/${data[i]._id}`
             text1[i].innerHTML = `${data[i].location.slice(0,50)}`
             date= new Date(data[i].createdAt)
             text2[i].innerHTML = `${date.toLocaleString()}`

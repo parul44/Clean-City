@@ -243,7 +243,8 @@
           cardimg = document.getElementsByClassName('card-img-top');
           cardtext = document.getElementsByClassName('text');
           cardsmall = document.getElementsByClassName('text-muted');
-          for (i = 0; i < 6; i++) {
+          length = data.length;
+          for (i = 0; i < length; i++) {
             cardimg[i].src = `/user/image/${data[i]._id}`;
             date = new Date(data[i].createdAt);
             cardsmall[i].innerHTML = `${date.toLocaleString()} <br> ${

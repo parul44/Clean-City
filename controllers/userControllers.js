@@ -3,6 +3,7 @@
 const Report = require('../models/reportModel');
 const multer = require('multer');
 const sharp = require('sharp');
+const fetch = require('node-fetch');
 
 //controllers
 //Multer file upload controller
@@ -36,6 +37,16 @@ const postSubmitData = async (req, res) => {
     req.body.geometry = {
       coordinates: [req.body.longitude, req.body.latitude]
     };
+
+    const response = await fetch(
+      `http://apis.mapmyindia.com/advancedmaps/v1/o223g5iid9kb1pimi74ltebthdi64q3r/rev_geocode?lat=${
+        req.body.latitude
+      }&lng=${req.body.longitude}`
+    );
+
+    const data = await response.json();
+    req.body.results = data.results[0];
+
     const report = new Report(req.body);
     await report.save();
     res.status(201).send(`Report added to DB! with id ${report._id}`);
@@ -61,6 +72,7 @@ const getGeojson = async (req, res) => {
 };
 
 // GET /reports?reportType=xyz
+// GET /reports?pincode=123
 // GET /reports?limit=10&skip=20
 // GET /reports?sortBy=createdAt:desc
 const getReports = async (req, res) => {
@@ -68,7 +80,11 @@ const getReports = async (req, res) => {
   const options = { sort: {} };
 
   if (req.query.reportType) {
-    match.reportType = req.query.reportType;
+    if (req.query.reportType.length) match.reportType = req.query.reportType;
+  }
+
+  if (req.query.pincode) {
+    if (req.query.pincode.length) match.pincode = Number(req.query.pincode);
   }
 
   if (req.query.sortBy) {

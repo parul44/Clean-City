@@ -107,6 +107,18 @@ const getReports = async (req, res) => {
     res.status(400).send(e);
   }
 };
+const getcount = async (req,res) =>{
+  try{
+    let count = await Report.countDocuments({},function(err,c){
+      if(err){
+        console.log(err);
+      }
+    });
+    res.sendStatus(200).send(count);
+  } catch (e) {
+    res.status(404).send(e);
+  }
+};
 
 const getReportsID = async (req, res) => {
   const _id = req.params.id;
@@ -142,5 +154,6 @@ module.exports = {
   getGeojson,
   getReports,
   getReportsID,
-  getImage
+  getImage,
+  getcount
 };

@@ -21,4 +21,6 @@ router.get('/reports/:id', userControllers.getReportsID);
 
 router.get('/image/:id', userControllers.getImage);
 
+router.get('/getcount',userControllers.getcount);
+
 module.exports = router;

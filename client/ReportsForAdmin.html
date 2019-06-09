@@ -130,7 +130,7 @@
 
 <!--filters-->
 <style>
-#btnAdd,#btnClear,#btnSort,#btnSortN,.dropbtn {
+#btnAdd,#btnClear,#btnSort,#btnSortN,.dropbtn, .btn{
   color: white;
   border: none;
   cursor: pointer;
@@ -315,21 +315,69 @@ function filterFunction() {
       Reports Uploaded Till now
     </h2>
   <br>
+  <form>
+      <div class="input-group no-border col col-6">
+        <input type="text" value="" class="form-control" placeholder="Search Location Keywords">
+        <div class="input-group-append">
+          <div class="input-group-text">
+            <i class="now-ui-icons ui-1_zoom-bold"></i>
+          </div>
+        </div>
+      </div>
+    </form>
+    <form>
+        <div class="input-group no-border col col-6">
+          <input type="text" value="" class="form-control" placeholder="Search Description Keywords">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <i class="now-ui-icons ui-1_zoom-bold"></i>
+            </div>
+          </div>
+        </div>
+      </form>
+
     <div class="container">
       <div class="row">
-          <div class="dropdown">
-              <button type="button" onclick="myFunction()" class="dropbtn btn btn-success">SELECT TYPE OF REPORT</button>
-              <div id="myDropdown" class="dropdown-content">
-                <a href="#about">Garbage</a>
-                <a href="#base">Water</a>
-                <a href="#blog">Electricity</a>
-                <a href="#contact">Crime</a>
-                <a href="#custom">Accidents</a>
+ 
+                        
+          <div class="btn-group">
+              <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Select type of report
+              </button>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="#">Garbage</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Water</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Electricity</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Crime</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Accidents</a>
               </div>
             </div>
-        <button id="btnClear" class="btn transparent btn-danger col-1  mx-2">CLEAR</button>
-        <button id="btnSort" class="btn transparent btn-primary col-3 mx-2">SORT BY OLDEST FIRST</button>
-        <button id="btnSortN" class="btn transparent btn-secondary col-3  mx-2">SORT BY NEWEST FIRST</button>
+
+            <button id="btnClear" class="btn transparent btn-danger col-1  mx-2">CLEAR</button>
+       
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Sort
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="#">Garbage</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="#">Water</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="#">Electricity</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="#">Crime</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="#">Accidents</a>
+                    </div>
+                </div>
+              
+       
+
       </div>
       <br><br>
       <div class="row my-2">

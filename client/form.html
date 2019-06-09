@@ -1,264 +1,385 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Clean City</title>
-    <link rel="stylesheet" type="text/css" href="main.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.css' rel='stylesheet' />
-    <link rel="stylesheet" type="text/css" href="mapbox.css">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" 
-    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="main.css" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" type="text/css" href="mapbox.css" />
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
     <script src="main.js"></script>
-    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.js'></script>
+    <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.js"></script>
   </head>
 
-<body>
+  <body>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-light " >
-            
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-            </button>
-          
-            <div class="collapse navbar-collapse" id="navbarSupportedContent" >
-              <ul class="navbar-nav mr-auto">
-                <li class="nav-item active ">
-                  <a class="nav-link  " style="color:whitesmoke;font-size:1.1em;font-weight: bold;" href="index.html#home">HOME </a>
-                </li>
-                <li class="nav-item active">
-                  <a class="nav-link  " style="color:whitesmoke;font-size:1.1em;font-weight: bold;" href="form.html"> UPLOAD </a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link  " style="color:whitesmoke;font-size:1.1em;font-weight: bold;" href="index.html#viewReports"> VIEW REPORTS </a>
-                  </li>
-                <li class="nav-item active">
-                    <a class="nav-link   " style="color:whitesmoke;font-size:1.1em;font-weight: bold;" href="about.html"> ABOUT </a>
-                  </li>
-                
-              </ul>
-              
-             </div>
-            <form action="form.html">
-</form>
-          </nav>
-    </header>
-<br><Br>
+      <nav class="navbar navbar-expand-lg navbar-light ">
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-      <div style="padding: 20px;color:whitesmoke">
-          <h1 style="text-align: center">Any problems in your area?
-          Post them here!</h1><br>
-          <p style="text-align: center">(Drag Marker to set location. Allow access to location if prompted)</p>
-      </div>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active ">
+              <a
+                class="nav-link  "
+                style="color:whitesmoke;font-size:1.1em;font-weight: bold;"
+                href="index.html#home"
+                >HOME
+              </a>
+            </li>
+            <li class="nav-item active">
+              <a
+                class="nav-link  "
+                style="color:whitesmoke;font-size:1.1em;font-weight: bold;"
+                href="form.html"
+              >
+                UPLOAD
+              </a>
+            </li>
+            <li class="nav-item active">
+              <a
+                class="nav-link  "
+                style="color:whitesmoke;font-size:1.1em;font-weight: bold;"
+                href="index.html#viewReports"
+              >
+                VIEW REPORTS
+              </a>
+            </li>
+            <li class="nav-item active">
+              <a
+                class="nav-link   "
+                style="color:whitesmoke;font-size:1.1em;font-weight: bold;"
+                href="about.html"
+              >
+                ABOUT
+              </a>
+            </li>
+          </ul>
+        </div>
+        <form action="form.html"></form>
+      </nav>
+    </header>
+    <br /><Br />
+
+    <div style="padding: 20px;color:whitesmoke">
+      <h1 style="text-align: center">
+        Any problems in your area? Post them here!
+      </h1>
+      <br />
+      <p style="text-align: center">
+        (Drag Marker to set location. Allow access to location if prompted)
+      </p>
+    </div>
 
     <section>
       <div class="mapcontainer">
-        <div id='map'>
-        </div>
-        <br/>
-        <button id='fly'>Set to Current Location</button>
-        <pre id='coordinates' class='coordinates'></pre>          
-        
+        <div id="map"></div>
+        <br />
+        <button id="fly">Set to Current Location</button>
+        <pre id="coordinates" class="coordinates"></pre>
+
+        <!-- MAPBOX script -->
         <script>
-            mapboxgl.accessToken = 'pk.eyJ1IjoiZXJyYWh1bDkzIiwiYSI6ImNqdW8wemlxODJwNzUzeXFqbnVibHZzYzUifQ.bZKWernpF2H1uvOVNp4DOA';
-            var coordinates = document.getElementById('coordinates');
-            var map = new mapboxgl.Map({
+          mapboxgl.accessToken =
+            'pk.eyJ1IjoiZXJyYWh1bDkzIiwiYSI6ImNqdW8wemlxODJwNzUzeXFqbnVibHZzYzUifQ.bZKWernpF2H1uvOVNp4DOA';
+          var coordinates = document.getElementById('coordinates');
+          var map = new mapboxgl.Map({
             container: 'map',
             style: 'mapbox://styles/mapbox/streets-v11',
-            center: [77.146721,28.644800],
+            center: [77.146721, 28.6448],
             zoom: 11
-            });
+          });
 
-            //Creating Draggable Marker
-            var marker = new mapboxgl.Marker({
+          //Creating Draggable Marker
+          var marker = new mapboxgl.Marker({
             draggable: true
-            })
-            .setLngLat([77.146721,28.644800])
+          })
+            .setLngLat([77.146721, 28.6448])
             .addTo(map);
-            //setPosition Function for current location
-            function setPosition(position) {
-                accuracy = position.coords.accuracy
-                if (position.coords.accuracy>100){
-                  alert(`Accuracy:${accuracy}m . Please drag marker to exact location.`)
-                }
-                long = position.coords.longitude
-                lat = position.coords.latitude
-                marker.setLngLat([long , lat]).addTo(map);
-                onDragEnd();
-                
-                //Fly animation
-                map.flyTo({
-                center: [
-                long,
-                lat],
-                zoom: 15
-                });
-              }              
-            //Using Current Location
-            document.getElementById('fly').addEventListener('click', function () {
-                if (navigator.geolocation) {
-                  navigator.geolocation.getCurrentPosition(setPosition, function (){alert("Can't Locate. Allow location acess")}, {maximumAge:0,timeout:9000, enableHighAccuracy: true} );
-                } else { 
-                  alert("Geolocation is not supported by this browser");
-                }
-            });
+          //setPosition Function for current location
+          function setPosition(position) {
+            accuracy = position.coords.accuracy;
+            if (position.coords.accuracy > 100) {
+              alert(
+                `Accuracy:${accuracy}m . Please drag marker to exact location.`
+              );
+            }
+            long = position.coords.longitude;
+            lat = position.coords.latitude;
+            marker.setLngLat([long, lat]).addTo(map);
+            onDragEnd();
 
-            //Set Coordinates on drag
-            function onDragEnd() {
+            //Fly animation
+            map.flyTo({
+              center: [long, lat],
+              zoom: 15
+            });
+          }
+          //Using Current Location
+          document.getElementById('fly').addEventListener('click', function() {
+            if (navigator.geolocation) {
+              navigator.geolocation.getCurrentPosition(
+                setPosition,
+                function() {
+                  alert("Can't Locate. Allow location acess");
+                },
+                { maximumAge: 0, timeout: 9000, enableHighAccuracy: true }
+              );
+            } else {
+              alert('Geolocation is not supported by this browser');
+            }
+          });
+
+          //Set Coordinates on drag
+          function onDragEnd() {
             var lngLat = marker.getLngLat();
             coordinates.style.display = 'block';
-            coordinates.innerHTML = 'Longitude: ' + lngLat.lng + '<br />Latitude: ' + lngLat.lat;
+            coordinates.innerHTML =
+              'Longitude: ' + lngLat.lng + '<br />Latitude: ' + lngLat.lat;
             //feeding location to form
-            document.getElementById('longitude').value=lngLat.lng;
-            document.getElementById('latitude').value=lngLat.lat;
-            }
-             
-            marker.on('dragend', onDragEnd);
-            </script>
+            document.getElementById('longitude').value = lngLat.lng;
+            document.getElementById('latitude').value = lngLat.lat;
+          }
+
+          marker.on('dragend', onDragEnd);
+        </script>
       </div>
     </section>
 
-	  <section id="upload">
-
-        <div class="uploadform ">
+    <section id="upload">
+      <div class="uploadform ">
         <div class="card text-dark bg-light ">
-        <div class="card-body">                      
-        
-        <form id="myForm" enctype="multipart/form-data" action="/user/submit" method="post">
-        <br>
+          <div class="card-body">
+            <form
+              id="myForm"
+              enctype="multipart/form-data"
+              action="/user/submit"
+              method="post"
+            >
+              <br />
 
-        <div class="container formcontainer">
-        	
-            <div class="row">
-              
-              <div class="col col-10 col-sm-10">
-                  <label>Name&emsp;</label><input  id="name" placeholder=" Optional" size="60" name="name"><br>
-                
-              </div></div>
-                <br>
-            <div class="row">
-                        <div class="form-group  col-6 col-sm-10  ">
-                                <label>Select type of report&emsp;</label>
-                                <select class="form-control" id="problemtype" name="reportType" required>
-                                  <option value=garbage>Garbage Heap</option>
-                                  <option value=accident>Accident</option>
-                                  <option value=water>Water Shortage</option>
-                                  <option value=electricity>Electricity cut off</option>
-                                  <option value=crime>Crime</option>
-                                </select>
-
-                              </div>
-             </div>
-            <div class="row">
-            <div class="col-sm-10 col-6">
-                    
-                        <div class="form-group" id="uploadimage">
-
-                                <label for="picfile">Upload Image</label>
-
-                                <input type="file" class="form-control-file" id="picfile" name="image" required>
-                              </div>
+              <div class="container formcontainer">
+                <div class="row">
+                  <div class="col col-10 col-sm-10">
+                    <label>Name&emsp;</label
+                    ><input
+                      id="name"
+                      placeholder=" Optional"
+                      size="60"
+                      name="name"
+                    /><br />
+                  </div>
                 </div>
-            </div>
-            <div class="row">
-                            <div class=" col-10 col-sm-10">
-                                <!-- <label>Description of the report&emsp;&emsp;</label> -->
-                                <textarea style="height:70px " placeholder=" Short Description" id="description" rows="2" cols="50" name="description" minlength="10" maxlength="800" required></textarea>
-                               
-                            </div>
-                            
-            </div> 
+                <br />
+                <div class="row">
+                  <div class="col col-10 col-sm-10">
+                    <label>Contact Number&emsp;</label
+                    ><input
+                      id="contactNumber"
+                      placeholder=" Optional"
+                      size="60"
+                      name="contactNumber"
+                    /><br />
+                  </div>
+                </div>
+                <br />
+                <div class="row">
+                  <div class="form-group  col-6 col-sm-10  ">
+                    <label>Select type of report&emsp;</label>
+                    <select
+                      class="form-control"
+                      id="problemtype"
+                      name="reportType"
+                      required
+                    >
+                      <option value="garbage">Garbage Heap</option>
+                      <option value="accident">Accident</option>
+                      <option value="water">Water Shortage</option>
+                      <option value="electricity">Electricity cut off</option>
+                      <option value="crime">Crime</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-10 col-6">
+                    <div class="form-group" id="uploadimage">
+                      <label>Upload Image</label>
 
-            <br> 
+                      <input
+                        type="file"
+                        class="form-control-file"
+                        id="picfile"
+                        name="image"
+                        required
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class=" col-10 col-sm-10">
+                    <!-- <label>Description of the report&emsp;&emsp;</label> -->
+                    <textarea
+                      style="height:70px "
+                      placeholder=" Short Description"
+                      id="description"
+                      rows="2"
+                      cols="50"
+                      name="description"
+                      minlength="10"
+                      maxlength="800"
+                      required
+                    ></textarea>
+                  </div>
+                </div>
 
-            <div class="row">
-                            <div class="col-10 col-sm-10 ">
-                                <!-- <label>Location&emsp;&emsp;</label> -->
-                                <textarea style="height:70px " placeholder=" Enter Landmark/Area/Colony" id="location" rows="2" cols="50" name="location" required></textarea>
-                              
-                            </div>
-                            
-            </div>
-            
-            <input type="hidden" id="longitude" placeholder="Press button to AutoDetect" size="30" name="longitude" required><br>
-            <input type="hidden" id="latitude" placeholder="Press button to AutoDetect" size="30" name="latitude" required><br>
-       </div>
-        <button style="margin: 1em " type ="submit" class="btn btn-secondary col-10 col-sm-6 col-md-4 ">Submit Form</button>
-        
-        <button style="margin: 1em" type="reset" class="btn btn-secondary col-10 col-sm-6 col-md-4">Reset</button>
-    </fieldset>
-    </form>
-  </div>
-  </div>
+                <br />
+
+                <div class="row">
+                  <div class="col-10 col-sm-10 ">
+                    <!-- <label>Location&emsp;&emsp;</label> -->
+                    <textarea
+                      style="height:70px "
+                      placeholder=" Enter Landmark/Area/Colony"
+                      id="location"
+                      rows="2"
+                      cols="50"
+                      name="location"
+                      required
+                    ></textarea>
+                  </div>
+                </div>
+
+                <input
+                  type="hidden"
+                  id="longitude"
+                  placeholder="Press button to AutoDetect"
+                  size="30"
+                  name="longitude"
+                  required
+                /><br />
+                <input
+                  type="hidden"
+                  id="latitude"
+                  placeholder="Press button to AutoDetect"
+                  size="30"
+                  name="latitude"
+                  required
+                /><br />
+              </div>
+              <button
+                style="margin: 1em "
+                type="submit"
+                class="btn btn-secondary col-10 col-sm-6 col-md-4 "
+              >
+                Submit Form
+              </button>
+
+              <button
+                style="margin: 1em"
+                type="reset"
+                class="btn btn-secondary col-10 col-sm-6 col-md-4"
+              >
+                Reset
+              </button>
+            </form>
+          </div>
         </div>
-        <br><br>
-</section>
+      </div>
+      <br /><br />
+    </section>
 
-    
-<footer class="footer-distributed">
+    <footer class="footer-distributed">
+      <div class="footer-left">
+        <h3>Develop<span>HowTo</span></h3>
 
-  <div class="footer-left">
+        <p class="footer-links">
+          <a href="#">Garbage</a>
+          ·
+          <a href="#">Electricity</a>
+          ·
+          <a href="#">Water</a>
+          ·
+          <a href="#">Accidents</a>
+          ·
+          <a href="#">Crime</a>
+        </p>
 
-    <h3>Develop<span>HowTo</span></h3>
+        <p class="footer-company-name">All Rights Reserved &copy; 2019</p>
+        <br />
+        <p class="footer-company-name">Made with Love in India</p>
+      </div>
 
-    <p class="footer-links">
-      
-      <a href="#">Garbage</a>
-      ·
-      <a href="#">Electricity</a>
-      ·
-      <a href="#">Water</a>
-      ·
-      <a href="#">Accidents</a>
-      ·
-      <a href="#">Crime</a>
-    </p>
+      <div class="footer-center">
+        <div>
+          <i class="fa fa-map-marker"></i>
+          <p><span>Address line 1</span> Address line 2</p>
+        </div>
 
-    <p class="footer-company-name">All Rights Reserved &copy; 2019</p>
-    <br>
-    <p class="footer-company-name">Made with Love in India</p>
-  </div>
+        <div>
+          <i class="fa fa-phone"></i>
+          <p>phone number</p>
+        </div>
 
-  <div class="footer-center">
+        <div>
+          <i class="fa fa-envelope"></i>
+          <p>
+            <a href="https://develophowto.com/">https://develophowto.com/</a>
+          </p>
+        </div>
+      </div>
 
-    <div>
-      <i class="fa fa-map-marker"></i>
-      <p><span>Address line 1</span> Address line 2</p>
-    </div>
-
-    <div>
-      <i class="fa fa-phone"></i>
-      <p>phone number </p>
-    </div>
-
-    <div>
-      <i class="fa fa-envelope"></i>
-      <p><a href="https://develophowto.com/">https://develophowto.com/</a></p>
-    </div>
-
-  </div>
-
-  <div class="footer-right">
-
-    <p class="footer-company-about">
-      <span>About the company</span>
-      We deal with all type of issues. You can lodge your complaints here. Join us to make everyone aware.
-    </p>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <div class="footer-icons">
-
-      <a href="https://www.facebook.com" ><i class="fa fa-1x fa-facebook-square "></i></a>
-      <a href="https://www.twitter.com" ><i class="fa fa-1x fa-twitter-square"></i></a>
-      <a href="https://www.linkedin.com"><i class="fa fa-linkedin"></i></a>
-      <a href="https://www.google.com" ><i class="fa fa-1x fa-google-plus"></i></a>
-
-    </div>
-  </div>
-</footer>
-</body>
+      <div class="footer-right">
+        <p class="footer-company-about">
+          <span>About the company</span>
+          We deal with all type of issues. You can lodge your complaints here.
+          Join us to make everyone aware.
+        </p>
+        <link
+          rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+        />
+        <div class="footer-icons">
+          <a href="https://www.facebook.com"
+            ><i class="fa fa-1x fa-facebook-square "></i
+          ></a>
+          <a href="https://www.twitter.com"
+            ><i class="fa fa-1x fa-twitter-square"></i
+          ></a>
+          <a href="https://www.linkedin.com"><i class="fa fa-linkedin"></i></a>
+          <a href="https://www.google.com"
+            ><i class="fa fa-1x fa-google-plus"></i
+          ></a>
+        </div>
+      </div>
+    </footer>
+  </body>
 </html>

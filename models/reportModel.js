@@ -6,8 +6,10 @@ const reportSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      default: 'Anonymous',
       trim: true
+    },
+    contactNumber: {
+      type: Number
     },
     reportType: {
       type: String,
@@ -45,6 +47,10 @@ const reportSchema = new mongoose.Schema(
         type: [Number],
         index: '2dsphere'
       }
+    },
+    results: {
+      type: mongoose.Schema.Types.Mixed,
+      default: {}
     }
   },
   {

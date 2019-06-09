@@ -195,7 +195,8 @@ section#viewReports .card:hover {
 }
 
 textarea,
-#name {
+#name,
+#contactNumber {
   border: 1px#DDDDDD solid;
   border-radius: 10px;
   outline: none;
@@ -380,11 +381,12 @@ textarea,
     padding-left: 5px;
   }
 }
-@media only screen and (max-width: 580px) {
+@media only screen and (max-width: 615px) {
   #name,
+  #contactNumber,
   textarea,
   .uploadform label {
-    width: 75vw;
+    width: 70vw;
   }
   #uploadimage {
     width: 22rem;

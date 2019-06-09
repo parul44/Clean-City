@@ -3,7 +3,7 @@ const express = require('express');
 const path = require('path');
 require('./db/mongoose');
 const bodyParser = require('body-parser');
-const userRoutes = require('./routes/userRoutes');
+const userRoutes = require('./routes/userRoutes');``
 const adminRoutes = require('./routes/adminRoutes');
 const Admin = require('./models/adminModel');
 const passport = require('passport');

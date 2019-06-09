@@ -71,7 +71,7 @@
     </div>
     <div class="main-panel" id="main-panel">
       <!-- Navbar -->
-      <nav class="navbar navbar-expand-lg navbar-transparent  bg-primary  navbar-absolute">
+      <nav class="navbar navbar-expand-lg bg-warning  navbar-absolute">
         <div class="container-fluid">
           <div class="navbar-wrapper">
             <div class="navbar-toggle">
@@ -89,16 +89,7 @@
             <span class="navbar-toggler-bar navbar-kebab"></span>
           </button>
           <div class="collapse navbar-collapse justify-content-end" id="navigation">
-            <form>
-              <div class="input-group no-border">
-                <input type="text" value="" class="form-control" placeholder="Search...">
-                <div class="input-group-append">
-                  <div class="input-group-text">
-                    <i class="now-ui-icons ui-1_zoom-bold"></i>
-                  </div>
-                </div>
-              </div>
-            </form>
+            
             <ul class="navbar-nav">
               <li class="nav-item">
                 <a class="nav-link" href="#pablo">
@@ -133,10 +124,90 @@
           </div>
         </div>
       </nav>
-      <br>
-      <br>
-      <br>
-      <br>
+<br><br>
+
+
+
+<!--filters-->
+<style>
+#btnAdd,#btnClear,#btnSort,#btnSortN,.dropbtn {
+  color: white;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 8px 0 rgb(0,0,0,1.2);
+ 
+}
+
+.dropbtn:hover, .dropbtn:focus {
+  opacity: 0.9%;
+  color: black;
+  
+}
+
+#myInput:focus {outline: 3px solid #ddd;}
+
+#filters .dropdown {
+  position: relative;
+  display: inline-block;
+  margin: 40px;
+  
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: transparent;
+  min-width: 230px;
+  overflow: auto;
+  z-index: 1;
+ 
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 10px 16px;
+  text-decoration: none;
+  display: block;
+  background-color: #ffc107;
+  border-radius: 20px;
+  margin:1%;
+}
+
+.dropdown a:hover {opacity: 0.6;}
+
+.show {display: block;}
+
+li .done span{
+      text-decoration: line-through;
+       }
+</style>
+
+<script>
+/* When the user clicks on the button,
+toggle between hiding and showing the dropdown content */
+function myFunction() {
+  document.getElementById("myDropdown").classList.toggle("show");
+}
+
+function filterFunction() {
+  var input, filter, ul, li, a, i;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  div = document.getElementById("myDropdown");
+  a = div.getElementsByTagName("a");
+  for (i = 0; i < a.length; i++) {
+    txtValue = a[i].textContent || a[i].innerText;
+    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+      a[i].style.display = "";
+    } else {
+      a[i].style.display = "none";
+    }
+  }
+}
+</script>
+
+
+      <!-- <br>
      <div class="row">
   <div class="column">
     <img src="images.png" alt="Avatar" style="width:100%">
@@ -234,9 +305,42 @@
     </label>
   </div>Sample Data<button type="button">Delete</button></div>
   </div>
-</div>
+</div> 
    
+  </div>-->
    
+<div style="background-color: cornsilk">
+<br><br>
+  <h2 class="text-center transparent my-3">
+      Reports Uploaded Till now
+    </h2>
+  <br>
+    <div class="container">
+      <div class="row">
+          <div class="dropdown">
+              <button type="button" onclick="myFunction()" class="dropbtn btn btn-success">SELECT TYPE OF REPORT</button>
+              <div id="myDropdown" class="dropdown-content">
+                <a href="#about">Garbage</a>
+                <a href="#base">Water</a>
+                <a href="#blog">Electricity</a>
+                <a href="#contact">Crime</a>
+                <a href="#custom">Accidents</a>
+              </div>
+            </div>
+        <button id="btnClear" class="btn transparent btn-danger col-1  mx-2">CLEAR</button>
+        <button id="btnSort" class="btn transparent btn-primary col-3 mx-2">SORT BY OLDEST FIRST</button>
+        <button id="btnSortN" class="btn transparent btn-secondary col-3  mx-2">SORT BY NEWEST FIRST</button>
+      </div>
+      <br><br>
+      <div class="row my-2">
+        <div class="col mx-4">
+          <ul class="transparent list-group" id="taskList">
+   
+          </ul>
+        </div>
+      </div>
+    </div>
+
       <footer class="footer">
         <div class="container-fluid">
           <nav>
@@ -270,6 +374,7 @@
       </footer>
     </div>
   </div>
+  </div>
   <!--   Core JS Files   -->
   <script src="assets/js/core/jquery.min.js"></script>
   <script src="assets/js/core/popper.min.js"></script>
@@ -283,8 +388,159 @@
   <script src="assets/js/plugins/bootstrap-notify.js"></script>
   <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="assets/js/now-ui-dashboard.min.js?v=1.3.0" type="text/javascript"></script>
-  <!-- Now Ui Dashboard DEMO methods, don't include it in your project! -->
-  <script src="assets/demo/demo.js"></script>
+  
+
+  <script>
+  
+window.onload = function () {
+    let btnAdd = document.getElementById('btnAdd')
+    let btnClear = document.getElementById('btnClear')
+    let btnSort = document.getElementById('btnSort')
+    let btnSortN = document.getElementById('btnSortN')
+
+    let inpNewTask = document.getElementById('inpNewTask')
+    let taskList = document.getElementById("taskList")
+    let tasks = []
+    if (localStorage.list) {
+      tasks = JSON.parse(localStorage.list)
+    }
+  
+    function refreshList () {
+      localStorage.list = JSON.stringify(tasks)
+      taskList.innerHTML = ""
+      for (let i in tasks) {
+        let task = tasks[i]
+        let li = document.createElement('li')
+        li.className = "list-group-item"
+        li.setAttribute("display","block")
+        let div = document.createElement('div')
+        div.className = task.done ? "row done" : "row"
+        
+        let uploadimg = document.createElement("img");
+        uploadimg.setAttribute("src", "images.png");
+        uploadimg.setAttribute("width", "200");
+        uploadimg.setAttribute("height", "150");
+        uploadimg.setAttribute("alt", "Report img");
+        
+        
+        let span = document.createElement('span')
+        span.innerText = task.name
+        span.className = "col col-6 py-1"
+        let liBtnDone = document.createElement('button')
+        liBtnDone.innerText = task.done ? "❌" : "✔"
+        liBtnDone.className = "btn col-6 border-dark mx-2"
+        liBtnDone.setAttribute("height","1rem")
+        let liBtnDelete = document.createElement('button')
+        liBtnDelete.innerText = "DELETE"
+        liBtnDelete.className = "btn btn-danger col-6 mx-2"
+        
+        let div2=document.createElement('div')
+        div2.setAttribute("display","inline-block");
+        div2.className = "col col-6 mx-2"
+        let div3=document.createElement('div')  
+        div3.setAttribute("display","inline-block");
+        
+        let upbtn=document.createElement('button')
+        upbtn.className="btn btn-primary col-2 mx-2"
+        upbtn.innerText='UP'
+        
+        let downbtn=document.createElement('button')
+        downbtn.className="btn btn-primary col-2 mx-2"
+        downbtn.innerText='DOWN'
+
+        liBtnDone.onclick = function () {
+          task.done = !task.done
+          refreshList()
+        }
+        liBtnDelete.onclick = function () {
+          tasks.splice(i, 1)
+          refreshList()
+        }
+        if (i!=0){
+        upbtn.onclick = function(){
+          let x= tasks.splice(i,1)
+          tasks.splice(i-1,0,x[0])
+           refreshList()
+        }
+        }
+        if (i<tasks.length-1){
+        downbtn.onclick = function(){
+          let x = tasks.splice(i,1)
+          tasks.splice(i+1,0,x[0])
+          refreshList()
+        }
+      }
+
+        //  div2.setAttribute("","") 
+          div2.appendChild(span)
+         div3.appendChild(liBtnDone)
+         div3.appendChild(liBtnDelete)
+         div2.appendChild(div3)
+         div.appendChild(div2)
+         div.appendChild(uploadimg)
+       
+        li.appendChild(div)
+        taskList.appendChild(li)
+  
+      }
+    }
+  
+    refreshList()
+  
+    function sortList () {
+      tasks.sort(function (a, b) {
+        return a.done - b.done
+      })
+      refreshList()
+    }
+  
+    function clearList() {
+      tasks = tasks.filter(function (t) {
+        return !t.done
+      })
+      refreshList()
+    }
+  
+    function addTask() {
+      console.log(tasks)
+      let taskName = inpNewTask.value
+      tasks.push({
+        name: taskName,
+        done: false
+      })
+      inpNewTask.value = ""
+      refreshList()
+    }
+  
+    btnAdd.onclick = function () {
+      addTask()
+    }
+    // inpNewTask.onkeyup = function (ev) {
+    //   if (ev.keyCode == 13) {
+    //     addTask()
+    //   }
+    // }
+  
+    btnSort.onclick = function () {
+      sortList()
+    }
+    
+    //Edit this
+    btnSortN.onclick = function(){
+      sortList()
+    }
+    btnClear.onclick = function () {
+      clearList()
+    }
+    // function upFuntion(){
+
+    // }
+    // up.onclick = function(){
+    //   upFuntion()
+    // }
+  }
+  </script>
+
 </body>
 
 </html>

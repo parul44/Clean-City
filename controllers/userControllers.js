@@ -174,6 +174,19 @@ const getImage = async (req, res) => {
   }
 };
 
+const deleteReport = (req,res) =>{
+  try{
+    Report.findByIdAndRemove(req.params.id,function(err){
+      if(err){
+        console.log(err);
+      }
+    });
+    res.status(200).send(`Report deleted with id ${req.params.id}`)
+  }catch (e) {
+    res.status(404).send(e);
+  }
+};
+
 module.exports = {
   upload,
   postSubmitData,
@@ -181,5 +194,6 @@ module.exports = {
   getReports,
   getReportsID,
   getImage,
-  getCount
+  getCount,
+  deleteReport
 };

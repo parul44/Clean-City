@@ -39,9 +39,9 @@ const postSubmitData = async (req, res) => {
     };
 
     const response = await fetch(
-      `http://apis.mapmyindia.com/advancedmaps/v1/o223g5iid9kb1pimi74ltebthdi64q3r/rev_geocode?lat=${
-        req.body.latitude
-      }&lng=${req.body.longitude}`
+      `http://apis.mapmyindia.com/advancedmaps/v1/${
+        process.env.API_KEY
+      }/rev_geocode?lat=${req.body.latitude}&lng=${req.body.longitude}`
     );
 
     const data = await response.json();
@@ -51,7 +51,7 @@ const postSubmitData = async (req, res) => {
     await report.save();
     res.status(201).send(`Report added to DB! with id ${report._id}`);
   } catch (e) {
-    res.status(400).send(e);
+    res.status(400).send({ error: e.errmsg });
   }
 };
 
@@ -73,6 +73,8 @@ const getGeojson = async (req, res) => {
 
 // GET /reports?reportType=xyz
 // GET /reports?pincode=123
+// GET /reports?description=broken lamp
+// GET /reports?location=punjabi bagh
 // GET /reports?limit=10&skip=20
 // GET /reports?sortBy=createdAt:desc
 const getReports = async (req, res) => {
@@ -84,7 +86,31 @@ const getReports = async (req, res) => {
   }
 
   if (req.query.pincode) {
-    if (req.query.pincode.length) match.pincode = Number(req.query.pincode);
+    if (req.query.pincode.length) {
+      match['results.pincode'] = req.query.pincode;
+    }
+  }
+
+  if (req.query.description) {
+    if (req.query.description.length) {
+      var regexString = req.query.description.replace(
+        /[-\/\\^$*+?.()|[\]{}]/g,
+        '\\$&'
+      );
+      var regex = new RegExp(regexString, 'i');
+      match.description = regex;
+    }
+  }
+
+  if (req.query.location) {
+    if (req.query.location.length) {
+      var regexString = req.query.location.replace(
+        /[-\/\\^$*+?.()|[\]{}]/g,
+        '\\$&'
+      );
+      var regex = new RegExp(regexString, 'i');
+      match['results.formatted_address'] = regex;
+    }
   }
 
   if (req.query.sortBy) {
@@ -107,14 +133,14 @@ const getReports = async (req, res) => {
     res.status(400).send(e);
   }
 };
-const getcount = async (req,res) =>{
-  try{
-    let count = await Report.countDocuments({},function(err,c){
-      if(err){
+const getCount = async (req, res) => {
+  try {
+    let count = await Report.countDocuments({}, function(err, c) {
+      if (err) {
         console.log(err);
       }
     });
-    res.sendStatus(200).send(count);
+    res.status(200).send({ count });
   } catch (e) {
     res.status(404).send(e);
   }
@@ -155,5 +181,5 @@ module.exports = {
   getReports,
   getReportsID,
   getImage,
-  getcount
+  getCount
 };

@@ -428,24 +428,20 @@
           
           }
           </script>
+          <!-- SCRIPT FOR NOTIFICATION -->
           <script>
-          fetch('/user/getcount')
-          .then(res =>{
-            res.json().then(data=>{
-              var oldcount = data.count;
-              console.log(oldcount);
-              setInterval(function(){
+          var data = await fetch('/user/count').then(res => res.json())
+          var oldcount = data.count;
+          console.log(oldcount);
+
+          setInterval(function(){
+              var data = await fetch('/user/count').then(res => res.json())
               var newcount = data.count;
-              console.log(newcount);
               if(newcount>oldcount){
                 nowuiDashboard.showNotification('bottom','center');
               }
               oldcount=newcount;
             },3000);
-            });
-            
-          });
-
           </script>
 
       <!--   Core JS Files   -->

@@ -140,7 +140,17 @@ const getCount = async (req, res) => {
         console.log(err);
       }
     });
-    res.status(200).send({ count });
+    let report = await Report.findOne(
+      {},
+      { reportType: +1 },
+      { sort: { created_at: -1 } },
+      function(err, post) {
+        if (err) {
+          console.log(post);
+        }
+      }
+    );
+    res.status(200).send({ count: count, report: report });
   } catch (e) {
     res.status(404).send(e);
   }
@@ -174,15 +184,15 @@ const getImage = async (req, res) => {
   }
 };
 
-const deleteReport = (req,res) =>{
-  try{
-    Report.findByIdAndRemove(req.params.id,function(err){
-      if(err){
+const deleteReport = (req, res) => {
+  try {
+    Report.findByIdAndRemove(req.params.id, function(err) {
+      if (err) {
         console.log(err);
       }
     });
-    res.status(200).send(`Report deleted with id ${req.params.id}`)
-  }catch (e) {
+    res.status(200).send(`Report deleted with id ${req.params.id}`);
+  } catch (e) {
     res.status(404).send(e);
   }
 };

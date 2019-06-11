@@ -19,7 +19,6 @@
    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.css' rel='stylesheet' />
   <link rel="stylesheet" type="text/css" href="mapbox.css">
-  <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.js'></script>
 </head>
 <body class="">
   <div class="wrapper ">
@@ -372,17 +371,17 @@
               <nav>
                 <ul>
                   <li>
-                    <a href="index.html">
+                    <a href="/index.html" target="_blank">
                       Clean City
                     </a>
                   </li>
                   <li>
-                    <a href="http://presentation.creative-tim.com">
+                    <a href="/about.html" target="_blank">
                       About Us
                     </a>
                   </li>
                   <li>
-                    <a href="http://blog.creative-tim.com">
+                    <a href="#">
                       Blog
                     </a>
                   </li>
@@ -392,9 +391,8 @@
                 &copy;
                 <script>
                   document.getElementById('copyright').appendChild(document.createTextNode(new Date().getFullYear()))
-                </script>, Designed by
-                <a href="https://www.invisionapp.com" target="_blank">Invision</a>. Coded by
-                <a href="https://www.creative-tim.com" target="_blank">Clean City</a>.
+                </script> Coded by
+                <a href="https://develophowto.com/" target="_blank">DevelopHowTo</a>.
               </div>
             </div>
           </footer>
@@ -403,6 +401,7 @@
       
       </div>
     </div>
+    <!-- SCRIPTS -->
       <script>
           window.onload = function() {
           
@@ -437,23 +436,25 @@
           </script>
           <!-- SCRIPT FOR NOTIFICATION -->
           <script>
-              var oldcount;
-              fetch("/user/count").then(res => res.json()).then(data => {oldcount=data.count});
-              console.log(oldcount);
+              var oldcount=0;
+              fetch("/user/count").then(res => res.json()).then(data => {oldcount=data.count;});
 
               setInterval(async function(){
-              var newcount;
-              fetch("/user/count").then(res => res.json()).then(data => {newcount=data.count});
-              console.log(newcount);
-              if(newcount>oldcount){
-                nowuiDashboard.showNotification('bottom','center');
-              }
-              oldcount=newcount;
-            },3000);
+                var count,report;
+                fetch("/user/count").then(res => res.json()).then(data => {
+                  count=data.count
+                  report=data.report
+                  if(count>oldcount){
+                    nowuiDashboard.showNotification('bottom','center', report);
+                  }
+                  oldcount=count;
+                });
+              },4000);
           
           </script>
 
-          <!-- mapbox script -->
+    <!-- mapbox script -->
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.js'></script>
     <script>
         mapboxgl.accessToken = 'pk.eyJ1IjoiZXJyYWh1bDkzIiwiYSI6ImNqdW8wemlxODJwNzUzeXFqbnVibHZzYzUifQ.bZKWernpF2H1uvOVNp4DOA';
         var map = new mapboxgl.Map({
@@ -1130,7 +1131,7 @@
   <!--  Notifications Plugin    -->
   <script src="assets/js/plugins/bootstrap-notify.js"></script>
   <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
-  <script src="assets/js/now-ui-dashboard.min.js?v=1.3.0" type="text/javascript"></script>
+  <script src="assets/js/now-ui-dashboard.js?v=1.3.0" type="text/javascript"></script>
   <!-- Now Ui Dashboard DEMO methods, don't include it in your project! -->
   
 </body>

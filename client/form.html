@@ -129,9 +129,7 @@
           function setPosition(position) {
             accuracy = position.coords.accuracy;
             if (position.coords.accuracy > 100) {
-              alert(
-                `Accuracy:${accuracy}m . Please drag marker to exact location.`
-              );
+              alert(`Accuracy>100m . Please drag marker to exact location.`);
             }
             long = position.coords.longitude;
             lat = position.coords.latitude;
@@ -150,7 +148,7 @@
               navigator.geolocation.getCurrentPosition(
                 setPosition,
                 function() {
-                  alert(" Allow location acess and try again.");
+                  alert(' Allow location acess and try again.');
                 },
                 { maximumAge: 0, timeout: 9000, enableHighAccuracy: true }
               );

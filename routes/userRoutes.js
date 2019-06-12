@@ -23,6 +23,6 @@ router.get('/image/:id', userControllers.getImage);
 
 router.get('/count', userControllers.getCount);
 
-router.delete('/reports/:id',userControllers.deleteReport);
+router.delete('/reports', userControllers.deleteReport);
 
 module.exports = router;

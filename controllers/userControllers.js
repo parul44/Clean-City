@@ -186,12 +186,13 @@ const getImage = async (req, res) => {
 
 const deleteReport = (req, res) => {
   try {
-    Report.findByIdAndRemove(req.params.id, function(err) {
+    var idarray = req.body.idarray;
+    Report.deleteMany({ _id: { $in: idarray } }, function(err) {
       if (err) {
         console.log(err);
       }
     });
-    res.status(200).send(`Report deleted with id ${req.params.id}`);
+    res.status(200).send(`Reports deleted`);
   } catch (e) {
     res.status(404).send(e);
   }

@@ -563,3 +563,7 @@ textarea,
     margin-left: 0;
   }
 }
+
+.bar {
+  fill: green;
+}

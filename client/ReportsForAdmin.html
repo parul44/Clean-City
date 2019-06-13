@@ -163,66 +163,6 @@
         </nav>
         <br /><br />
 
-        <!--fetch reports-->
-        <script>
-          async function fetchReports() {
-            var form = document.getElementById('myForm');
-            var fetchURL = `/user/reports?location=${
-              form.location.value
-            }&description=${form.description.value}&reportType=${
-              form.reportType.value
-            }&sortBy=${form.sortBy.value}`;
-            var data = await fetch(fetchURL).then(res => res.json());
-            console.log(data);
-            var ul = document.getElementById('reportList');
-            length = data.length;
-            console.log(length);
-            for (i = 0; i < length; i++) {
-              console.log('append list items here');
-            }
-
-
-            let li = document.createElement('li')
-          let div1 = document.createElement('div')
-          let div2 = document.createElement('div')
-          let span = document.createElement('span')
-          let btnDone = document.createElement('button')
-          let btnDelete = document.createElement('button')
-          let img = document.createElement('img')
-
-          li.className = "list-group-item"
-          div2.className= "div2"
-          div2.setAttribute("dispaly","inline-block")
-          span.className = "reporttitle col col-6 py-1"
-          btnDone.className = "btn col-6 mx-2 transparent"
-          btnDelete.className = "btn btn-danger col-6 mx-2"
-          img.setAttribute('src','images.png') //set correct path of the image
-          div1.className = arrayelement.done? "row done" : "row"
-          // create a var say str holding name of report title ..
-          span.innerText = str
-
-          //btnDone ka innertext badalna hoga click karne ke hisab se 
-          // to vo pata lagane ke liye kuch aisi functionality daal de isi button ki
-
-          /*btnDone.onclick = function () {
-          arrayelement.done = !arrayelement.done   (arrayelement is name of the list[i] which is report obj, usme ek done naam se attribute additionally dala hoga)
-          fetchReports()} */
-        
-
-        btnDone.innerText = arrayelement.done ? "❌" : "✔"
-        btnDelete.innerText = "DELETE"
-        div2.appendChild(span)
-        div2.appendChild(btnDone)
-        div2.appendChild(btnDelete)
-        div1.appendChild(div2)
-        div1.appendChild(img)
-        
-        li.appendChild(div1)
-        reportList.appendChild(li)
-
-        
-          }
-        </script>
         <style>
           #btnClear,
           #btnClear,
@@ -254,7 +194,7 @@
             height: 150px;
             margin: -50px 0 0 0;
           }
-          .done{
+          .done {
             text-decoration: line-through;
           }
         </style>
@@ -336,11 +276,11 @@
                 GET REPORTS
               </button>
               <button
-                onclick="return false;"
+                onclick="deleteMarked(); return false;"
                 id="btnClear"
                 class="btn transparent btn-danger col-1  mx-2"
               >
-                CLEAR
+                DELETE MARKED
               </button>
             </div>
           </form>
@@ -349,7 +289,7 @@
           <div class="row my-2">
             <div class="col mx-4">
               <ul class=" list-group transparent" id="reportList">
-<!--               
+                <!--               
                 <li class="list-group-item">
                   <div class="row">
                     <div class="div2">
@@ -361,29 +301,22 @@
                     </div>
                     <img src="images.png" />
                   </div>
-                </li>
-              </ul> -->
+                </li>-->
+              </ul>
             </div>
           </div>
-
-
-          <script>
-          
-          //
-          </script>
-
 
           <footer class="footer">
             <div class="container-fluid">
               <nav>
                 <ul>
                   <li>
-                    <a href="https://www.creative-tim.com">
+                    <a href="/index.html" target="_blank">
                       Clean City
                     </a>
                   </li>
                   <li>
-                    <a href="http://presentation.creative-tim.com">
+                    <a href="/about.html" target="_blank">
                       About Us
                     </a>
                   </li>
@@ -398,13 +331,122 @@
                       document.createTextNode(new Date().getFullYear())
                     );
                 </script>
-                
               </div>
             </div>
           </footer>
         </div>
       </div>
     </div>
+    <!--fetch reports-->
+    <script>
+      async function fetchReports() {
+        var form = document.getElementById('myForm');
+        var fetchURL = `/user/reports?location=${
+          form.location.value
+        }&description=${form.description.value}&reportType=${
+          form.reportType.value
+        }&sortBy=${form.sortBy.value}`;
+        var data = await fetch(fetchURL)
+          .then(res => res.json())
+          .catch(function(error) {
+            console.log(error);
+          });
+        var ul = document.getElementById('reportList');
+        while (ul.lastChild) {
+          ul.removeChild(ul.lastChild);
+        }
+
+        length = data.length;
+        for (i = 0; i < length; i++) {
+          let li = document.createElement('li');
+          let div1 = document.createElement('div');
+          let div2 = document.createElement('div');
+          let span = document.createElement('span');
+          let btnDone = document.createElement('button');
+          let btnDelete = document.createElement('button');
+          // let img = document.createElement('img')
+
+          li.className = 'list-group-item';
+          li.setAttribute('id', `${data[i]._id}`);
+          div2.className = 'div2';
+          div2.setAttribute('dispaly', 'inline-block');
+          span.className = 'reporttitle col col-6 py-1';
+          btnDone.className = 'btn col-6 mx-2 transparent';
+          btnDelete.className = 'btn btn-danger col-6 mx-2';
+          // img.setAttribute("width","200px")
+          // img.setAttribute("height","150px");
+          // img.setAttribute("style", "margin:-50px 0 0 0");
+          // img.setAttribute('src',`/user/image/${data[i]._id}`)
+          date = new Date(data[i].createdAt);
+          span.innerText = `ID: ${data[i]._id}
+            ${date.toLocaleString()}
+            ${data[i].results.locality} , ${data[i].results.pincode}`;
+          // btnDone.setAttribute('done', false);
+          btnDone.innerText = this.done ? '❌' : '✔';
+          div1.className = this.done ? 'row done' : 'row';
+          btnDelete.innerText = 'DELETE';
+
+          btnDone.onclick = function() {
+            this.done = !this.done;
+            this.innerText = this.done ? '❌' : '✔';
+            this.parentElement.parentElement.className = this.done
+              ? 'row done'
+              : 'row';
+          };
+
+          btnDelete.onclick = function() {
+            let id = this.parentElement.parentElement.parentElement.id;
+            let body = { idarray: [id] };
+            fetch(`/user/reports`, {
+              method: 'delete',
+              body: JSON.stringify(body),
+              headers: { 'Content-type': 'application/json' }
+            })
+              .then(document.getElementById(`${id}`).remove())
+              .catch(function(error) {
+                console.log(error);
+              });
+          };
+
+          div2.appendChild(span);
+          div2.appendChild(btnDone);
+          div2.appendChild(btnDelete);
+          div1.appendChild(div2);
+          // div1.appendChild(img)
+          li.appendChild(div1);
+          reportList.appendChild(li);
+        }
+      }
+
+      async function deleteMarked() {
+        var ul = document.getElementById('reportList');
+        var idarray = [];
+        for (i = 0; i < ul.children.length; i++) {
+          if (
+            ul.children[i].children[0].children[0].children[1].innerText ===
+            '❌'
+          ) {
+            let id = ul.children[i].id;
+            idarray.push(id);
+          }
+        }
+        var body = { idarray: idarray };
+        fetch(`/user/reports`, {
+          method: 'delete',
+          body: JSON.stringify(body),
+          headers: { 'Content-type': 'application/json' }
+        })
+          .then(
+            idarray.forEach(id => {
+              document.getElementById(id).remove();
+            })
+          )
+          .catch(function(error) {
+            console.log(error);
+          });
+      }
+      fetchReports();
+    </script>
     <!--   Core JS Files   -->
     <script src="assets/js/core/jquery.min.js"></script>
     <script src="assets/js/core/popper.min.js"></script>

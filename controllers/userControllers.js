@@ -73,6 +73,8 @@ const getGeojson = async (req, res) => {
 
 // GET /reports?reportType=xyz
 // GET /reports?pincode=123
+// GET /reports?description=broken lamp
+// GET /reports?location=punjabi bagh
 // GET /reports?limit=10&skip=20
 // GET /reports?sortBy=createdAt:desc
 const getReports = async (req, res) => {
@@ -86,6 +88,28 @@ const getReports = async (req, res) => {
   if (req.query.pincode) {
     if (req.query.pincode.length) {
       match['results.pincode'] = req.query.pincode;
+    }
+  }
+
+  if (req.query.description) {
+    if (req.query.description.length) {
+      var regexString = req.query.description.replace(
+        /[-\/\\^$*+?.()|[\]{}]/g,
+        '\\$&'
+      );
+      var regex = new RegExp(regexString, 'i');
+      match.description = regex;
+    }
+  }
+
+  if (req.query.location) {
+    if (req.query.location.length) {
+      var regexString = req.query.location.replace(
+        /[-\/\\^$*+?.()|[\]{}]/g,
+        '\\$&'
+      );
+      var regex = new RegExp(regexString, 'i');
+      match['results.formatted_address'] = regex;
     }
   }
 
@@ -116,7 +140,17 @@ const getCount = async (req, res) => {
         console.log(err);
       }
     });
-    res.status(200).send({ count });
+    let report = await Report.findOne(
+      {},
+      { reportType: +1 },
+      { sort: { created_at: -1 } },
+      function(err, post) {
+        if (err) {
+          console.log(post);
+        }
+      }
+    );
+    res.status(200).send({ count: count, report: report });
   } catch (e) {
     res.status(404).send(e);
   }
@@ -150,6 +184,20 @@ const getImage = async (req, res) => {
   }
 };
 
+const deleteReport = (req, res) => {
+  try {
+    var idarray = req.body.idarray;
+    Report.deleteMany({ _id: { $in: idarray } }, function(err) {
+      if (err) {
+        console.log(err);
+      }
+    });
+    res.status(200).send(`Reports deleted`);
+  } catch (e) {
+    res.status(404).send(e);
+  }
+};
+
 module.exports = {
   upload,
   postSubmitData,
@@ -157,5 +205,6 @@ module.exports = {
   getReports,
   getReportsID,
   getImage,
-  getCount
+  getCount,
+  deleteReport
 };

@@ -9,6 +9,7 @@
   <title>
     Clean City Dashboard
   </title>
+  <link rel="stylesheet" type="text/css" href="main.css">
   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
   <!--     Fonts and icons     -->
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
@@ -16,6 +17,8 @@
   <link href="assets/css/now-ui-dashboard.css?v=1.3.0" rel="stylesheet" />
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.css' rel='stylesheet' />
+  <link rel="stylesheet" type="text/css" href="mapbox.css">
 </head>
 <body class="">
   <div class="wrapper ">
@@ -135,13 +138,16 @@
       <!-- End Navbar -->
       <br><br>
       <div style="background-color: cornsilk">
-        <section id="heatmap2">
-          <br><br>
-          <h4 class="mainh4" style="text-align:center"> Live HeatMap of Reports</h4><br>
-          <div class="delmap">
-          </div>
-          <br><br><br>
-        </section>
+          <section id="heatmap">
+              <br><br>
+                  <h4 class="mainh4" style="text-align:center"> Live HeatMap of Reports</h4>
+                <div class="mapcontainer">
+                <nav id="menu"></nav>
+                <div id='map'>
+                </div>
+              </div>
+              <br><br><br>
+          </section>
  <br>
 
         <section id="charts">
@@ -365,17 +371,17 @@
               <nav>
                 <ul>
                   <li>
-                    <a href="index.html">
+                    <a href="/index.html" target="_blank">
                       Clean City
                     </a>
                   </li>
                   <li>
-                    <a href="http://presentation.creative-tim.com">
+                    <a href="/about.html" target="_blank">
                       About Us
                     </a>
                   </li>
                   <li>
-                    <a href="http://blog.creative-tim.com">
+                    <a href="#">
                       Blog
                     </a>
                   </li>
@@ -385,9 +391,8 @@
                 &copy;
                 <script>
                   document.getElementById('copyright').appendChild(document.createTextNode(new Date().getFullYear()))
-                </script>, Designed by
-                <a href="https://www.invisionapp.com" target="_blank">Invision</a>. Coded by
-                <a href="https://www.creative-tim.com" target="_blank">Clean City</a>.
+                </script> Coded by
+                <a href="https://develophowto.com/" target="_blank">DevelopHowTo</a>.
               </div>
             </div>
           </footer>
@@ -396,6 +401,7 @@
       
       </div>
     </div>
+    <!-- SCRIPTS -->
       <script>
           window.onload = function() {
           
@@ -430,19 +436,689 @@
           </script>
           <!-- SCRIPT FOR NOTIFICATION -->
           <script>
-          var data = await fetch('/user/count').then(res => res.json())
-          var oldcount = data.count;
-          console.log(oldcount);
+              var oldcount=0;
+              fetch("/user/count").then(res => res.json()).then(data => {oldcount=data.count;});
 
-          setInterval(function(){
-              var data = await fetch('/user/count').then(res => res.json())
-              var newcount = data.count;
-              if(newcount>oldcount){
-                nowuiDashboard.showNotification('bottom','center');
-              }
-              oldcount=newcount;
-            },3000);
+              setInterval(async function(){
+                var count,report;
+                fetch("/user/count").then(res => res.json()).then(data => {
+                  count=data.count
+                  report=data.report
+                  if(count>oldcount){
+                    nowuiDashboard.showNotification('bottom','center', report);
+                  }
+                  oldcount=count;
+                });
+              },4000);
+          
           </script>
+
+    <!-- mapbox script -->
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.js'></script>
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiZXJyYWh1bDkzIiwiYSI6ImNqdW8wemlxODJwNzUzeXFqbnVibHZzYzUifQ.bZKWernpF2H1uvOVNp4DOA';
+        var map = new mapboxgl.Map({
+          container: 'map',
+          style: 'mapbox://styles/mapbox/dark-v10',
+          center: [77.146721,28.644800],
+          zoom: 11
+        });
+        
+        map.on('load', function() {
+  
+          //ADDING LAYER SOURCES
+          map.addSource('Sample', {
+            type: 'geojson',
+            data: 'sampleJson.geojson'
+          });
+  
+          map.addSource('Accident', {
+          type: 'geojson',
+          data: '/user/geojson/accident'
+          });
+  
+          map.addSource('Garbage', {
+          type: 'geojson',
+          data: '/user/geojson/garbage'
+          });
+  
+          map.addSource('Water', {
+          type: 'geojson',
+          data: '/user/geojson/water'
+          });
+  
+          map.addSource('Electricity', {
+          type: 'geojson',
+          data: '/user/geojson/electricity'
+          });
+  
+          map.addSource('Crime', {
+          type: 'geojson',
+          data: '/user/geojson/crime'
+          });
+  
+          
+          //ADDING  HEATMAP LAYERS
+          map.addLayer({
+            id: 'Sample-heat',
+            type: 'heatmap',
+            source: 'Sample',
+            maxzoom: 15,
+            paint: {
+              // increase weight as diameter breast height increases
+              'heatmap-weight': {
+                property: 'dbh',
+                type: 'exponential',
+                stops: [
+                  [1, 0],
+                  [62, 1]
+                ]
+              },
+              // increase intensity as zoom level increases
+              'heatmap-intensity': {
+                stops: [
+                  [11, 1],
+                  [15, 3]
+                ]
+              },
+              // assign color values be applied to points depending on their density
+              'heatmap-color': [
+                'interpolate',
+                ['linear'],
+                ['heatmap-density'],
+                0, "rgba(33,102,172,0)",
+                0.2, "rgb(103,169,207)",
+                0.4, "rgb(209,229,240)",
+                0.6, "rgb(253,219,199)",
+                0.8, "rgb(239,138,98)",
+                1, "rgb(178,24,43)"
+              ],
+              // increase radius as zoom increases
+              'heatmap-radius': {
+                stops: [
+                  [11, 15],
+                  [15, 20]
+                ]
+              },
+              // decrease opacity to transition into the circle layer
+              'heatmap-opacity': {
+                default: 1,
+                stops: [
+                  [14, 1],
+                  [15, 0]
+                ]
+              },
+            }
+          }, 'waterway-label');
+    
+          map.addLayer({
+          id: 'Accident-heat',
+          type: 'heatmap',
+          source: 'Accident',
+          maxzoom: 15,
+          paint: {
+            // increase weight as diameter breast height increases
+            'heatmap-weight': {
+              property: 'dbh',
+              type: 'exponential',
+              stops: [
+                [1, 0],
+                [62, 1]
+              ]
+            },
+            // increase intensity as zoom level increases
+            'heatmap-intensity': {
+              stops: [
+                [11, 1],
+                [15, 3]
+              ]
+            },
+            // assign color values be applied to points depending on their density
+            'heatmap-color': [
+              'interpolate',
+              ['linear'],
+              ['heatmap-density'],
+              0, 'rgba(236,222,239,0)',
+              0.2, 'rgb(208,209,230)',
+              0.4, 'rgb(166,189,219)',
+              0.6, 'rgb(103,169,207)',
+              0.8, 'rgb(28,144,153)'
+            ],
+            // increase radius as zoom increases
+            'heatmap-radius': {
+              stops: [
+                [11, 15],
+                [15, 20]
+              ]
+            },
+            // decrease opacity to transition into the circle layer
+            'heatmap-opacity': {
+              default: 1,
+              stops: [
+                [14, 1],
+                [15, 0]
+              ]
+            },
+          }
+        }, 'waterway-label');
+  
+          map.addLayer({
+          id: 'Garbage-heat',
+          type: 'heatmap',
+          source: 'Garbage',
+          maxzoom: 15,
+          paint: {
+            // increase weight as diameter breast height increases
+            'heatmap-weight': {
+              property: 'dbh',
+              type: 'exponential',
+              stops: [
+                [1, 0],
+                [62, 1]
+              ]
+            },
+            // increase intensity as zoom level increases
+            'heatmap-intensity': {
+              stops: [
+                [11, 1],
+                [15, 3]
+              ]
+            },
+            // assign color values be applied to points depending on their density
+            'heatmap-color': [
+              'interpolate',
+              ['linear'],
+              ['heatmap-density'],
+              0, "rgba(33,102,172,0)",
+              0.2, "rgb(103,169,207)",
+              0.4, "rgb(209,229,240)",
+              0.6, "rgb(253,219,199)",
+              0.8, "rgb(239,138,98)",
+              1, "rgb(178,24,43)"
+            ],
+            // increase radius as zoom increases
+            'heatmap-radius': {
+              stops: [
+                [11, 15],
+                [15, 20]
+              ]
+            },
+            // decrease opacity to transition into the circle layer
+            'heatmap-opacity': {
+              default: 1,
+              stops: [
+                [14, 1],
+                [15, 0]
+              ]
+            },
+          }
+        }, 'waterway-label');
+  
+          map.addLayer({
+          id: 'Water-heat',
+          type: 'heatmap',
+          source: 'Water',
+          maxzoom: 15,
+          paint: {
+            // increase weight as diameter breast height increases
+            'heatmap-weight': {
+              property: 'dbh',
+              type: 'exponential',
+              stops: [
+                [1, 0],
+                [62, 1]
+              ]
+            },
+            // increase intensity as zoom level increases
+            'heatmap-intensity': {
+              stops: [
+                [11, 1],
+                [15, 3]
+              ]
+            },
+            // assign color values be applied to points depending on their density
+            'heatmap-color': [
+              'interpolate',
+              ['linear'],
+              ['heatmap-density'],
+              0, "rgba(33,102,172,0)",
+              0.2, "rgb(103,169,207)",
+              0.4, "rgb(209,229,240)",
+              0.6, "rgb(253,219,199)",
+              0.8, "rgb(239,138,98)",
+              1, "rgb(178,24,43)"
+            ],
+            // increase radius as zoom increases
+            'heatmap-radius': {
+              stops: [
+                [11, 15],
+                [15, 20]
+              ]
+            },
+            // decrease opacity to transition into the circle layer
+            'heatmap-opacity': {
+              default: 1,
+              stops: [
+                [14, 1],
+                [15, 0]
+              ]
+            },
+          }
+        }, 'waterway-label');
+  
+          map.addLayer({
+          id: 'Electricity-heat',
+          type: 'heatmap',
+          source: 'Electricity',
+          maxzoom: 15,
+          paint: {
+            // increase weight as diameter breast height increases
+            'heatmap-weight': {
+              property: 'dbh',
+              type: 'exponential',
+              stops: [
+                [1, 0],
+                [62, 1]
+              ]
+            },
+            // increase intensity as zoom level increases
+            'heatmap-intensity': {
+              stops: [
+                [11, 1],
+                [15, 3]
+              ]
+            },
+            // assign color values be applied to points depending on their density
+            'heatmap-color': [
+              'interpolate',
+              ['linear'],
+              ['heatmap-density'],
+              0, "rgba(33,102,172,0)",
+              0.2, "rgb(103,169,207)",
+              0.4, "rgb(209,229,240)",
+              0.6, "rgb(253,219,199)",
+              0.8, "rgb(239,138,98)",
+              1, "rgb(178,24,43)"
+            ],
+            // increase radius as zoom increases
+            'heatmap-radius': {
+              stops: [
+                [11, 15],
+                [15, 20]
+              ]
+            },
+            // decrease opacity to transition into the circle layer
+            'heatmap-opacity': {
+              default: 1,
+              stops: [
+                [14, 1],
+                [15, 0]
+              ]
+            },
+          }
+        }, 'waterway-label');
+  
+          map.addLayer({
+          id: 'Crime-heat',
+          type: 'heatmap',
+          source: 'Crime',
+          maxzoom: 15,
+          paint: {
+            // increase weight as diameter breast height increases
+            'heatmap-weight': {
+              property: 'dbh',
+              type: 'exponential',
+              stops: [
+                [1, 0],
+                [62, 1]
+              ]
+            },
+            // increase intensity as zoom level increases
+            'heatmap-intensity': {
+              stops: [
+                [11, 1],
+                [15, 3]
+              ]
+            },
+            // assign color values be applied to points depending on their density
+            'heatmap-color': [
+              'interpolate',
+              ['linear'],
+              ['heatmap-density'],
+              0, "rgba(33,102,172,0)",
+              0.2, "rgb(103,169,207)",
+              0.4, "rgb(209,229,240)",
+              0.6, "rgb(253,219,199)",
+              0.8, "rgb(239,138,98)",
+              1, "rgb(178,24,43)"
+            ],
+            // increase radius as zoom increases
+            'heatmap-radius': {
+              stops: [
+                [11, 15],
+                [15, 20]
+              ]
+            },
+            // decrease opacity to transition into the circle layer
+            'heatmap-opacity': {
+              default: 1,
+              stops: [
+                [14, 1],
+                [15, 0]
+              ]
+            },
+          }
+        }, 'waterway-label');
+  
+  
+          //ADDING  POINTS LAYERS
+          map.addLayer({
+            id: 'Sample-point',
+            type: 'circle',
+            source: 'Sample',
+            minzoom: 14,
+            paint: {
+              // increase the radius of the circle as the zoom level and dbh value increases
+              'circle-radius': {
+                property: 'dbh',
+                type: 'exponential',
+                stops: [
+                  [{ zoom: 15, value: 1 }, 5],
+                  [{ zoom: 15, value: 62 }, 10],
+                  [{ zoom: 22, value: 1 }, 20],
+                  [{ zoom: 22, value: 62 }, 50],
+                ]
+              },
+              'circle-color': {
+                property: 'dbh',
+                type: 'exponential',
+                stops: [
+                  [0, 'rgba(236,222,239,0)'],
+                  [10, 'rgb(236,222,239)'],
+                  [20, 'rgb(208,209,230)'],
+                  [30, 'rgb(166,189,219)'],
+                  [40, 'rgb(103,169,207)'],
+                  [50, 'rgb(28,144,153)'],
+                  [60, 'rgb(1,108,89)']
+                ]
+              },
+              'circle-stroke-color': 'white',
+              'circle-stroke-width': 1,
+              'circle-opacity': {
+                stops: [
+                  [14, 0],
+                  [15, 1]
+                ]
+              }
+            }
+          }, 'waterway-label');
+          
+          map.addLayer({
+            id: 'Accident-point',
+            type: 'circle',
+            source: 'Accident',
+            minzoom: 14,
+            paint: {
+              // increase the radius of the circle as the zoom level and dbh value increases
+              'circle-radius': {
+                property: 'dbh',
+                type: 'exponential',
+                stops: [
+                  [{ zoom: 15, value: 1 }, 5],
+                  [{ zoom: 15, value: 62 }, 10],
+                  [{ zoom: 22, value: 1 }, 20],
+                  [{ zoom: 22, value: 62 }, 50],
+                ]
+              },
+              'circle-color': {
+                property: 'dbh',
+                type: 'exponential',
+                stops: [
+                  [0, 'rgba(236,222,239,0)'],
+                  [10, 'rgb(236,222,239)'],
+                  [20, 'rgb(208,209,230)'],
+                  [30, 'rgb(166,189,219)'],
+                  [40, 'rgb(103,169,207)'],
+                  [50, 'rgb(28,144,153)'],
+                  [60, 'rgb(1,108,89)']
+                ]
+              },
+              'circle-stroke-color': 'white',
+              'circle-stroke-width': 2,
+              'circle-opacity': {
+                stops: [
+                  [14, 0],
+                  [15, 1]
+                ]
+              }
+            }
+          }, 'waterway-label');
+  
+          map.addLayer({
+            id: 'Garbage-point',
+            type: 'circle',
+            source: 'Garbage',
+            minzoom: 14,
+            paint: {
+              // increase the radius of the circle as the zoom level and dbh value increases
+              'circle-radius': {
+                property: 'dbh',
+                type: 'exponential',
+                stops: [
+                  [{ zoom: 15, value: 1 }, 5],
+                  [{ zoom: 15, value: 62 }, 10],
+                  [{ zoom: 22, value: 1 }, 20],
+                  [{ zoom: 22, value: 62 }, 50],
+                ]
+              },
+              'circle-color': {
+                property: 'dbh',
+                type: 'exponential',
+                stops: [
+                  [0, 'rgba(236,222,239,0)'],
+                  [10, 'rgb(236,222,239)'],
+                  [20, 'rgb(208,209,230)'],
+                  [30, 'rgb(166,189,219)'],
+                  [40, 'rgb(103,169,207)'],
+                  [50, 'rgb(28,144,153)'],
+                  [60, 'rgb(1,108,89)']
+                ]
+              },
+              'circle-stroke-color': 'white',
+              'circle-stroke-width': 2,
+              'circle-opacity': {
+                stops: [
+                  [14, 0],
+                  [15, 1]
+                ]
+              }
+            }
+          }, 'waterway-label');
+          
+          map.addLayer({
+            id: 'Water-point',
+            type: 'circle',
+            source: 'Water',
+            minzoom: 14,
+            paint: {
+              // increase the radius of the circle as the zoom level and dbh value increases
+              'circle-radius': {
+                property: 'dbh',
+                type: 'exponential',
+                stops: [
+                  [{ zoom: 15, value: 1 }, 5],
+                  [{ zoom: 15, value: 62 }, 10],
+                  [{ zoom: 22, value: 1 }, 20],
+                  [{ zoom: 22, value: 62 }, 50],
+                ]
+              },
+              'circle-color': {
+                property: 'dbh',
+                type: 'exponential',
+                stops: [
+                  [0, 'rgba(236,222,239,0)'],
+                  [10, 'rgb(236,222,239)'],
+                  [20, 'rgb(208,209,230)'],
+                  [30, 'rgb(166,189,219)'],
+                  [40, 'rgb(103,169,207)'],
+                  [50, 'rgb(28,144,153)'],
+                  [60, 'rgb(1,108,89)']
+                ]
+              },
+              'circle-stroke-color': 'white',
+              'circle-stroke-width': 2,
+              'circle-opacity': {
+                stops: [
+                  [14, 0],
+                  [15, 1]
+                ]
+              }
+            }
+          }, 'waterway-label');
+          
+          map.addLayer({
+            id: 'Electricity-point',
+            type: 'circle',
+            source: 'Electricity',
+            minzoom: 14,
+            paint: {
+              // increase the radius of the circle as the zoom level and dbh value increases
+              'circle-radius': {
+                property: 'dbh',
+                type: 'exponential',
+                stops: [
+                  [{ zoom: 15, value: 1 }, 5],
+                  [{ zoom: 15, value: 62 }, 10],
+                  [{ zoom: 22, value: 1 }, 20],
+                  [{ zoom: 22, value: 62 }, 50],
+                ]
+              },
+              'circle-color': {
+                property: 'dbh',
+                type: 'exponential',
+                stops: [
+                  [0, 'rgba(236,222,239,0)'],
+                  [10, 'rgb(236,222,239)'],
+                  [20, 'rgb(208,209,230)'],
+                  [30, 'rgb(166,189,219)'],
+                  [40, 'rgb(103,169,207)'],
+                  [50, 'rgb(28,144,153)'],
+                  [60, 'rgb(1,108,89)']
+                ]
+              },
+              'circle-stroke-color': 'white',
+              'circle-stroke-width': 2,
+              'circle-opacity': {
+                stops: [
+                  [14, 0],
+                  [15, 1]
+                ]
+              }
+            }
+          }, 'waterway-label');
+          
+          map.addLayer({
+            id: 'Crime-point',
+            type: 'circle',
+            source: 'Crime',
+            minzoom: 14,
+            paint: {
+              // increase the radius of the circle as the zoom level and dbh value increases
+              'circle-radius': {
+                property: 'dbh',
+                type: 'exponential',
+                stops: [
+                  [{ zoom: 15, value: 1 }, 5],
+                  [{ zoom: 15, value: 62 }, 10],
+                  [{ zoom: 22, value: 1 }, 20],
+                  [{ zoom: 22, value: 62 }, 50],
+                ]
+              },
+              'circle-color': {
+                property: 'dbh',
+                type: 'exponential',
+                stops: [
+                  [0, 'rgba(236,222,239,0)'],
+                  [10, 'rgb(236,222,239)'],
+                  [20, 'rgb(208,209,230)'],
+                  [30, 'rgb(166,189,219)'],
+                  [40, 'rgb(103,169,207)'],
+                  [50, 'rgb(28,144,153)'],
+                  [60, 'rgb(1,108,89)']
+                ]
+              },
+              'circle-stroke-color': 'white',
+              'circle-stroke-width': 2,
+              'circle-opacity': {
+                stops: [
+                  [14, 0],
+                  [15, 1]
+                ]
+              }
+            }
+          }, 'waterway-label');
+  
+          //On clicking point layers
+          var pointLayerIds = [ 'Sample-point','Garbage-point', 'Accident-point', 'Water-point', 'Electricity-point', 'Crime-point' ];
+          
+          pointLayerIds.forEach(function(layer) {
+            // Popup on click
+            map.on('click', `${layer}`, function(e) {
+              new mapboxgl.Popup()
+                .setLngLat(e.features[0].geometry.coordinates)
+                .setHTML('<b>'+`${layer}`+'</b><br>'+ e.features[0].properties.brief.slice(0,33) + '<br>'
+                + e.features[0].properties.brief.slice(33,66) + '<br>'
+                + e.features[0].properties.brief.slice(66,100))
+                .addTo(map);
+            });
+  
+            // Change the cursor to a pointer when the mouse is over the places layer.
+            map.on('mouseenter', `${layer}` , function () {
+              map.getCanvas().style.cursor = 'pointer';
+            });
+            
+            // Change it back to a pointer when it leaves.
+            map.on('mouseleave',  `${layer}` , function () {
+              map.getCanvas().style.cursor = '';
+            });
+          });
+  
+      }); 
+  
+      //LAYER TOGGLE MENU
+      var toggleableLayerIds = [ ['Sample-heat', 'Sample-point'],['Garbage-heat', 'Garbage-point'], ['Accident-heat', 'Accident-point'], ['Water-heat', 'Water-point'], ['Electricity-heat', 'Electricity-point'], ['Crime-heat', 'Crime-point'] ];
+  
+      for (var i = 0; i < toggleableLayerIds.length; i++) {
+        
+        var link = document.createElement('a');
+        link.href = '#';
+        link.className = 'active';
+        link.textContent = toggleableLayerIds[i][0];
+        link.layers= toggleableLayerIds[i];
+          
+        link.onclick = function (e) {
+          this.layers.forEach((layer) => {
+            var clickedLayer = layer;
+            e.preventDefault();
+            e.stopPropagation();
+              
+            var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
+              
+            if (visibility === 'visible') {
+              map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+              this.className = '';
+            } else {
+              this.className = 'active';
+              map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+            }
+          });
+        };
+          
+        var layers = document.getElementById('menu');
+        layers.appendChild(link);
+      }
+      
+      </script>
 
       <!--   Core JS Files   -->
   <script src="assets/js/core/jquery.min.js"></script>
@@ -455,7 +1131,7 @@
   <!--  Notifications Plugin    -->
   <script src="assets/js/plugins/bootstrap-notify.js"></script>
   <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
-  <script src="assets/js/now-ui-dashboard.min.js?v=1.3.0" type="text/javascript"></script>
+  <script src="assets/js/now-ui-dashboard.js?v=1.3.0" type="text/javascript"></script>
   <!-- Now Ui Dashboard DEMO methods, don't include it in your project! -->
   
 </body>

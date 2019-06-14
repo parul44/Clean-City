@@ -59,27 +59,22 @@
                 <p>Dashboard</p>
               </a>
             </li>
-            <li class="active ">
-              <a href="./icons.html">
-                <i class="now-ui-icons education_atom"></i>
-                <p>Latest Reports</p>
-              </a>
-            </li>
             <li>
-              <a href="./map.html">
+              <a href="dashboard.html#heatmap2">
                 <i class="now-ui-icons location_map-big"></i>
                 <p>Heat Map</p>
               </a>
             </li>
-
-            <li>
-              <a href="./user.html">
-                <i class="now-ui-icons users_single-02"></i>
-                <p>User Profile</p>
+            <li class="active ">
+              <a href="dashboard.html#charts">
+                <i class="now-ui-icons education_atom"></i>
+                <p>Latest Reports</p>
               </a>
             </li>
+
+
             <li>
-              <a href="./tables.html">
+              <a href="dashboard.html#analytics">
                 <i class="now-ui-icons design_bullet-list-67"></i>
                 <p>Analytics</p>
               </a>
@@ -254,8 +249,12 @@
                 <select id="inputState" class="form-control" name="sortBy">
                   <option value="createdAt:desc">Latest Reports</option>
                   <option value="createdAt:asc">Oldest Reports</option>
-                  <option value="pincode:desc">Pincode:Descending</option>
-                  <option value="pincode:asc">Pincode:Ascending</option>
+                  <option value="results.pincode:desc"
+                    >Pincode:Descending</option
+                  >
+                  <option value="results.pincode:asc">Pincode:Ascending</option>
+                  <option value="rank:asc">Most reported Pincode</option>
+                  <option value="rank:desc">Least reported Pincode</option>
                 </select>
               </div>
             </div>
@@ -278,7 +277,7 @@
               <button
                 onclick="deleteMarked(); return false;"
                 id="btnClear"
-                class="btn transparent btn-danger col-1  mx-2"
+                class="btn transparent btn-danger col-2  mx-2"
               >
                 DELETE MARKED
               </button>
@@ -289,7 +288,6 @@
           <div class="row my-2">
             <div class="col mx-4">
               <ul class=" list-group transparent" id="reportList">
-                              
                 <!-- <li class="list-group-item">
                   <div class="row">
                     <div class="div2">

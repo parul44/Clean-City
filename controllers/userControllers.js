@@ -81,58 +81,78 @@ const getReports = async (req, res) => {
   const match = {};
   const options = { sort: {} };
 
-  if (req.query.reportType) {
-    if (req.query.reportType.length) match.reportType = req.query.reportType;
-  }
-
-  if (req.query.pincode) {
-    if (req.query.pincode.length) {
-      match['results.pincode'] = req.query.pincode;
-    }
-  }
-
-  if (req.query.description) {
-    if (req.query.description.length) {
-      var regexString = req.query.description.replace(
-        /[-\/\\^$*+?.()|[\]{}]/g,
-        '\\$&'
-      );
-      var regex = new RegExp(regexString, 'i');
-      match.description = regex;
-    }
-  }
-
-  if (req.query.location) {
-    if (req.query.location.length) {
-      var regexString = req.query.location.replace(
-        /[-\/\\^$*+?.()|[\]{}]/g,
-        '\\$&'
-      );
-      var regex = new RegExp(regexString, 'i');
-      match['results.formatted_address'] = regex;
-    }
-  }
-
-  if (req.query.sortBy) {
-    const parts = req.query.sortBy.split(':');
-    options.sort[parts[0]] = parts[1] === 'desc' ? -1 : 1;
-  }
-
-  if (req.query.limit) {
-    options.limit = parseInt(req.query.limit);
-  }
-
-  if (req.query.skip) {
-    options.skip = parseInt(req.query.skip);
-  }
-
   try {
-    var reports = await Report.find(match, '-imageBuffer', options);
+    if (req.query.reportType) {
+      if (req.query.reportType.length) match.reportType = req.query.reportType;
+    }
+
+    if (req.query.pincode) {
+      if (req.query.pincode.length) {
+        match['results.pincode'] = req.query.pincode;
+      }
+    }
+
+    if (req.query.description) {
+      if (req.query.description.length) {
+        var regexString = req.query.description.replace(
+          /[-\/\\^$*+?.()|[\]{}]/g,
+          '\\$&'
+        );
+        var regex = new RegExp(regexString, 'i');
+        match.description = regex;
+      }
+    }
+
+    if (req.query.location) {
+      if (req.query.location.length) {
+        var regexString = req.query.location.replace(
+          /[-\/\\^$*+?.()|[\]{}]/g,
+          '\\$&'
+        );
+        var regex = new RegExp(regexString, 'i');
+        match['results.formatted_address'] = regex;
+      }
+    }
+
+    if (req.query.sortBy) {
+      var parts = req.query.sortBy.split(':');
+      options.sort[parts[0]] = parts[1] === 'desc' ? -1 : 1;
+    }
+
+    if (req.query.limit) {
+      options.limit = parseInt(req.query.limit);
+    }
+
+    if (req.query.skip) {
+      options.skip = parseInt(req.query.skip);
+    }
+
+    if (parts[0] == 'rank') {
+      var jsonarray = await Report.aggregate([
+        { $sortByCount: '$results.pincode' }
+      ]);
+      var order = jsonarray.map(function(obj) {
+        return obj._id;
+      });
+      var reports = await Report.aggregate([
+        { $match: match },
+        {
+          $addFields: {
+            rank: { $indexOfArray: [order, '$results.pincode'] }
+          }
+        },
+        { $sort: options.sort },
+        { $project: { imageBuffer: 0 } }
+      ]);
+    } else {
+      var reports = await Report.find(match, '-imageBuffer', options);
+    }
     res.status(200).send(reports);
   } catch (e) {
-    res.status(400).send(e);
+    res.status(404).send(e);
   }
 };
+
 const getCount = async (req, res) => {
   try {
     let count = await Report.countDocuments({}, function(err, c) {

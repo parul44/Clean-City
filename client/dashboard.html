@@ -21,6 +21,14 @@
   <link rel="stylesheet" type="text/css" href="mapbox.css">
   <script src="https://d3js.org/d3.v4.js"></script>
   <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+
+  <style>
+  .ToRchart svg{
+
+    margin: -30 -30 0 0 !important;
+  }
+  
+  </style>
 </head>
 <body class="">
   <div class="wrapper ">
@@ -142,6 +150,7 @@
       </nav>
       <!-- End Navbar -->
       <br><br>
+      
       <div style="background-color: cornsilk">
           <section id="heatmap">
               <br><br>
@@ -159,7 +168,7 @@
  <br>
 
           <div class="ToRchart">
-              <svg width="600" height="500"></svg>
+              <svg width="400" height="500" ></svg>
           </div>
 
           <div class="card-group text-center">
@@ -232,7 +241,7 @@
     <script>
 
       var svg = d3.select("svg"),
-          margin = 200,
+          margin = 20,
           width = svg.attr("width") - margin,
           height = svg.attr("height") - margin
       console.log(height);

@@ -14,7 +14,7 @@
 	// set the dimensions and margins of the graph
 	var width = 450
 		height = 450
-		margin = 40
+		margin = 10
 	
 	// The radius of the pieplot is half the width or half the height (smallest one). I substract a bit of margin.
 	var radius = Math.min(width, height) / 2 - margin
@@ -28,7 +28,7 @@
 		.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 	
 	// Create dummy data
-	var data = {accident : 20,garbage:10,crime:30,waterShortage: 25,Electricity :15}
+	var data = {accident: 20,garbage: 10,crime: 30,waterShortage: 25,Electricity :15}
 	
 	// set the color scale
 	var color = d3.scaleOrdinal()

@@ -1,3 +1,5 @@
+
+    
 <!DOCTYPE html>
 <html lang="en">
 
@@ -24,7 +26,6 @@
 
   <style>
   .ToRchart svg{
-
     margin: -30 -30 0 0 !important;
   }
   
@@ -150,10 +151,53 @@
       </nav>
       <!-- End Navbar -->
       <br><br>
-      
+      <style>
+          #analysisTiles .col{
+              height: 70px;
+            margin: 40px 10px 0 0;
+            background-color: slategrey;
+            font-size: 1.3rem;
+            box-shadow: 0 
+            
+  
+          }
+          #analysisTiles{
+            background-color: cornsilk
+          }
+        </style>
 
       
       <div style="background-color: cornsilk">
+
+       
+     <br>
+     <section id = "analysisTiles">
+        <div class="card-group">
+            <div class="card border-0">
+               <div class="card-body">
+                 <p>chart3</p>
+                        </div>
+            </div>
+            <div class="card border-0">
+                <div class="card-body">
+                  <p>chart3</p>
+                         </div>
+             </div>
+            <div class="card border-0">
+                  <div class="card-body">
+                    <p>chart4</p>
+                 </div>
+              </div>
+              <div class="card border-0">
+                  <div class="card-body">
+                    <p>chart4</p>
+                 </div>
+              </div>
+            </div>
+            
+          
+            </section>
+              
           <section id="heatmap">
               <br><br>
                   <h4 class="mainh4" style="text-align:center"> Live HeatMap of Reports</h4>
@@ -199,7 +243,7 @@
                     <p>chart4</p>
                  </div>
               </div>
-       
+            </div>
           
         </section>
              <br> <br> <br> <br>
@@ -242,7 +286,6 @@
     <!-- SCRIPTS -->
     <!--Script for line chart-->
     <script>
-
       // set the dimensions and margins of the graph
       var margin = {top: 10, right: 30, bottom: 30, left: 60},
           width = 460 - margin.left - margin.right,
@@ -341,7 +384,6 @@
           <script>
               var oldcount=0;
               fetch("/user/count").then(res => res.json()).then(data => {oldcount=data.count;});
-
               setInterval(async function(){
                 var count,report;
                 fetch("/user/count").then(res => res.json()).then(data => {

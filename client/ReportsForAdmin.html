@@ -254,8 +254,12 @@
                 <select id="inputState" class="form-control" name="sortBy">
                   <option value="createdAt:desc">Latest Reports</option>
                   <option value="createdAt:asc">Oldest Reports</option>
-                  <option value="pincode:desc">Pincode:Descending</option>
-                  <option value="pincode:asc">Pincode:Ascending</option>
+                  <option value="results.pincode:desc"
+                    >Pincode:Descending</option
+                  >
+                  <option value="results.pincode:asc">Pincode:Ascending</option>
+                  <option value="rank:asc">Most reported Pincode</option>
+                  <option value="rank:desc">Least reported Pincode</option>
                 </select>
               </div>
             </div>
@@ -289,7 +293,6 @@
           <div class="row my-2">
             <div class="col mx-4">
               <ul class=" list-group transparent" id="reportList">
-                              
                 <!-- <li class="list-group-item">
                   <div class="row">
                     <div class="div2">

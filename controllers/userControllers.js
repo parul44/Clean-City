@@ -86,6 +86,10 @@ const getReports = async (req, res) => {
       if (req.query.reportType.length) match.reportType = req.query.reportType;
     }
 
+    if (req.query.status) {
+      if (req.query.status.length) match.status = req.query.status;
+    }
+
     if (req.query.pincode) {
       if (req.query.pincode.length) {
         match['results.pincode'] = req.query.pincode;

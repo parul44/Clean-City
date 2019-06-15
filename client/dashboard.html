@@ -301,10 +301,10 @@
                 "translate(" + margin.left + "," + margin.top + ")");
       
       //Read the data
-      d3.csv("https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/5_OneCatSevNumOrdered.csv", function(data) {
+      d3.csv("demo1.csv", function(data) {
       
           // List of groups (here I have one group per column)
-          var allGroup = d3.map(data, function(d){return(d.name)}).keys()
+          var allGroup = d3.map(data, function(d){return(d.reportType)}).keys()
       
           // add the options to the button
           d3.select("#selectButton")
@@ -341,7 +341,7 @@
           var line = svg
             .append('g')
             .append("path")
-              .datum(data.filter(function(d){return d.name==allGroup[0]}))
+              .datum(data.filter(function(d){return d.reportType==allGroup[0]}))
               .attr("d", d3.line()
                 .x(function(d) { return x(d.year) })
                 .y(function(d) { return y(+d.n) })
@@ -354,7 +354,7 @@
           function update(selectedGroup) {
       
             // Create new data with the selection?
-            var dataFilter = data.filter(function(d){return d.name==selectedGroup})
+            var dataFilter = data.filter(function(d){return d.reportType==selectedGroup})
       
             // Give these new data to update line
             line

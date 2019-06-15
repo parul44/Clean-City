@@ -276,25 +276,25 @@
                 RESET
               </button>
               <button
-                onclick="fetchReports(); return false;"
+                onclick="getReports(); return false;"
                 id="btnUpdateReports"
                 class="btn transparent btn-primary col-2  mx-2"
               >
                 GET REPORTS
               </button>
               <button
-                onclick="closeMarked(); return false;"
+                onclick="closeTicked(); return false;"
                 id="btnClear"
                 class="btn transparent btn-danger col-2  mx-2"
               >
-                CLOSE-MARKED
+                CLOSE-TICKED
               </button>
               <button
-                onclick="seenMarked(); return false;"
+                onclick="seenTicked(); return false;"
                 id="btnClear"
                 class="btn transparent btn-danger col-2  mx-2"
               >
-                SEEN-MARKED
+                SEEN-TICKED
               </button>
             </div>
           </form>
@@ -350,9 +350,9 @@
         </div>
       </div>
     </div>
-    <!--fetch reports-->
+    <!--get/filter reports-->
     <script>
-      async function fetchReports() {
+      async function getReports() {
         var form = document.getElementById('myForm');
         var fetchURL = `/user/reports?location=${
           form.location.value
@@ -389,6 +389,7 @@
           btnClose.className = 'btn btn-danger col-6 mx-2';
           date = new Date(data[i].createdAt);
           span.innerText = `ID: ${data[i]._id}
+            Status : ${data[i].status}
             ${date.toLocaleString()}
             ${data[i].results.locality} , ${data[i].results.district}, ${
             data[i].results.pincode
@@ -407,11 +408,25 @@
               : 'row';
           };
 
+          btnSeen.onclick = function() {
+            let id = this.parentElement.parentElement.parentElement.id;
+            let body = { idarray: [id], status: 'seen' };
+            fetch(`/user/reports`, {
+              method: 'put',
+              body: JSON.stringify(body),
+              headers: { 'Content-type': 'application/json' }
+            })
+              .then(document.getElementById(`${id}`).remove())
+              .catch(function(error) {
+                console.log(error);
+              });
+          };
+
           btnClose.onclick = function() {
             let id = this.parentElement.parentElement.parentElement.id;
-            let body = { idarray: [id] };
+            let body = { idarray: [id], status: 'closed' };
             fetch(`/user/reports`, {
-              method: 'delete',
+              method: 'put',
               body: JSON.stringify(body),
               headers: { 'Content-type': 'application/json' }
             })
@@ -432,7 +447,7 @@
         }
       }
 
-      async function deleteMarked() {
+      function tickedArray() {
         var ul = document.getElementById('reportList');
         var idarray = [];
         for (i = 0; i < ul.children.length; i++) {
@@ -444,6 +459,47 @@
             idarray.push(id);
           }
         }
+        return idarray;
+      }
+
+      async function seenTicked() {
+        var idarray = tickedArray();
+        var body = { idarray: idarray, status: 'seen' };
+        fetch(`/user/reports`, {
+          method: 'put',
+          body: JSON.stringify(body),
+          headers: { 'Content-type': 'application/json' }
+        })
+          .then(
+            idarray.forEach(id => {
+              document.getElementById(id).remove();
+            })
+          )
+          .catch(function(error) {
+            console.log(error);
+          });
+      }
+
+      async function closeTicked() {
+        var idarray = tickedArray();
+        var body = { idarray: idarray, status: 'closed' };
+        fetch(`/user/reports`, {
+          method: 'put',
+          body: JSON.stringify(body),
+          headers: { 'Content-type': 'application/json' }
+        })
+          .then(
+            idarray.forEach(id => {
+              document.getElementById(id).remove();
+            })
+          )
+          .catch(function(error) {
+            console.log(error);
+          });
+      }
+
+      async function deleteTicked() {
+        var idarray = tickedArray();
         var body = { idarray: idarray };
         fetch(`/user/reports`, {
           method: 'delete',

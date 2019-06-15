@@ -208,7 +208,26 @@ const getImage = async (req, res) => {
   }
 };
 
-const deleteReport = (req, res) => {
+const updateReports = (req, res) => {
+  try {
+    let idarray = req.body.idarray;
+    let status = req.body.status;
+    Report.updateMany(
+      { _id: { $in: idarray } },
+      { $set: { status: status } },
+      function(err) {
+        if (err) {
+          console.log(err);
+        }
+      }
+    );
+    res.status(200).send(`Reports updated`);
+  } catch (e) {
+    res.status(404).send(e);
+  }
+};
+
+const deleteReports = (req, res) => {
   try {
     var idarray = req.body.idarray;
     Report.deleteMany({ _id: { $in: idarray } }, function(err) {
@@ -230,5 +249,6 @@ module.exports = {
   getReportsID,
   getImage,
   getCount,
-  deleteReport
+  updateReports,
+  deleteReports
 };

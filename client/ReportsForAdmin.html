@@ -72,7 +72,6 @@
               </a>
             </li>
 
-
             <li>
               <a href="dashboard.html#analytics">
                 <i class="now-ui-icons design_bullet-list-67"></i>
@@ -234,7 +233,7 @@
 
             <div class="form-row">
               <div class="form-group col-4 col-md-4">
-                <label for="inputState">SELECT TYPE OF REPORT</label>
+                <label for="inputState">TYPE OF REPORT</label>
                 <select id="inputState" class="form-control" name="reportType">
                   <option value="">All</option>
                   <option value="garbage">Garbage Heap</option>
@@ -245,16 +244,25 @@
                 </select>
               </div>
               <div class="form-group col-4 col-md-4">
+                <label for="inputState">REPORT STATUS</label>
+                <select id="inputState" class="form-control" name="status">
+                  <option value="unseen">Unseen</option>
+                  <option value="seen">Seen(Under Process)</option>
+                  <option value="closed">Closed</option>
+                  <option value="">All</option>
+                </select>
+              </div>
+              <div class="form-group col-4 col-md-4">
                 <label for="inputState">SORT BY</label>
                 <select id="inputState" class="form-control" name="sortBy">
                   <option value="createdAt:desc">Latest Reports</option>
                   <option value="createdAt:asc">Oldest Reports</option>
+                  <option value="rank:asc">Most reported Pincode</option>
+                  <option value="rank:desc">Least reported Pincode</option>
                   <option value="results.pincode:desc"
                     >Pincode:Descending</option
                   >
                   <option value="results.pincode:asc">Pincode:Ascending</option>
-                  <option value="rank:asc">Most reported Pincode</option>
-                  <option value="rank:desc">Least reported Pincode</option>
                 </select>
               </div>
             </div>
@@ -268,18 +276,25 @@
                 RESET
               </button>
               <button
-                onclick="fetchReports(); return false;"
+                onclick="getReports(); return false;"
                 id="btnUpdateReports"
                 class="btn transparent btn-primary col-2  mx-2"
               >
                 GET REPORTS
               </button>
               <button
-                onclick="deleteMarked(); return false;"
+                onclick="closeTicked(); return false;"
                 id="btnClear"
                 class="btn transparent btn-danger col-2  mx-2"
               >
-                DELETE MARKED
+                CLOSE-TICKED
+              </button>
+              <button
+                onclick="seenTicked(); return false;"
+                id="btnClear"
+                class="btn transparent btn-danger col-2  mx-2"
+              >
+                SEEN-TICKED
               </button>
             </div>
           </form>
@@ -335,15 +350,15 @@
         </div>
       </div>
     </div>
-    <!--fetch reports-->
+    <!--get/filter reports-->
     <script>
-      async function fetchReports() {
+      async function getReports() {
         var form = document.getElementById('myForm');
         var fetchURL = `/user/reports?location=${
           form.location.value
         }&description=${form.description.value}&reportType=${
           form.reportType.value
-        }&sortBy=${form.sortBy.value}`;
+        }&status=${form.status.value}&sortBy=${form.sortBy.value}`;
         var data = await fetch(fetchURL)
           .then(res => res.json())
           .catch(function(error) {
@@ -361,8 +376,8 @@
           let div2 = document.createElement('div');
           let span = document.createElement('span');
           let btnDone = document.createElement('button');
-          let btnDelete = document.createElement('button');
-          // let img = document.createElement('img')
+          let btnSeen = document.createElement('button');
+          let btnClose = document.createElement('button');
 
           li.className = 'list-group-item';
           li.setAttribute('id', `${data[i]._id}`);
@@ -370,19 +385,20 @@
           div2.setAttribute('dispaly', 'inline-block');
           span.className = 'reporttitle col col-6 py-1';
           btnDone.className = 'btn col-6 mx-2 transparent';
-          btnDelete.className = 'btn btn-danger col-6 mx-2';
-          // img.setAttribute("width","200px")
-          // img.setAttribute("height","150px");
-          // img.setAttribute("style", "margin:-50px 0 0 0");
-          // img.setAttribute('src',`/user/image/${data[i]._id}`)
+          btnSeen.className = 'btn btn-danger col-6 mx-2';
+          btnClose.className = 'btn btn-danger col-6 mx-2';
           date = new Date(data[i].createdAt);
           span.innerText = `ID: ${data[i]._id}
+            Status : ${data[i].status}
             ${date.toLocaleString()}
-            ${data[i].results.locality} , ${data[i].results.pincode}`;
+            ${data[i].results.locality} , ${data[i].results.district}, ${
+            data[i].results.pincode
+          }`;
           // btnDone.setAttribute('done', false);
           btnDone.innerText = this.done ? '❌' : '✔';
           div1.className = this.done ? 'row done' : 'row';
-          btnDelete.innerText = 'DELETE';
+          btnSeen.innerText = 'SEEN';
+          btnClose.innerText = 'CLOSE';
 
           btnDone.onclick = function() {
             this.done = !this.done;
@@ -392,11 +408,25 @@
               : 'row';
           };
 
-          btnDelete.onclick = function() {
+          btnSeen.onclick = function() {
             let id = this.parentElement.parentElement.parentElement.id;
-            let body = { idarray: [id] };
+            let body = { idarray: [id], status: 'seen' };
             fetch(`/user/reports`, {
-              method: 'delete',
+              method: 'put',
+              body: JSON.stringify(body),
+              headers: { 'Content-type': 'application/json' }
+            })
+              .then(document.getElementById(`${id}`).remove())
+              .catch(function(error) {
+                console.log(error);
+              });
+          };
+
+          btnClose.onclick = function() {
+            let id = this.parentElement.parentElement.parentElement.id;
+            let body = { idarray: [id], status: 'closed' };
+            fetch(`/user/reports`, {
+              method: 'put',
               body: JSON.stringify(body),
               headers: { 'Content-type': 'application/json' }
             })
@@ -408,7 +438,8 @@
 
           div2.appendChild(span);
           div2.appendChild(btnDone);
-          div2.appendChild(btnDelete);
+          div2.appendChild(btnSeen);
+          div2.appendChild(btnClose);
           div1.appendChild(div2);
           // div1.appendChild(img)
           li.appendChild(div1);
@@ -416,7 +447,7 @@
         }
       }
 
-      async function deleteMarked() {
+      function tickedArray() {
         var ul = document.getElementById('reportList');
         var idarray = [];
         for (i = 0; i < ul.children.length; i++) {
@@ -428,6 +459,47 @@
             idarray.push(id);
           }
         }
+        return idarray;
+      }
+
+      async function seenTicked() {
+        var idarray = tickedArray();
+        var body = { idarray: idarray, status: 'seen' };
+        fetch(`/user/reports`, {
+          method: 'put',
+          body: JSON.stringify(body),
+          headers: { 'Content-type': 'application/json' }
+        })
+          .then(
+            idarray.forEach(id => {
+              document.getElementById(id).remove();
+            })
+          )
+          .catch(function(error) {
+            console.log(error);
+          });
+      }
+
+      async function closeTicked() {
+        var idarray = tickedArray();
+        var body = { idarray: idarray, status: 'closed' };
+        fetch(`/user/reports`, {
+          method: 'put',
+          body: JSON.stringify(body),
+          headers: { 'Content-type': 'application/json' }
+        })
+          .then(
+            idarray.forEach(id => {
+              document.getElementById(id).remove();
+            })
+          )
+          .catch(function(error) {
+            console.log(error);
+          });
+      }
+
+      async function deleteTicked() {
+        var idarray = tickedArray();
         var body = { idarray: idarray };
         fetch(`/user/reports`, {
           method: 'delete',
@@ -443,7 +515,6 @@
             console.log(error);
           });
       }
-      fetchReports();
     </script>
     <!--   Core JS Files   -->
     <script src="assets/js/core/jquery.min.js"></script>

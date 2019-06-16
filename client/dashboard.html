@@ -1,5 +1,4 @@
-
-    
+ 
 <!DOCTYPE html>
 <html lang="en">
 
@@ -123,7 +122,7 @@
               </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="now-ui-icons location_world"></i>
+                  <i class="now-ui-icons ui-1_bell-53"></i>
                   <p>
                     <span class="d-lg-none d-md-block">Some Actions</span>
                   </p>
@@ -134,6 +133,8 @@
                   <a class="dropdown-item" href="#">Something else here</a>
                 </div>
               </li>
+                </li>
+              
               <li class="nav-item">
                 <a class="nav-link" href="#pablo">
                   <i class="now-ui-icons users_single-02"></i>
@@ -164,7 +165,33 @@
           #analysisTiles{
             background-color: cornsilk
           }
-        </style>
+         .icon1 {
+  padding: 10px;
+  background: red;
+  color: white;
+  height: 70px;
+  width: 70px;
+  align-content: left;
+  margin-left: 10px;
+}
+  .icon2 {
+  padding: 10px;
+  background: blue;
+  color: white;
+  height: 70px;
+  width: 70px;
+  align-content: left;
+}
+  .icon3 {
+  padding: 10px;
+  background: grey;
+  color: white;
+  height: 70px;
+  width: 70px;
+  align-content: left;
+}
+      
+            </style>
 
       
       <div style="background-color: cornsilk">
@@ -173,30 +200,29 @@
      <br>
      <section id = "analysisTiles">
         <div class="card-group">
-            <div class="card border-0">
-               <div class="card-body">
-                 <p>chart3</p>
-                        </div>
+            <div class="card border-0 ">
+              <i class="now-ui-icons education_paper icon1 icon" style="font-size: 3.25em; align-content:center;"></i>
+ <div class="card-body">
+                 <p> Unseen Reports </p>
+             </div>     <hr>
             </div>
-            <div class="card border-0">
+            <div class="card border-0 ">
+                <i class="now-ui-icons design-2_ruler-pencil icon2 icon" style="font-size: 3.25em; align-content:center;"></i>
                 <div class="card-body">
-                  <p>chart3</p>
-                         </div>
+                  <p>Seen Reports (Under Process) </p>
+                         </div><hr>
              </div>
-            <div class="card border-0">
+              <div class="card border-0 ">
+                  <i class="now-ui-icons files_box icon3 icon" style="font-size: 3.25em; align-content:center;"></i>
                   <div class="card-body">
-                    <p>chart4</p>
-                 </div>
-              </div>
-              <div class="card border-0">
-                  <div class="card-body">
-                    <p>chart4</p>
-                 </div>
+                    <span>Closed Reports</span>
+                    
+                 </div><hr>
               </div>
             </div>
             
           
-            </section>
+          </section>
               
           <section id="heatmap">
               <br><br>
@@ -217,11 +243,13 @@
             <select id="selectButton"></select>
             <div id="my_dataviz"></div>
           </div>
-
+          <svg class="chart"></svg>
+          <div class='button-area'>
+          </div>
           <div class="card-group text-center">
             <div class="card border-0">
-                <div class="card-body">
-  
+             <div class="card-body"><p>chart1</p>
+      
                     </div>
             </div>
             
@@ -284,7 +312,7 @@
       </div>
     </div>
     <!-- SCRIPTS -->
-    <!--Script for line chart-->
+    <!--Script for line chart1-->
     <script>
       // set the dimensions and margins of the graph
       var margin = {top: 10, right: 30, bottom: 30, left: 60},
@@ -379,7 +407,7 @@
       })
       
       
-      </script>
+    </script>
           <!-- SCRIPT FOR NOTIFICATION -->
           <script>
               var oldcount=0;
@@ -1064,6 +1092,8 @@
       }
       
       </script>
+
+<!--script for line chart 2-->
 
       <!--   Core JS Files   -->
   <script src="assets/js/core/jquery.min.js"></script>

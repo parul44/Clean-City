@@ -15,6 +15,10 @@ const reportSchema = new mongoose.Schema(
       type: String,
       required: true
     },
+    status: {
+      type: String,
+      default: 'unseen'
+    },
     description: {
       type: String,
       required: true,

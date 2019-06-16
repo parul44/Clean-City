@@ -929,7 +929,7 @@
           length=data.length;
           for(i=0;i<length;i++){
             latest6[i].src=`/user/image/${data[i]._id}`
-            text1[i].innerHTML = `${data[i].location.slice(0,50)}`
+            text1[i].innerHTML = `${data[i].results.locality} , ${data[i].results.district}`
             date= new Date(data[i].createdAt)
             text2[i].innerHTML = `${date.toLocaleString()}`
           }

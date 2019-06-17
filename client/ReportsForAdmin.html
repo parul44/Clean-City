@@ -375,6 +375,7 @@
           let div1 = document.createElement('div');
           let div2 = document.createElement('div');
           let span = document.createElement('span');
+          let a = document.createElement('a');
           let btnDone = document.createElement('button');
           let btnSeen = document.createElement('button');
           let btnClose = document.createElement('button');
@@ -384,6 +385,9 @@
           div2.className = 'div2';
           div2.setAttribute('dispaly', 'inline-block');
           span.className = 'reporttitle col col-6 py-1';
+          a.setAttribute('href', `/report/${data[i]._id}`);
+          a.setAttribute('target', `_blank`);
+          a.textContent = `View Report`;
           btnDone.className = 'btn col-6 mx-2 transparent';
           btnSeen.className = 'btn btn-danger col-6 mx-2';
           btnClose.className = 'btn btn-danger col-6 mx-2';
@@ -436,6 +440,7 @@
               });
           };
 
+          div2.appendChild(a);
           div2.appendChild(span);
           div2.appendChild(btnDone);
           div2.appendChild(btnSeen);

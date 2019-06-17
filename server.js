@@ -50,7 +50,7 @@ app.get('/form', (req, res, next) => {
   res.sendFile(__dirname + '/client/form.html');
 });
 
-app.get('/reports/:id', async (req, res, next) => {
+app.get('/report/:id', async (req, res, next) => {
   const _id = req.params.id;
   try {
     const report = await Report.findOne({ _id }, '-imageBuffer');

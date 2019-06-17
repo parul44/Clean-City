@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
 
-mongoose.connect(process.env.DB_URI, {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useFindAndModify: false
-});
+mongoose
+  .connect(process.env.DB_URI, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useFindAndModify: false
+  })
+  .catch(e => console.log(e));

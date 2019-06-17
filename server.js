@@ -50,7 +50,7 @@ app.get('/form', (req, res, next) => {
   res.sendFile(__dirname + '/client/form.html');
 });
 
-app.get('/reports/:id', async (req, res, next) => {
+app.get('/report/:id', async (req, res, next) => {
   const _id = req.params.id;
   try {
     const report = await Report.findOne({ _id }, '-imageBuffer');
@@ -69,7 +69,7 @@ app.get('/reports/:id', async (req, res, next) => {
         <b>View Image:</b> <a href='/user/image/${
           report._id
         }' target=_blank>Click here</a>
-        <b>View Location on Google Map:</b> <a href='https://www.google.com/maps/place/${
+        <b>View Location on Google Map:</b> <a href='https://www.google.com/maps/dir/${
           report.geometry.coordinates[1]
         },${report.geometry.coordinates[0]}' target=_blank>Click here</a>
 

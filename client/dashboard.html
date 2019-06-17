@@ -133,7 +133,6 @@
                   <a class="dropdown-item" href="#">Something else here</a>
                 </div>
               </li>
-                </li>
               
               <li class="nav-item">
                 <a class="nav-link" href="#pablo">
@@ -202,20 +201,23 @@
         <div class="card-group">
             <div class="card border-0 ">
               <i class="now-ui-icons education_paper icon1 icon" style="font-size: 3.25em; align-content:center;"></i>
- <div class="card-body">
+              <div class="card-body">
+                 <div id='unseenText'></div>
                  <p> Unseen Reports </p>
              </div>     <hr>
             </div>
             <div class="card border-0 ">
                 <i class="now-ui-icons design-2_ruler-pencil icon2 icon" style="font-size: 3.25em; align-content:center;"></i>
                 <div class="card-body">
+                  <div id='seenText'></div>
                   <p>Seen Reports (Under Process) </p>
                          </div><hr>
              </div>
               <div class="card border-0 ">
                   <i class="now-ui-icons files_box icon3 icon" style="font-size: 3.25em; align-content:center;"></i>
                   <div class="card-body">
-                    <span>Closed Reports</span>
+                    <div id='closedText'></div>
+                    <p>Closed Reports</p>
                     
                  </div><hr>
               </div>
@@ -416,8 +418,8 @@
         
       </script>
 
-      <!--Script for line chart for months-->
-      <script>
+    <!--Script for line chart for months-->
+    <script>
       var margin = {top: 10, right: 30, bottom: 30, left: 60},
       width = 460 - margin.left - margin.right,
       height = 400 - margin.top - margin.bottom;
@@ -506,9 +508,9 @@
   
   })
         
-      </script>
-          <!-- SCRIPT FOR NOTIFICATION -->
-          <script>
+    </script>
+    <!-- SCRIPT FOR NOTIFICATION -->
+    <!-- <script>
               var oldcount=0;
               fetch("/user/count").then(res => res.json()).then(data => {oldcount=data.count;});
               setInterval(async function(){
@@ -523,8 +525,16 @@
                 });
               },4000);
           
-          </script>
-
+    </script> -->
+    <!-- SCRIPT FOR No. of reports -->
+    <script>
+      seenText = document.getElementById('unseenText')
+      unseenText = document.getElementById('seenText')
+      closedText = document.getElementById('closedText')
+      fetch("/user/count/?status=seen").then(res => res.json()).then(data => {seenText.textContent=data.count;})
+      fetch("/user/count/?status=unseen").then(res => res.json()).then(data => {unseenText.textContent=data.count;})
+      fetch("/user/count/?status=closed").then(res => res.json()).then(data => {closedText.textContent=data.count;})
+    </script>
     <!-- mapbox script -->
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.js'></script>
     <script>

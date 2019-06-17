@@ -159,7 +159,11 @@ const getReports = async (req, res) => {
 
 const getCount = async (req, res) => {
   try {
-    let count = await Report.countDocuments({}, function(err, c) {
+    match = {};
+    if (req.query.status) {
+      match.status = `${req.query.status}`;
+    }
+    let count = await Report.countDocuments(match, function(err, c) {
       if (err) {
         console.log(err);
       }

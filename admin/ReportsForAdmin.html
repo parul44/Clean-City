@@ -54,7 +54,7 @@
         <div class="sidebar-wrapper" id="sidebar-wrapper">
           <ul class="nav">
             <li>
-              <a href="./dashboard.html">
+              <a href="./dashboard">
                 <i class="now-ui-icons design_app"></i>
                 <p>Dashboard</p>
               </a>
@@ -457,7 +457,7 @@
         var idarray = [];
         for (i = 0; i < ul.children.length; i++) {
           if (
-            ul.children[i].children[0].children[0].children[1].innerText ===
+            ul.children[i].children[0].children[0].children[2].innerText ===
             '❌'
           ) {
             let id = ul.children[i].id;
@@ -487,6 +487,7 @@
 
       async function closeTicked() {
         var idarray = tickedArray();
+
         var body = { idarray: idarray, status: 'closed' };
         fetch(`/user/reports`, {
           method: 'put',

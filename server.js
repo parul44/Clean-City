@@ -102,12 +102,19 @@ app.get('/login', (req, res, next) => {
 });
 
 app.get('/dashboard', middleware.isLoggedIn, (req, res, next) => {
-  res.sendFile(__dirname + '/client/dashboard.html');
+  res.sendFile(__dirname + '/admin/dashboard.html');
+});
+
+app.get('/dashboardReports', middleware.isLoggedIn, (req, res, next) => {
+  res.sendFile(__dirname + '/admin/ReportsForAdmin.html');
 });
 
 app.get('/', (req, res, next) => {
   res.sendFile(__dirname + '/client/index.html');
 });
+
+app.use(middleware.isLoggedIn);
+app.use(express.static(path.join(__dirname, 'admin')));
 
 app.listen(PORT, () => {
   console.log(`Server has started on port ${PORT}`);

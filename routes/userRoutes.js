@@ -24,6 +24,8 @@ router.get('/image/:id', userControllers.getImage);
 
 router.get('/count', userControllers.getCount);
 
+router.get('/graph', userControllers.getGraph);
+
 router.put('/reports', middleware.isLoggedIn, userControllers.updateReports);
 
 router.delete('/reports', middleware.isLoggedIn, userControllers.deleteReports);

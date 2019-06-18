@@ -106,70 +106,6 @@
         <br />
         <button id="fly">Set to Current Location</button>
         <pre id="coordinates" class="coordinates"></pre>
-
-        <!-- MAPBOX script -->
-        <script>
-          mapboxgl.accessToken =
-            'pk.eyJ1IjoiZXJyYWh1bDkzIiwiYSI6ImNqdW8wemlxODJwNzUzeXFqbnVibHZzYzUifQ.bZKWernpF2H1uvOVNp4DOA';
-          var coordinates = document.getElementById('coordinates');
-          var map = new mapboxgl.Map({
-            container: 'map',
-            style: 'mapbox://styles/mapbox/streets-v11',
-            center: [77.146721, 28.6448],
-            zoom: 11
-          });
-
-          //Creating Draggable Marker
-          var marker = new mapboxgl.Marker({
-            draggable: true
-          })
-            .setLngLat([77.146721, 28.6448])
-            .addTo(map);
-          //setPosition Function for current location
-          function setPosition(position) {
-            accuracy = position.coords.accuracy;
-            if (position.coords.accuracy > 100) {
-              alert(`Accuracy>100m . Please drag marker to exact location.`);
-            }
-            long = position.coords.longitude;
-            lat = position.coords.latitude;
-            marker.setLngLat([long, lat]).addTo(map);
-            onDragEnd();
-
-            //Fly animation
-            map.flyTo({
-              center: [long, lat],
-              zoom: 15
-            });
-          }
-          //Using Current Location
-          document.getElementById('fly').addEventListener('click', function() {
-            if (navigator.geolocation) {
-              navigator.geolocation.getCurrentPosition(
-                setPosition,
-                function() {
-                  alert(' Allow location acess and try again.');
-                },
-                { maximumAge: 0, timeout: 9000, enableHighAccuracy: true }
-              );
-            } else {
-              alert('Geolocation is not supported by this browser');
-            }
-          });
-
-          //Set Coordinates on drag
-          function onDragEnd() {
-            var lngLat = marker.getLngLat();
-            coordinates.style.display = 'block';
-            coordinates.innerHTML =
-              'Longitude: ' + lngLat.lng + '<br />Latitude: ' + lngLat.lat;
-            //feeding location to form
-            document.getElementById('longitude').value = lngLat.lng;
-            document.getElementById('latitude').value = lngLat.lat;
-          }
-
-          marker.on('dragend', onDragEnd);
-        </script>
       </div>
     </section>
 
@@ -219,10 +155,10 @@
                       name="reportType"
                       required
                     >
-                      <option value="garbage">Garbage Heap</option>
-                      <option value="accident">Accident</option>
-                      <option value="water">Water Shortage</option>
-                      <option value="electricity">Electricity cut off</option>
+                      <option value="garbage">Garbage/Sewage</option>
+                      <option value="road">Road</option>
+                      <option value="water">Water</option>
+                      <option value="electricity">Electricity</option>
                       <option value="crime">Crime</option>
                     </select>
                   </div>
@@ -326,7 +262,7 @@
           ·
           <a href="#">Water</a>
           ·
-          <a href="#">Accidents</a>
+          <a href="#">Road</a>
           ·
           <a href="#">Crime</a>
         </p>
@@ -379,5 +315,69 @@
         </div>
       </div>
     </footer>
+
+    <!-- MAPBOX script -->
+    <script>
+      mapboxgl.accessToken =
+        'pk.eyJ1IjoiZXJyYWh1bDkzIiwiYSI6ImNqdW8wemlxODJwNzUzeXFqbnVibHZzYzUifQ.bZKWernpF2H1uvOVNp4DOA';
+      var coordinates = document.getElementById('coordinates');
+      var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [77.146721, 28.6448],
+        zoom: 11
+      });
+
+      //Creating Draggable Marker
+      var marker = new mapboxgl.Marker({
+        draggable: true
+      })
+        .setLngLat([77.146721, 28.6448])
+        .addTo(map);
+      //setPosition Function for current location
+      function setPosition(position) {
+        accuracy = position.coords.accuracy;
+        if (position.coords.accuracy > 100) {
+          alert(`Accuracy>100m . Please drag marker to exact location.`);
+        }
+        long = position.coords.longitude;
+        lat = position.coords.latitude;
+        marker.setLngLat([long, lat]).addTo(map);
+        onDragEnd();
+
+        //Fly animation
+        map.flyTo({
+          center: [long, lat],
+          zoom: 15
+        });
+      }
+      //Using Current Location
+      document.getElementById('fly').addEventListener('click', function() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            setPosition,
+            function() {
+              alert(' Allow location acess and try again.');
+            },
+            { maximumAge: 0, timeout: 9000, enableHighAccuracy: true }
+          );
+        } else {
+          alert('Geolocation is not supported by this browser');
+        }
+      });
+
+      //Set Coordinates on drag
+      function onDragEnd() {
+        var lngLat = marker.getLngLat();
+        coordinates.style.display = 'block';
+        coordinates.innerHTML =
+          'Longitude: ' + lngLat.lng + '<br />Latitude: ' + lngLat.lat;
+        //feeding location to form
+        document.getElementById('longitude').value = lngLat.lng;
+        document.getElementById('latitude').value = lngLat.lat;
+      }
+
+      marker.on('dragend', onDragEnd);
+    </script>
   </body>
 </html>

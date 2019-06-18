@@ -82,6 +82,7 @@ const getReports = async (req, res) => {
   const options = { sort: {} };
 
   try {
+    console.log(req.user);
     if (req.query.reportType) {
       if (req.query.reportType.length) match.reportType = req.query.reportType;
     }
@@ -214,6 +215,7 @@ const getImage = async (req, res) => {
 
 const updateReports = (req, res) => {
   try {
+    console.log(req.user);
     let idarray = req.body.idarray;
     let status = req.body.status;
     Report.updateMany(

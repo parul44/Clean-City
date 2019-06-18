@@ -45,7 +45,7 @@
       <div class="sidebar-wrapper" id="sidebar-wrapper">
         <ul class="nav">
           <li class="active ">
-            <a href="./dashboard.html">
+            <a href="./dashboard">
               <i class="now-ui-icons design_app"></i>
               <p>Dashboard</p>
             </a>
@@ -57,7 +57,7 @@
             </a>
           </li>
           <li>
-            <a href="./ReportsForAdmin.html">
+            <a href=./dashboardReports>
               <i class="now-ui-icons education_atom"></i>
               <p>Latest Reports</p>
             </a>
@@ -528,11 +528,11 @@
     </script> -->
     <!-- SCRIPT FOR No. of reports -->
     <script>
-      seenText = document.getElementById('unseenText')
-      unseenText = document.getElementById('seenText')
+      unseenText = document.getElementById('unseenText')
+      seenText = document.getElementById('seenText')
       closedText = document.getElementById('closedText')
-      fetch("/user/count/?status=seen").then(res => res.json()).then(data => {seenText.textContent=data.count;})
       fetch("/user/count/?status=unseen").then(res => res.json()).then(data => {unseenText.textContent=data.count;})
+      fetch("/user/count/?status=seen").then(res => res.json()).then(data => {seenText.textContent=data.count;})
       fetch("/user/count/?status=closed").then(res => res.json()).then(data => {closedText.textContent=data.count;})
     </script>
     <!-- mapbox script -->

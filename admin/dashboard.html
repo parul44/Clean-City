@@ -554,9 +554,9 @@
             data: 'sampleJson.geojson'
           });
   
-          map.addSource('Accident', {
+          map.addSource('Road', {
           type: 'geojson',
-          data: '/user/geojson/accident'
+          data: '/user/geojson/road'
           });
   
           map.addSource('Garbage', {
@@ -634,9 +634,9 @@
           }, 'waterway-label');
     
           map.addLayer({
-          id: 'Accident-heat',
+          id: 'Road-heat',
           type: 'heatmap',
-          source: 'Accident',
+          source: 'Road',
           maxzoom: 15,
           paint: {
             // increase weight as diameter breast height increases
@@ -936,9 +936,9 @@
           }, 'waterway-label');
           
           map.addLayer({
-            id: 'Accident-point',
+            id: 'Road-point',
             type: 'circle',
-            source: 'Accident',
+            source: 'Road',
             minzoom: 14,
             paint: {
               // increase the radius of the circle as the zoom level and dbh value increases
@@ -1141,7 +1141,7 @@
           }, 'waterway-label');
   
           //On clicking point layers
-          var pointLayerIds = [ 'Sample-point','Garbage-point', 'Accident-point', 'Water-point', 'Electricity-point', 'Crime-point' ];
+          var pointLayerIds = [ 'Sample-point','Garbage-point', 'Road-point', 'Water-point', 'Electricity-point', 'Crime-point' ];
           
           pointLayerIds.forEach(function(layer) {
             // Popup on click
@@ -1168,7 +1168,7 @@
       }); 
   
       //LAYER TOGGLE MENU
-      var toggleableLayerIds = [ ['Sample-heat', 'Sample-point'],['Garbage-heat', 'Garbage-point'], ['Accident-heat', 'Accident-point'], ['Water-heat', 'Water-point'], ['Electricity-heat', 'Electricity-point'], ['Crime-heat', 'Crime-point'] ];
+      var toggleableLayerIds = [ ['Sample-heat', 'Sample-point'],['Garbage-heat', 'Garbage-point'], ['Road-heat', 'Road-point'], ['Water-heat', 'Water-point'], ['Electricity-heat', 'Electricity-point'], ['Crime-heat', 'Crime-point'] ];
   
       for (var i = 0; i < toggleableLayerIds.length; i++) {
         

@@ -228,16 +228,54 @@ const getCount = async (req, res) => {
         console.log(err);
       }
     });
-    // let report = await Report.findOne(
-    //   {},
-    //   { reportType: +1 },
-    //   { sort: { created_at: -1 } },
-    //   function(err, post) {
-    //     if (err) {
-    //       console.log(post);
-    //     }
-    //   }
-    // );
+    res.status(200).send({ count: count });
+  } catch (e) {
+    res.status(404).send(e);
+  }
+};
+
+const getGraph = async (req, res) => {
+  try {
+    match = {};
+
+    if (req.user) {
+      switch (req.user.owner) {
+        case 'EDMC':
+          match['results.district'] = {
+            $in: ['Shahdara District', 'East District', 'North East District']
+          };
+          match.reportType = { $in: [] };
+          break;
+        case 'SDMC':
+          match['results.district'] = {
+            $in: [
+              'South East Delhi District',
+              'South District',
+              'South West District'
+            ]
+          };
+          break;
+        case 'NDMC':
+          match['results.district'] = {
+            $in: [
+              'North West District',
+              'North District',
+              'West District',
+              'Central District'
+            ]
+          };
+          break;
+      }
+    }
+
+    if (req.query.status) {
+      match.status = `${req.query.status}`;
+    }
+    let count = await Report.countDocuments(match, function(err, c) {
+      if (err) {
+        console.log(err);
+      }
+    });
     res.status(200).send({ count: count });
   } catch (e) {
     res.status(404).send(e);
@@ -314,6 +352,7 @@ module.exports = {
   getReportsID,
   getImage,
   getCount,
+  getGraph,
   updateReports,
   deleteReports
 };

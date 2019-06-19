@@ -236,24 +236,24 @@
       </div>
     </footer>
     <script>
-      fetch('/user/reports?reportType=road&limit=6&sortBy=createdAt:desc').then(
-        res => {
-          res.json().then(data => {
-            cardimg = document.getElementsByClassName('card-img-top');
-            cardtext = document.getElementsByClassName('text');
-            cardsmall = document.getElementsByClassName('text-muted');
-            length = data.length;
-            for (i = 0; i < length; i++) {
-              cardimg[i].src = `/user/image/${data[i]._id}`;
-              date = new Date(data[i].createdAt);
-              cardsmall[i].innerHTML = `${date.toLocaleString()} <br> ${
-                data[i].location
-              }`;
-              cardtext[i].innerHTML = `${data[i].description}`;
-            }
-          });
-        }
-      );
+      fetch(
+        '/user/reports?user=public&reportType=road&limit=6&sortBy=createdAt:desc'
+      ).then(res => {
+        res.json().then(data => {
+          cardimg = document.getElementsByClassName('card-img-top');
+          cardtext = document.getElementsByClassName('text');
+          cardsmall = document.getElementsByClassName('text-muted');
+          length = data.length;
+          for (i = 0; i < length; i++) {
+            cardimg[i].src = `/user/image/${data[i]._id}`;
+            date = new Date(data[i].createdAt);
+            cardsmall[i].innerHTML = `${date.toLocaleString()} <br> ${
+              data[i].location
+            }`;
+            cardtext[i].innerHTML = `${data[i].description}`;
+          }
+        });
+      });
     </script>
   </body>
 </html>

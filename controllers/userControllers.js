@@ -55,12 +55,49 @@ const postSubmitData = async (req, res) => {
   }
 };
 
+const userFilter = user => {
+  var match = {};
+  if (user) {
+    switch (user.owner) {
+      case 'EDMC':
+        match['results.district'] = {
+          $in: ['Shahdara District', 'East District', 'North East District']
+        };
+        break;
+      case 'SDMC':
+        match['results.district'] = {
+          $in: [
+            'South East Delhi District',
+            'South District',
+            'South West District'
+          ]
+        };
+        break;
+      case 'NDMC':
+        match['results.district'] = {
+          $in: [
+            'North West District',
+            'North District',
+            'West District',
+            'Central District'
+          ]
+        };
+        break;
+    }
+  }
+  return match;
+};
+
 const getGeojson = async (req, res) => {
   try {
-    features = await Report.find(
-      { reportType: req.params.reportType },
-      'geometry properties -_id'
-    );
+    var match = {};
+    if (!(req.query.user == 'public')) {
+      match = userFilter(req.user);
+    }
+    match.reportType = req.params.reportType;
+    match.status = { $nin: ['closed'] };
+
+    features = await Report.find(match, 'geometry properties -_id');
     featurecollection = {
       type: 'FeatureCollection',
       features: features
@@ -71,44 +108,12 @@ const getGeojson = async (req, res) => {
   }
 };
 
-// GET /reports?reportType=xyz
-// GET /reports?pincode=123
-// GET /reports?description=broken lamp
-// GET /reports?location=punjabi bagh
-// GET /reports?limit=10&skip=20
-// GET /reports?sortBy=createdAt:desc
 const getReports = async (req, res) => {
-  const match = {};
-  const options = { sort: {} };
   try {
-    if (req.user) {
-      switch (req.user.owner) {
-        case 'EDMC':
-          match['results.district'] = {
-            $in: ['Shahdara District', 'East District', 'North East District']
-          };
-          match.reportType = { $in: [] };
-          break;
-        case 'SDMC':
-          match['results.district'] = {
-            $in: [
-              'South East Delhi District',
-              'South District',
-              'South West District'
-            ]
-          };
-          break;
-        case 'NDMC':
-          match['results.district'] = {
-            $in: [
-              'North West District',
-              'North District',
-              'West District',
-              'Central District'
-            ]
-          };
-          break;
-      }
+    var match = {};
+    var options = { sort: {} };
+    if (!(req.query.user == 'public')) {
+      match = userFilter(req.user);
     }
 
     if (req.query.reportType) {
@@ -188,38 +193,10 @@ const getReports = async (req, res) => {
 
 const getCount = async (req, res) => {
   try {
-    match = {};
-
-    if (req.user) {
-      switch (req.user.owner) {
-        case 'EDMC':
-          match['results.district'] = {
-            $in: ['Shahdara District', 'East District', 'North East District']
-          };
-          match.reportType = { $in: [] };
-          break;
-        case 'SDMC':
-          match['results.district'] = {
-            $in: [
-              'South East Delhi District',
-              'South District',
-              'South West District'
-            ]
-          };
-          break;
-        case 'NDMC':
-          match['results.district'] = {
-            $in: [
-              'North West District',
-              'North District',
-              'West District',
-              'Central District'
-            ]
-          };
-          break;
-      }
+    var match = {};
+    if (!(req.query.user == 'public')) {
+      match = userFilter(req.user);
     }
-
     if (req.query.status) {
       match.status = `${req.query.status}`;
     }
@@ -236,38 +213,10 @@ const getCount = async (req, res) => {
 
 const getGraph = async (req, res) => {
   try {
-    match = {};
-
-    if (req.user) {
-      switch (req.user.owner) {
-        case 'EDMC':
-          match['results.district'] = {
-            $in: ['Shahdara District', 'East District', 'North East District']
-          };
-          match.reportType = { $in: [] };
-          break;
-        case 'SDMC':
-          match['results.district'] = {
-            $in: [
-              'South East Delhi District',
-              'South District',
-              'South West District'
-            ]
-          };
-          break;
-        case 'NDMC':
-          match['results.district'] = {
-            $in: [
-              'North West District',
-              'North District',
-              'West District',
-              'Central District'
-            ]
-          };
-          break;
-      }
+    var match = {};
+    if (!(req.query.user == 'public')) {
+      match = userFilter(req.user);
     }
-
     if (req.query.status) {
       match.status = `${req.query.status}`;
     }

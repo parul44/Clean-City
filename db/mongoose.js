@@ -6,4 +6,5 @@ mongoose
     useCreateIndex: true,
     useFindAndModify: false
   })
+  .then(console.log('Connected to DB'))
   .catch(e => console.log(e));

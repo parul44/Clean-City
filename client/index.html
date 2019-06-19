@@ -272,27 +272,27 @@
 
         map.addSource('Road', {
         type: 'geojson',
-        data: '/user/geojson/road'
+        data: '/user/geojson/road?user=public'
         });
 
         map.addSource('Garbage', {
         type: 'geojson',
-        data: '/user/geojson/garbage'
+        data: '/user/geojson/garbage?user=public'
         });
 
         map.addSource('Water', {
         type: 'geojson',
-        data: '/user/geojson/water'
+        data: '/user/geojson/water?user=public'
         });
 
         map.addSource('Electricity', {
         type: 'geojson',
-        data: '/user/geojson/electricity'
+        data: '/user/geojson/electricity?user=public'
         });
 
         map.addSource('Crime', {
         type: 'geojson',
-        data: '/user/geojson/crime'
+        data: '/user/geojson/crime?user=public'
         });
 
         
@@ -919,7 +919,7 @@
     </script>
     <!-- fetching latest6 reports script -->
     <script>
-      fetch('/user/reports?limit=6&sortBy=createdAt:desc')
+      fetch('/user/reports?user=public&limit=6&sortBy=createdAt:desc')
       .then(res => {
         res.json().then(data => {
 

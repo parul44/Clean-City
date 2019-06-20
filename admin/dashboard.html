@@ -539,6 +539,13 @@
     <!-- mapbox script -->
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.js'></script>
     <script>
+      
+      var user={owner: '-' , username: '-'};
+      fetch("/admin/info").then(res => res.json()).then(data => {
+        
+        user=data;
+        document.getElementById('user').textContent=` ${user.owner} : ${user.username}`
+        
         mapboxgl.accessToken = 'pk.eyJ1IjoiZXJyYWh1bDkzIiwiYSI6ImNqdW8wemlxODJwNzUzeXFqbnVibHZzYzUifQ.bZKWernpF2H1uvOVNp4DOA';
         var map = new mapboxgl.Map({
           container: 'map',
@@ -546,13 +553,6 @@
           center: [77.146721,28.610800],
           zoom: 10
         });
-
-        var user={owner: '-' , username: '-'};
-        fetch("/admin/info").then(res => res.json()).then(data => {
-
-          user=data;
-          document.getElementById('user').textContent=` ${user.owner} : ${user.username}`
-        
             map.on('load', function() {
       
               //ADDING LAYER SOURCES

@@ -8,6 +8,8 @@ router.post('/login', adminControllers.login, function(req, res) {
   res.redirect(`/dashboard`);
 });
 
+router.get('/info', adminControllers.getInfo);
+
 router.get('/logout', adminControllers.logout);
 
 module.exports = router;

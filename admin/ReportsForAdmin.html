@@ -35,6 +35,9 @@
       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
       crossorigin="anonymous"
     />
+    <script>
+        
+      </script>
   </head>
 
   <body class="">
@@ -50,6 +53,9 @@
           <a href="/" class="simple-text logo-normal">
             Clean City
           </a>
+        </div>
+        <div id="user" class="logo" style="color:white" >
+            -
         </div>
         <div class="sidebar-wrapper" id="sidebar-wrapper">
           <ul class="nav">
@@ -231,13 +237,7 @@
             <div class="form-row">
               <div class="form-group col-4 col-md-4">
                 <label for="inputState">TYPE OF REPORT</label>
-                <select id="inputState" class="form-control" name="reportType">
-                  <option value="">All</option>
-                  <option value="garbage">Garbage/Sewage</option>
-            
-                 
-                  <option value="electricity">Electricity</option>
-                  <option value="crime">Crime</option>
+                <select id="inputState1" class="form-control" name="reportType">
                 </select>
               </div>
               <div class="form-group col-4 col-md-4">
@@ -347,6 +347,56 @@
         </div>
       </div>
     </div>
+    <!-- set options/set user on sidebar -->
+    <script>
+      var user={owner: '-' , username: '-'};
+        fetch("/admin/info").then(res => res.json()).then(data => {
+          user=data;
+          document.getElementById('user').textContent=` ${user.owner} : ${user.username}`
+          var types = document.getElementById("inputState1")
+          
+          switch (true) {
+            case user.owner=='PWD':
+              var road = document.createElement("option")
+              road.setAttribute('value', 'road')
+              road.textContent = 'Road'
+              types.appendChild(road)
+              break;
+            case user.owner=='DJB':
+              var water = document.createElement("option")
+              water.setAttribute('value', 'water')
+              water.textContent = 'Water'
+              types.appendChild(water)
+              break;
+            case user.owner=='EDMC'||user.owner=='NDMC'||user.owner=='SDMC'||user.owner=='NewDMC':
+              var all = document.createElement("option")
+              all.setAttribute('value', '')
+              all.textContent = 'All'
+              types.appendChild(all)
+              var garbage = document.createElement("option")
+              garbage.setAttribute('value', 'garbage')
+              garbage.textContent = 'Garbage/Sewage'
+              types.appendChild(garbage)
+              var road = document.createElement("option")
+              road.setAttribute('value', 'road')
+              road.textContent = 'Road'
+              types.appendChild(road)
+              var water = document.createElement("option")
+              water.setAttribute('value', 'water')
+              water.textContent = 'Water'
+              types.appendChild(water)
+              var electricity = document.createElement("option")
+              electricity.setAttribute('value', 'electricity')
+              electricity.textContent = 'Electricity'
+              types.appendChild(electricity)
+              var crime = document.createElement("option")
+              crime.setAttribute('value', 'crime')
+              crime.textContent = 'Crime'
+              types.appendChild(crime)
+              break;
+          }
+        })
+    </script>
     <!--get/filter reports-->
     <script>
       async function getReports() {

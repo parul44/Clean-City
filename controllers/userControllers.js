@@ -63,24 +63,48 @@ const userFilter = user => {
         match['results.district'] = {
           $in: ['Shahdara District', 'East District', 'North East District']
         };
+        match.reportType = {
+          $in: ['garbage', 'road', 'water', 'electricity', 'crime']
+        };
         break;
       case 'SDMC':
         match['results.district'] = {
           $in: [
             'South East Delhi District',
             'South District',
-            'South West District'
+            'West District',
+            'South West District',
+            'Central District'
           ]
+        };
+        match.reportType = {
+          $in: ['garbage', 'road', 'water', 'electricity', 'crime']
         };
         break;
       case 'NDMC':
         match['results.district'] = {
-          $in: [
-            'North West District',
-            'North District',
-            'West District',
-            'Central District'
-          ]
+          $in: ['North West District', 'North District', 'Central District']
+        };
+        match.reportType = {
+          $in: ['garbage', 'road', 'water', 'electricity', 'crime']
+        };
+        break;
+      case 'NewDMC':
+        match['results.district'] = {
+          $in: ['New Delhi District']
+        };
+        match.reportType = {
+          $in: ['garbage', 'road', 'water', 'electricity', 'crime']
+        };
+        break;
+      case 'DJB':
+        match.reportType = {
+          $in: ['water']
+        };
+        break;
+      case 'PWD':
+        match.reportType = {
+          $in: ['road']
         };
         break;
     }

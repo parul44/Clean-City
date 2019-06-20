@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const userControllers = require('../controllers/userControllers');
 const Report = require('../models/reportModel');
+var middleware = require('../middleware/auth');
 
 // final route is /user/test
 router.post(
@@ -23,8 +24,10 @@ router.get('/image/:id', userControllers.getImage);
 
 router.get('/count', userControllers.getCount);
 
-router.put('/reports', userControllers.updateReports);
+router.get('/graph', userControllers.getGraph);
 
-router.delete('/reports', userControllers.deleteReports);
+router.put('/reports', middleware.isLoggedIn, userControllers.updateReports);
+
+router.delete('/reports', middleware.isLoggedIn, userControllers.deleteReports);
 
 module.exports = router;

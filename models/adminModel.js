@@ -1,13 +1,15 @@
 const mongoose = require('mongoose');
-var passportlocalmongoose = require("passport-local-mongoose");
+var passportlocalmongoose = require('passport-local-mongoose');
 
 //Defining admintSchema
-const adminSchema = new mongoose.Schema(
-  {
-    username: String,
-    password: String,
+const adminSchema = new mongoose.Schema({
+  username: String,
+  password: String,
+  owner: {
+    type: String,
+    default: 'EDMC'
   }
-);
+});
 
 adminSchema.plugin(passportlocalmongoose);
 

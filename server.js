@@ -17,8 +17,8 @@ const PORT = process.env.PORT || 5000;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
-app.use(express.static(path.join(__dirname, 'client')));
+const public = path.join(__dirname, 'client');
+app.use(express.static(public));
 
 //Passport configuration
 app.use(
@@ -50,7 +50,7 @@ app.get('/form', (req, res, next) => {
   res.sendFile(__dirname + '/client/form.html');
 });
 
-app.get('/reports/:id', async (req, res, next) => {
+app.get('/report/:id', async (req, res, next) => {
   const _id = req.params.id;
   try {
     const report = await Report.findOne({ _id }, '-imageBuffer');
@@ -69,7 +69,7 @@ app.get('/reports/:id', async (req, res, next) => {
         <b>View Image:</b> <a href='/user/image/${
           report._id
         }' target=_blank>Click here</a>
-        <b>View Location on Google Map:</b> <a href='https://www.google.com/maps/place/${
+        <b>View Location on Google Map:</b> <a href='https://www.google.com/maps/dir/${
           report.geometry.coordinates[1]
         },${report.geometry.coordinates[0]}' target=_blank>Click here</a>
 
@@ -102,12 +102,19 @@ app.get('/login', (req, res, next) => {
 });
 
 app.get('/dashboard', middleware.isLoggedIn, (req, res, next) => {
-  res.sendFile(__dirname + '/client/dashboard.html');
+  res.sendFile(__dirname + '/admin/dashboard.html');
+});
+
+app.get('/dashboardReports', middleware.isLoggedIn, (req, res, next) => {
+  res.sendFile(__dirname + '/admin/ReportsForAdmin.html');
 });
 
 app.get('/', (req, res, next) => {
   res.sendFile(__dirname + '/client/index.html');
 });
+
+app.use(middleware.isLoggedIn);
+app.use(express.static(path.join(__dirname, 'admin')));
 
 app.listen(PORT, () => {
   console.log(`Server has started on port ${PORT}`);

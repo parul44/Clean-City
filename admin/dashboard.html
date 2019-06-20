@@ -37,15 +37,17 @@
         Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red | yellow"
     -->
       <div class="logo">
-        
-        <a href="http://www.creative-tim.com" class="simple-text logo-normal">
+        <a href="/" class="simple-text logo-mini">
+          <i class="fa fa-leaf" style="color:white" aria-hidden="true"></i>
+        </a>
+        <a href="/" class="simple-text logo-normal">
           Clean City
         </a>
       </div>
       <div class="sidebar-wrapper" id="sidebar-wrapper">
         <ul class="nav">
           <li class="active ">
-            <a href="./dashboard.html">
+            <a href="/dashboard">
               <i class="now-ui-icons design_app"></i>
               <p>Dashboard</p>
             </a>
@@ -57,7 +59,7 @@
             </a>
           </li>
           <li>
-            <a href="./ReportsForAdmin.html">
+            <a href=./dashboardReports>
               <i class="now-ui-icons education_atom"></i>
               <p>Latest Reports</p>
             </a>
@@ -70,17 +72,12 @@
               <p>Analytics</p>
             </a>
           </li>
-          <li>
-            <a href="#">
-              <i class="now-ui-icons users_single-02"></i>
-              <p>User Profile</p>
-            </a>
-          </li>
-          
+              
           
         </ul>
       </div>
     </div>
+
     <div class="main-panel" id="main-panel">
       <!-- Navbar -->
       <nav class="navbar sticky-top navbar-expand-lg bg-warning navbar-absolute">
@@ -133,7 +130,6 @@
                   <a class="dropdown-item" href="#">Something else here</a>
                 </div>
               </li>
-                </li>
               
               <li class="nav-item">
                 <a class="nav-link" href="#pablo">
@@ -202,20 +198,23 @@
         <div class="card-group">
             <div class="card border-0 ">
               <i class="now-ui-icons education_paper icon1 icon" style="font-size: 3.25em; align-content:center;"></i>
- <div class="card-body">
+              <div class="card-body">
+                 <div id='unseenText'></div>
                  <p> Unseen Reports </p>
              </div>     <hr>
             </div>
             <div class="card border-0 ">
                 <i class="now-ui-icons design-2_ruler-pencil icon2 icon" style="font-size: 3.25em; align-content:center;"></i>
                 <div class="card-body">
+                  <div id='seenText'></div>
                   <p>Seen Reports (Under Process) </p>
                          </div><hr>
              </div>
               <div class="card border-0 ">
                   <i class="now-ui-icons files_box icon3 icon" style="font-size: 3.25em; align-content:center;"></i>
                   <div class="card-body">
-                    <span>Closed Reports</span>
+                    <div id='closedText'></div>
+                    <p>Closed Reports</p>
                     
                  </div><hr>
               </div>
@@ -416,8 +415,8 @@
         
       </script>
 
-      <!--Script for line chart for months-->
-      <script>
+    <!--Script for line chart for months-->
+    <script>
       var margin = {top: 10, right: 30, bottom: 30, left: 60},
       width = 460 - margin.left - margin.right,
       height = 400 - margin.top - margin.bottom;
@@ -506,9 +505,9 @@
   
   })
         
-      </script>
-          <!-- SCRIPT FOR NOTIFICATION -->
-          <script>
+    </script>
+    <!-- SCRIPT FOR NOTIFICATION -->
+    <!-- <script>
               var oldcount=0;
               fetch("/user/count").then(res => res.json()).then(data => {oldcount=data.count;});
               setInterval(async function(){
@@ -523,8 +522,16 @@
                 });
               },4000);
           
-          </script>
-
+    </script> -->
+    <!-- SCRIPT FOR No. of reports -->
+    <script>
+      unseenText = document.getElementById('unseenText')
+      seenText = document.getElementById('seenText')
+      closedText = document.getElementById('closedText')
+      fetch("/user/count/?status=unseen").then(res => res.json()).then(data => {unseenText.textContent=data.count;})
+      fetch("/user/count/?status=seen").then(res => res.json()).then(data => {seenText.textContent=data.count;})
+      fetch("/user/count/?status=closed").then(res => res.json()).then(data => {closedText.textContent=data.count;})
+    </script>
     <!-- mapbox script -->
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.js'></script>
     <script>
@@ -544,9 +551,9 @@
             data: 'sampleJson.geojson'
           });
   
-          map.addSource('Accident', {
+          map.addSource('Road', {
           type: 'geojson',
-          data: '/user/geojson/accident'
+          data: '/user/geojson/road'
           });
   
           map.addSource('Garbage', {
@@ -624,9 +631,9 @@
           }, 'waterway-label');
     
           map.addLayer({
-          id: 'Accident-heat',
+          id: 'Road-heat',
           type: 'heatmap',
-          source: 'Accident',
+          source: 'Road',
           maxzoom: 15,
           paint: {
             // increase weight as diameter breast height increases
@@ -926,9 +933,9 @@
           }, 'waterway-label');
           
           map.addLayer({
-            id: 'Accident-point',
+            id: 'Road-point',
             type: 'circle',
-            source: 'Accident',
+            source: 'Road',
             minzoom: 14,
             paint: {
               // increase the radius of the circle as the zoom level and dbh value increases
@@ -1131,7 +1138,7 @@
           }, 'waterway-label');
   
           //On clicking point layers
-          var pointLayerIds = [ 'Sample-point','Garbage-point', 'Accident-point', 'Water-point', 'Electricity-point', 'Crime-point' ];
+          var pointLayerIds = [ 'Sample-point','Garbage-point', 'Road-point', 'Water-point', 'Electricity-point', 'Crime-point' ];
           
           pointLayerIds.forEach(function(layer) {
             // Popup on click
@@ -1158,7 +1165,7 @@
       }); 
   
       //LAYER TOGGLE MENU
-      var toggleableLayerIds = [ ['Sample-heat', 'Sample-point'],['Garbage-heat', 'Garbage-point'], ['Accident-heat', 'Accident-point'], ['Water-heat', 'Water-point'], ['Electricity-heat', 'Electricity-point'], ['Crime-heat', 'Crime-point'] ];
+      var toggleableLayerIds = [ ['Sample-heat', 'Sample-point'],['Garbage-heat', 'Garbage-point'], ['Road-heat', 'Road-point'], ['Water-heat', 'Water-point'], ['Electricity-heat', 'Electricity-point'], ['Crime-heat', 'Crime-point'] ];
   
       for (var i = 0; i < toggleableLayerIds.length; i++) {
         

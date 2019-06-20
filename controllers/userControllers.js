@@ -55,12 +55,49 @@ const postSubmitData = async (req, res) => {
   }
 };
 
+const userFilter = user => {
+  var match = {};
+  if (user) {
+    switch (user.owner) {
+      case 'EDMC':
+        match['results.district'] = {
+          $in: ['Shahdara District', 'East District', 'North East District']
+        };
+        break;
+      case 'SDMC':
+        match['results.district'] = {
+          $in: [
+            'South East Delhi District',
+            'South District',
+            'South West District'
+          ]
+        };
+        break;
+      case 'NDMC':
+        match['results.district'] = {
+          $in: [
+            'North West District',
+            'North District',
+            'West District',
+            'Central District'
+          ]
+        };
+        break;
+    }
+  }
+  return match;
+};
+
 const getGeojson = async (req, res) => {
   try {
-    features = await Report.find(
-      { reportType: req.params.reportType },
-      'geometry properties -_id'
-    );
+    var match = {};
+    if (!(req.query.user == 'public')) {
+      match = userFilter(req.user);
+    }
+    match.reportType = req.params.reportType;
+    match.status = { $nin: ['closed'] };
+
+    features = await Report.find(match, 'geometry properties -_id');
     featurecollection = {
       type: 'FeatureCollection',
       features: features
@@ -71,17 +108,14 @@ const getGeojson = async (req, res) => {
   }
 };
 
-// GET /reports?reportType=xyz
-// GET /reports?pincode=123
-// GET /reports?description=broken lamp
-// GET /reports?location=punjabi bagh
-// GET /reports?limit=10&skip=20
-// GET /reports?sortBy=createdAt:desc
 const getReports = async (req, res) => {
-  const match = {};
-  const options = { sort: {} };
-
   try {
+    var match = {};
+    var options = { sort: {} };
+    if (!(req.query.user == 'public')) {
+      match = userFilter(req.user);
+    }
+
     if (req.query.reportType) {
       if (req.query.reportType.length) match.reportType = req.query.reportType;
     }
@@ -159,22 +193,39 @@ const getReports = async (req, res) => {
 
 const getCount = async (req, res) => {
   try {
-    let count = await Report.countDocuments({}, function(err, c) {
+    var match = {};
+    if (!(req.query.user == 'public')) {
+      match = userFilter(req.user);
+    }
+    if (req.query.status) {
+      match.status = `${req.query.status}`;
+    }
+    let count = await Report.countDocuments(match, function(err, c) {
       if (err) {
         console.log(err);
       }
     });
-    let report = await Report.findOne(
-      {},
-      { reportType: +1 },
-      { sort: { created_at: -1 } },
-      function(err, post) {
-        if (err) {
-          console.log(post);
-        }
+    res.status(200).send({ count: count });
+  } catch (e) {
+    res.status(404).send(e);
+  }
+};
+
+const getGraph = async (req, res) => {
+  try {
+    var match = {};
+    if (!(req.query.user == 'public')) {
+      match = userFilter(req.user);
+    }
+    if (req.query.status) {
+      match.status = `${req.query.status}`;
+    }
+    let count = await Report.countDocuments(match, function(err, c) {
+      if (err) {
+        console.log(err);
       }
-    );
-    res.status(200).send({ count: count, report: report });
+    });
+    res.status(200).send({ count: count });
   } catch (e) {
     res.status(404).send(e);
   }
@@ -210,6 +261,7 @@ const getImage = async (req, res) => {
 
 const updateReports = (req, res) => {
   try {
+    console.log(req.user);
     let idarray = req.body.idarray;
     let status = req.body.status;
     Report.updateMany(
@@ -249,6 +301,7 @@ module.exports = {
   getReportsID,
   getImage,
   getCount,
+  getGraph,
   updateReports,
   deleteReports
 };

@@ -151,14 +151,14 @@
                   <img class="card-img-top" src="images/garbage.jpg" alt="Card image cap">
                   <div class="card-body">
                       <h4 style="color: #2b4d38" >Garbage</h4>
-                      <p>Garbage reports </p>
+                      <p>Garbage/Sewage reports </p>
                       <button type="button" class="btn btn-secondary" onclick='window.location = "garbage.html"' >View Reports</button> </div>
                 </div>
                 <div class="card border border-info">
                   <img class="card-img-top" src="images/electricity.jpg" alt="Card image cap">
                   <div class="card-body">
                       <h4 style="color: #2b4d38">Electricity</h4>
-                      <p>Cutoff reports </p>
+                      <p>Electricity reports </p>
                       <button type="button" class="btn btn-secondary" onclick='window.location = "electricity.html"'>View Reports</button></div>
                 </div>
                 <div class="card border border-info">
@@ -172,9 +172,9 @@
                 <div class="card border border-info">
                     <img class="card-img-top" src="images/accident.jpg" alt="Card image cap">
                     <div class="card-body">
-                        <h4 style="color: #2b4d38">Accidents</h4>
-                        <p>Accident reports </p>
-                        <button type="button" class="btn btn-secondary" onclick='window.location = "accident.html"'>View Reports</button>
+                        <h4 style="color: #2b4d38">Road</h4>
+                        <p>Road reports </p>
+                        <button type="button" class="btn btn-secondary" onclick='window.location = "road.html"'>View Reports</button>
                      </div>
                   </div>
                   <div class="card border border-info">
@@ -206,7 +206,7 @@
           ·
           <a href="#">Water</a>
           ·
-          <a href="#">Accidents</a>
+          <a href="#">Road</a>
           ·
           <a href="#">Crime</a>
         </p>
@@ -270,29 +270,29 @@
           data: 'sampleJson.geojson'
         });
 
-        map.addSource('Accident', {
+        map.addSource('Road', {
         type: 'geojson',
-        data: '/user/geojson/accident'
+        data: '/user/geojson/road?user=public'
         });
 
         map.addSource('Garbage', {
         type: 'geojson',
-        data: '/user/geojson/garbage'
+        data: '/user/geojson/garbage?user=public'
         });
 
         map.addSource('Water', {
         type: 'geojson',
-        data: '/user/geojson/water'
+        data: '/user/geojson/water?user=public'
         });
 
         map.addSource('Electricity', {
         type: 'geojson',
-        data: '/user/geojson/electricity'
+        data: '/user/geojson/electricity?user=public'
         });
 
         map.addSource('Crime', {
         type: 'geojson',
-        data: '/user/geojson/crime'
+        data: '/user/geojson/crime?user=public'
         });
 
         
@@ -350,9 +350,9 @@
         }, 'waterway-label');
   
         map.addLayer({
-        id: 'Accident-heat',
+        id: 'Road-heat',
         type: 'heatmap',
-        source: 'Accident',
+        source: 'Road',
         maxzoom: 15,
         paint: {
           // increase weight as diameter breast height increases
@@ -652,9 +652,9 @@
         }, 'waterway-label');
         
         map.addLayer({
-          id: 'Accident-point',
+          id: 'Road-point',
           type: 'circle',
-          source: 'Accident',
+          source: 'Road',
           minzoom: 14,
           paint: {
             // increase the radius of the circle as the zoom level and dbh value increases
@@ -857,7 +857,7 @@
         }, 'waterway-label');
 
         //On clicking point layers
-        var pointLayerIds = [ 'Sample-point','Garbage-point', 'Accident-point', 'Water-point', 'Electricity-point', 'Crime-point' ];
+        var pointLayerIds = [ 'Sample-point','Garbage-point', 'Road-point', 'Water-point', 'Electricity-point', 'Crime-point' ];
         
         pointLayerIds.forEach(function(layer) {
           // Popup on click
@@ -884,7 +884,7 @@
     }); 
 
     //LAYER TOGGLE MENU
-    var toggleableLayerIds = [ ['Sample-heat', 'Sample-point'],['Garbage-heat', 'Garbage-point'], ['Accident-heat', 'Accident-point'], ['Water-heat', 'Water-point'], ['Electricity-heat', 'Electricity-point'], ['Crime-heat', 'Crime-point'] ];
+    var toggleableLayerIds = [ ['Sample-heat', 'Sample-point'],['Garbage-heat', 'Garbage-point'], ['Road-heat', 'Road-point'], ['Water-heat', 'Water-point'], ['Electricity-heat', 'Electricity-point'], ['Crime-heat', 'Crime-point'] ];
 
     for (var i = 0; i < toggleableLayerIds.length; i++) {
       
@@ -919,7 +919,7 @@
     </script>
     <!-- fetching latest6 reports script -->
     <script>
-      fetch('/user/reports?limit=6&sortBy=createdAt:desc')
+      fetch('/user/reports?user=public&limit=6&sortBy=createdAt:desc')
       .then(res => {
         res.json().then(data => {
 

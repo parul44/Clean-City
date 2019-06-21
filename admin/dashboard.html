@@ -345,7 +345,7 @@
                 "translate(" + margin.left + "," + margin.top + ")");
       
       //Read the data
-      d3.json("http://localhost:5000/user/graph/?graphType=weekly").then(function(data) {
+      d3.json("/user/graph/?graphType=weekly").then(function(data) {
         console.log(data);
           // List of groups (here I have one group per column)s
           var allGroup = d3.map(data, function(d){return(d.reportType)}).keys()
@@ -452,7 +452,7 @@
       .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")");
   //Read the data
-  d3.json("http://localhost:5000/user/graph/?graphType=monthly").then(function(data) {
+  d3.json("/user/graph/?graphType=monthly").then(function(data) {
     console.log(data);
       console.log(d3.max(data,function(d){return d.month;}));
       // List of groups (here I have one group per column)

@@ -26,8 +26,13 @@ const logout = (req, res, next) => {
   res.redirect('/');
 };
 
+const getInfo = (req, res, next) => {
+  res.status(200).send(req.user);
+};
+
 module.exports = {
   register,
   login,
-  logout
+  logout,
+  getInfo
 };

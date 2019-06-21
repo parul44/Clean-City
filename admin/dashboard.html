@@ -22,6 +22,7 @@
   <link rel="stylesheet" type="text/css" href="mapbox.css">
   <script src="https://d3js.org/d3.v4.js"></script>
   <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+  <script src="https://d3js.org/d3-fetch.v1.min.js"></script>
 
   <style>
   .ToRchart svg{
@@ -243,11 +244,7 @@
 
           <div class="ToRchart">
           <select id="selectButton1"></select>
-            <select>
-              <option>Yearly</option>
-              <option>Monthly</option>
-            </select>
-            <div id="year"></div>
+            <div id="week"></div>
           </div>
           <br>
           <div class="ToRchart">
@@ -339,7 +336,7 @@
           height = 400 - margin.top - margin.bottom;
       
       // append the svg object to the body of the page
-      var svg = d3.select("#year")
+      var svg = d3.select("#week")
         .append("svg")
           .attr("width", width + margin.left + margin.right)
           .attr("height", height + margin.top + margin.bottom)
@@ -348,8 +345,9 @@
                 "translate(" + margin.left + "," + margin.top + ")");
       
       //Read the data
-      d3.csv("demo1.csv", function(data) {
-          // List of groups (here I have one group per column)
+      d3.json("http://localhost:5000/user/graph/?graphType=weekly").then(function(data) {
+        console.log(data);
+          // List of groups (here I have one group per column)s
           var allGroup = d3.map(data, function(d){return(d.reportType)}).keys()
       
           // add the options to the button
@@ -368,11 +366,18 @@
       
           // Add X axis --> it is a date format
           var x = d3.scaleLinear()
-            .domain(d3.extent(data, function(d) { return d.year; }))
+            .domain(d3.extent(data, function(d) { return d.week; }))
             .range([ 0, width ]);
           svg.append("g")
             .attr("transform", "translate(0," + height + ")")
             .call(d3.axisBottom(x).ticks(7))
+
+            svg.append("text")             
+                .attr("transform",
+                      "translate(" + (width/2) + " ," + 
+                           (height + margin.top + 20) + ")")
+                .style("text-anchor", "middle")
+                .text("Weeks");  
       
           // Add Y axis
           var y = d3.scaleLinear()
@@ -381,15 +386,21 @@
           svg.append("g")
             .call(d3.axisLeft(y))
           
-            
-      
+            svg.append("text")
+              .attr("transform", "rotate(-90)")
+              .attr("y", 0 - margin.left)
+              .attr("x",0 - (height / 2))
+              .attr("dy", "1em")
+              .style("text-anchor", "middle")
+              .text("Number Of Reports");        
+
           // Initialize line with first group of the list
           var line = svg
             .append('g')
             .append("path")
               .datum(data.filter(function(d){return d.reportType==allGroup[0]}))
               .attr("d", d3.line()
-                .x(function(d) { return x(d.year) })
+                .x(function(d) { return x(d.week) })
                 .y(function(d) { return y(+d.n) })
               )
               .attr("stroke", function(d){ return myColor("valueA") })
@@ -408,7 +419,7 @@
                 .transition()
                 .duration(1000)
                 .attr("d", d3.line()
-                  .x(function(d) { return x(d.year) })
+                  .x(function(d) { return x(d.week) })
                   .y(function(d) { return y(+d.n) })
                 )
                 .attr("stroke", function(d){ return myColor(selectedGroup) })
@@ -440,9 +451,9 @@
     .append("g")
       .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")");
-  
   //Read the data
-  d3.csv("demo2.csv", function(data) {
+  d3.json("http://localhost:5000/user/graph/?graphType=monthly").then(function(data) {
+    console.log(data);
       console.log(d3.max(data,function(d){return d.month;}));
       // List of groups (here I have one group per column)
       var allGroup = d3.map(data, function(d){return(d.reportType)}).keys()
@@ -462,12 +473,19 @@
         .range(d3.schemeSet2);
       // Add X axis --> it is a date format
       var x = d3.scaleLinear()
-        .domain([1,d3.max(data, function(d) { return Number(d.month); })])
+        .domain([d3.min(data, function(d) { return Number(d.month); }),d3.max(data, function(d) { return Number(d.month); })])
         .range([ 0, width ]);
       svg2.append("g")
         .attr("transform", "translate(0," + height + ")")
         .call(d3.axisBottom(x).ticks(10));
   
+        svg2.append("text")             
+                .attr("transform",
+                      "translate(" + (width/2) + " ," + 
+                           (height + margin.top + 20) + ")")
+                .style("text-anchor", "middle")
+                .text("Months");
+
       // Add Y axis
       var y = d3.scaleLinear()
         .domain([0, d3.max(data, function(d) { return +d.n; })])
@@ -475,6 +493,14 @@
       svg2.append("g")
         .call(d3.axisLeft(y));
   
+        svg2.append("text")
+              .attr("transform", "rotate(-90)")
+              .attr("y", 0 - margin.left)
+              .attr("x",0 - (height / 2))
+              .attr("dy", "1em")
+              .style("text-anchor", "middle")
+              .text("Number Of Reports"); 
+
       // Initialize line with first group of the list
       var line = svg2
         .append('g')

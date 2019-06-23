@@ -3,10 +3,12 @@ const express = require('express');
 const path = require('path');
 require('./db/mongoose');
 const bodyParser = require('body-parser');
-const userRoutes = require('./routes/userRoutes');
 const Report = require('./models/reportModel');
+const reportRoutes = require('./routes/reportRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const userRoutes = require('./routes/userRoutes');
 const Admin = require('./models/adminModel');
+const User = require('./models/userModel');
 const passport = require('passport');
 var LocalStrategy = require('passport-local');
 var middleware = require('./middleware/auth');
@@ -35,11 +37,14 @@ passport.serializeUser(Admin.serializeUser());
 passport.deserializeUser(Admin.deserializeUser());
 
 // Routes
-// User routes
-app.use('/user', userRoutes);
+// Report routes
+app.use('/report', reportRoutes);
 
 // Admin routes
 app.use('/admin', adminRoutes);
+
+// User routes
+app.use('/user', userRoutes);
 
 //html routes
 app.get('/about', (req, res, next) => {
@@ -66,7 +71,7 @@ app.get('/report/:id', async (req, res, next) => {
       <h5> Status : ${report.status}</h5>
       <pre>
         <p> 
-        <b>View Image:</b> <a href='/user/image/${
+        <b>View Image:</b> <a href='/report/image/${
           report._id
         }' target=_blank>Click here</a>
         <b>View Location on Google Map:</b> <a href='https://www.google.com/maps/dir/${
@@ -93,12 +98,20 @@ app.get('/report/:id', async (req, res, next) => {
   }
 });
 
+app.get('/adminregister', (req, res, next) => {
+  res.sendFile(__dirname + '/client/adminRegister.html');
+});
+
+app.get('/adminlogin', (req, res, next) => {
+  res.sendFile(__dirname + '/client/adminLogin.html');
+});
+
 app.get('/register', (req, res, next) => {
-  res.sendFile(__dirname + '/client/register.html');
+  res.sendFile(__dirname + '/client/userRegister.html');
 });
 
 app.get('/login', (req, res, next) => {
-  res.sendFile(__dirname + '/client/login.html');
+  res.sendFile(__dirname + '/client/userLogin.html');
 });
 
 app.get('/dashboard', middleware.isLoggedIn, (req, res, next) => {

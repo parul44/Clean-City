@@ -401,7 +401,7 @@
     <script>
       async function getReports() {
         var form = document.getElementById('myForm');
-        var fetchURL = `/user/reports?location=${
+        var fetchURL = `/report/reports?location=${
           form.location.value
         }&description=${form.description.value}&reportType=${
           form.reportType.value
@@ -462,7 +462,7 @@
           btnSeen.onclick = function() {
             let id = this.parentElement.parentElement.parentElement.id;
             let body = { idarray: [id], status: 'seen' };
-            fetch(`/user/reports`, {
+            fetch(`/report/reports`, {
               method: 'put',
               body: JSON.stringify(body),
               headers: { 'Content-type': 'application/json' }
@@ -476,7 +476,7 @@
           btnClose.onclick = function() {
             let id = this.parentElement.parentElement.parentElement.id;
             let body = { idarray: [id], status: 'closed' };
-            fetch(`/user/reports`, {
+            fetch(`/report/reports`, {
               method: 'put',
               body: JSON.stringify(body),
               headers: { 'Content-type': 'application/json' }
@@ -517,7 +517,7 @@
       async function seenTicked() {
         var idarray = tickedArray();
         var body = { idarray: idarray, status: 'seen' };
-        fetch(`/user/reports`, {
+        fetch(`/report/reports`, {
           method: 'put',
           body: JSON.stringify(body),
           headers: { 'Content-type': 'application/json' }
@@ -536,7 +536,7 @@
         var idarray = tickedArray();
 
         var body = { idarray: idarray, status: 'closed' };
-        fetch(`/user/reports`, {
+        fetch(`/report/reports`, {
           method: 'put',
           body: JSON.stringify(body),
           headers: { 'Content-type': 'application/json' }
@@ -554,7 +554,7 @@
       async function deleteTicked() {
         var idarray = tickedArray();
         var body = { idarray: idarray };
-        fetch(`/user/reports`, {
+        fetch(`/report/reports`, {
           method: 'delete',
           body: JSON.stringify(body),
           headers: { 'Content-type': 'application/json' }

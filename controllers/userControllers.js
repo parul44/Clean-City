@@ -55,12 +55,73 @@ const postSubmitData = async (req, res) => {
   }
 };
 
+const userFilter = user => {
+  var match = {};
+  if (user) {
+    switch (user.owner) {
+      case 'EDMC':
+        match['results.district'] = {
+          $in: ['Shahdara District', 'East District', 'North East District']
+        };
+        match.reportType = {
+          $in: ['garbage', 'road', 'water', 'electricity', 'crime']
+        };
+        break;
+      case 'SDMC':
+        match['results.district'] = {
+          $in: [
+            'South East Delhi District',
+            'South District',
+            'West District',
+            'South West District',
+            'Central District'
+          ]
+        };
+        match.reportType = {
+          $in: ['garbage', 'road', 'water', 'electricity', 'crime']
+        };
+        break;
+      case 'NDMC':
+        match['results.district'] = {
+          $in: ['North West District', 'North District', 'Central District']
+        };
+        match.reportType = {
+          $in: ['garbage', 'road', 'water', 'electricity', 'crime']
+        };
+        break;
+      case 'NewDMC':
+        match['results.district'] = {
+          $in: ['New Delhi District']
+        };
+        match.reportType = {
+          $in: ['garbage', 'road', 'water', 'electricity', 'crime']
+        };
+        break;
+      case 'DJB':
+        match.reportType = {
+          $in: ['water']
+        };
+        break;
+      case 'PWD':
+        match.reportType = {
+          $in: ['road']
+        };
+        break;
+    }
+  }
+  return match;
+};
+
 const getGeojson = async (req, res) => {
   try {
-    features = await Report.find(
-      { reportType: req.params.reportType },
-      'geometry properties -_id'
-    );
+    var match = {};
+    if (!(req.query.user == 'public')) {
+      match = userFilter(req.user);
+    }
+    match.reportType = req.params.reportType;
+    match.status = { $nin: ['closed'] };
+
+    features = await Report.find(match, 'geometry properties -_id');
     featurecollection = {
       type: 'FeatureCollection',
       features: features
@@ -71,17 +132,14 @@ const getGeojson = async (req, res) => {
   }
 };
 
-// GET /reports?reportType=xyz
-// GET /reports?pincode=123
-// GET /reports?description=broken lamp
-// GET /reports?location=punjabi bagh
-// GET /reports?limit=10&skip=20
-// GET /reports?sortBy=createdAt:desc
 const getReports = async (req, res) => {
-  const match = {};
-  const options = { sort: {} };
-
   try {
+    var match = {};
+    var options = { sort: {} };
+    if (!(req.query.user == 'public')) {
+      match = userFilter(req.user);
+    }
+
     if (req.query.reportType) {
       if (req.query.reportType.length) match.reportType = req.query.reportType;
     }
@@ -117,18 +175,18 @@ const getReports = async (req, res) => {
         match['results.formatted_address'] = regex;
       }
     }
-
-    if (req.query.sortBy) {
-      var parts = req.query.sortBy.split(':');
-      options.sort[parts[0]] = parts[1] === 'desc' ? -1 : 1;
-    }
-
     if (req.query.limit) {
       options.limit = parseInt(req.query.limit);
     }
 
     if (req.query.skip) {
       options.skip = parseInt(req.query.skip);
+    }
+
+    var parts = [];
+    if (req.query.sortBy) {
+      parts = req.query.sortBy.split(':');
+      options.sort[parts[0]] = parts[1] === 'desc' ? -1 : 1;
     }
 
     if (parts[0] == 'rank') {
@@ -148,10 +206,11 @@ const getReports = async (req, res) => {
         { $sort: options.sort },
         { $project: { imageBuffer: 0 } }
       ]);
+      res.status(200).send(reports);
     } else {
       var reports = await Report.find(match, '-imageBuffer', options);
+      res.status(200).send(reports);
     }
-    res.status(200).send(reports);
   } catch (e) {
     res.status(404).send(e);
   }
@@ -159,22 +218,104 @@ const getReports = async (req, res) => {
 
 const getCount = async (req, res) => {
   try {
-    let count = await Report.countDocuments({}, function(err, c) {
+    var match = {};
+    if (!(req.query.user == 'public')) {
+      match = userFilter(req.user);
+    }
+    if (req.query.status) {
+      match.status = `${req.query.status}`;
+    }
+    let count = await Report.countDocuments(match, function(err, c) {
       if (err) {
         console.log(err);
       }
     });
-    let report = await Report.findOne(
-      {},
-      { reportType: +1 },
-      { sort: { created_at: -1 } },
-      function(err, post) {
-        if (err) {
-          console.log(post);
+    res.status(200).send({ count: count });
+  } catch (e) {
+    res.status(404).send(e);
+  }
+};
+
+const getGraph = async (req, res) => {
+  try {
+    var match = {};
+    var count;
+    if (!(req.query.user == 'public')) {
+      match = userFilter(req.user);
+    }
+    if (req.query.reportType) {
+      if (req.query.reportType.length) match.reportType = req.query.reportType;
+    }
+
+    if (req.query.status) {
+      if (req.query.status.length) match.status = req.query.status;
+    }
+
+    if (req.query.graphType == 'monthly') {
+      match.createdAt = {
+        $gt: new Date(new Date().getTime() - 1000 * 60 * 60 * 24 * 30 * 6)
+      };
+
+      count = await Report.aggregate([
+        {
+          $match: match
+        },
+        {
+          $project: {
+            year: { $year: '$createdAt' },
+            month: { $month: '$createdAt' },
+            reportType: 1
+          }
+        },
+        {
+          $group: {
+            _id: { year: '$year', reportType: '$reportType', month: '$month' },
+            n: { $sum: 1 }
+          }
+        },
+        {
+          $project: {
+            month: '$_id.month',
+
+            reportType: '$_id.reportType',
+            _id: 0,
+            n: 1
+          }
         }
-      }
-    );
-    res.status(200).send({ count: count, report: report });
+      ]);
+    } else if (req.query.graphType == 'weekly') {
+      match.createdAt = {
+        $gt: new Date(new Date().getTime() - 1000 * 60 * 60 * 24 * 30)
+      };
+      count = await Report.aggregate([
+        {
+          $match: match
+        },
+        {
+          $project: {
+            year: { $year: '$createdAt' },
+            week: { $week: '$createdAt' },
+            reportType: 1
+          }
+        },
+        {
+          $group: {
+            _id: { year: '$year', reportType: '$reportType', week: '$week' },
+            n: { $sum: 1 }
+          }
+        },
+        {
+          $project: {
+            week: '$_id.week',
+
+            reportType: '$_id.reportType',
+            _id: 0,
+            n: 1
+          }
+        }
+      ]);
+    }
+    res.status(200).send(count);
   } catch (e) {
     res.status(404).send(e);
   }
@@ -210,6 +351,7 @@ const getImage = async (req, res) => {
 
 const updateReports = (req, res) => {
   try {
+    console.log(req.user);
     let idarray = req.body.idarray;
     let status = req.body.status;
     Report.updateMany(
@@ -249,6 +391,7 @@ module.exports = {
   getReportsID,
   getImage,
   getCount,
+  getGraph,
   updateReports,
   deleteReports
 };

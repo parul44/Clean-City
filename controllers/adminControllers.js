@@ -2,7 +2,10 @@ const passport = require('passport');
 const Admin = require('../models/adminModel');
 
 const register = (req, res, next) => {
-  var newUser = new Admin({ username: req.body.username });
+  var newUser = new Admin({
+    username: req.body.username,
+    owner: req.body.owner
+  });
   Admin.register(newUser, req.body.password, function(err, user) {
     if (err) {
       console.log(err);
@@ -14,7 +17,7 @@ const register = (req, res, next) => {
 };
 
 const login = passport.authenticate('local', {
-  successRedirect: '/dashboard',
+  // successRedirect: '/dashboard',
   failureRedirect: '/login'
 });
 
@@ -23,8 +26,13 @@ const logout = (req, res, next) => {
   res.redirect('/');
 };
 
+const getInfo = (req, res, next) => {
+  res.status(200).send(req.user);
+};
+
 module.exports = {
   register,
   login,
-  logout
+  logout,
+  getInfo
 };

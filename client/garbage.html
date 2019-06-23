@@ -237,7 +237,7 @@
     </footer>
     <script>
       fetch(
-        '/user/reports?reportType=garbage&limit=6&sortBy=createdAt:desc'
+        '/user/reports?user=public&reportType=garbage&limit=6&sortBy=createdAt:desc'
       ).then(res => {
         res.json().then(data => {
           cardimg = document.getElementsByClassName('card-img-top');

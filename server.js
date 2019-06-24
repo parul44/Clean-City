@@ -34,14 +34,54 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //passport for admin 
-passport.use(new LocalStrategy(Admin.authenticate()));
-passport.serializeUser(Admin.serializeUser());
-passport.deserializeUser(Admin.deserializeUser());
+passport.use("admin",new LocalStrategy(Admin.authenticate()));
+// passport.serializeUser(Admin.serializeUser());
+// passport.deserializeUser(Admin.deserializeUser());
 
-//passport for user
-passport.use(new LocalStrategy(User.authenticate()));
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+//passport for admin
+passport.use("user",new LocalStrategy(User.authenticate()));
+// passport.serializeUser(User.serializeUser());
+// passport.deserializeUser(User.deserializeUser());
+
+function SessionConstructor(userId, userGroup, details) {
+  this.userId = userId;
+  this.userGroup = userGroup;
+  this.details = details;
+}
+
+passport.serializeUser(function (userObject, done) {
+  // userObject could be a Model1 or a Model2... or Model3, Model4, etc.
+  let userGroup = "admin";
+  let userPrototype =  Object.getPrototypeOf(userObject);
+
+  if (userPrototype === Admin.prototype) {
+    userGroup = "admin";
+  } else if (userPrototype === User.prototype) {
+    userGroup = "user";
+  }
+
+  let sessionConstructor = new SessionConstructor(userObject.id, userGroup, '');
+  done(null,sessionConstructor);
+});
+
+passport.deserializeUser(function (sessionConstructor, done) {
+
+  if (sessionConstructor.userGroup == 'admin') {
+    Admin.findOne({
+        _id: sessionConstructor.userId
+    }, '-localStrategy.password', function (err, user) { // When using string syntax, prefixing a path with - will flag that path as excluded.
+        done(err, user);
+    });
+  } else if (sessionConstructor.userGroup == 'user') {
+    User.findOne({
+        _id: sessionConstructor.userId
+    }, '-localStrategy.password', function (err, user) { // When using string syntax, prefixing a path with - will flag that path as excluded.
+        done(err, user);
+    });
+  } 
+
+});
+
 
 
 // Routes
@@ -114,7 +154,7 @@ app.get('/userLogin', (req, res, next) => {
   res.sendFile(__dirname + '/client/userLogin.html');
 });
 
-app.get('/userDashboard', (req, res, next) => {
+app.get('/userDashboard',middleware.isLoggedInUser, (req, res, next) => {
   res.sendFile(__dirname + '/User/userDashboard.html');
 });
 

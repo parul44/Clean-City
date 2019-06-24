@@ -10,15 +10,15 @@ const register = (req, res, next) => {
     if (err) {
       console.log(err);
     }
-    passport.authenticate('local')(req, res, function() {
+    passport.authenticate('admin')(req, res, function() {
       res.redirect('/');
     });
   });
 };
 
-const login = passport.authenticate('local', {
+const login = passport.authenticate('admin', {
   // successRedirect: '/dashboard',
-  failureRedirect: '/login'
+  failureRedirect: '/adminLogin'
 });
 
 const logout = (req, res, next) => {

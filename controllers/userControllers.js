@@ -9,14 +9,14 @@ const register = (req, res, next) => {
     if (err) {
       console.log(err);
     }
-    passport.authenticate('local')(req, res, function() {
+    passport.authenticate('user')(req, res, function() {
       res.redirect('/');
     });
   });
 };
 
-const login = passport.authenticate('local', {
-  failureRedirect: '/login'
+const login = passport.authenticate('user', {
+  failureRedirect: '/userLogin'
 });
 
 const logout = (req, res, next) => {

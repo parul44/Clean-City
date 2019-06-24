@@ -3,10 +3,12 @@ const express = require('express');
 const path = require('path');
 require('./db/mongoose');
 const bodyParser = require('body-parser');
-const userRoutes = require('./routes/userRoutes');
 const Report = require('./models/reportModel');
+const reportRoutes = require('./routes/reportRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const userRoutes = require('./routes/userRoutes');
 const Admin = require('./models/adminModel');
+const User = require('./models/userModel');
 const passport = require('passport');
 var LocalStrategy = require('passport-local');
 var middleware = require('./middleware/auth');
@@ -30,16 +32,27 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
+
+//passport for admin 
 passport.use(new LocalStrategy(Admin.authenticate()));
 passport.serializeUser(Admin.serializeUser());
 passport.deserializeUser(Admin.deserializeUser());
 
+//passport for user
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+
 // Routes
-// User routes
-app.use('/user', userRoutes);
+// Report routes
+app.use('/report', reportRoutes);
 
 // Admin routes
 app.use('/admin', adminRoutes);
+
+// User routes
+app.use('/user', userRoutes);
 
 //html routes
 app.get('/about', (req, res, next) => {
@@ -66,7 +79,7 @@ app.get('/report/:id', async (req, res, next) => {
       <h5> Status : ${report.status}</h5>
       <pre>
         <p> 
-        <b>View Image:</b> <a href='/user/image/${
+        <b>View Image:</b> <a href='/report/image/${
           report._id
         }' target=_blank>Click here</a>
         <b>View Location on Google Map:</b> <a href='https://www.google.com/maps/dir/${
@@ -93,19 +106,31 @@ app.get('/report/:id', async (req, res, next) => {
   }
 });
 
-app.get('/register', (req, res, next) => {
-  res.sendFile(__dirname + '/client/register.html');
+app.get('/userRegister', (req, res, next) => {
+  res.sendFile(__dirname + '/client/userRegister.html');
 });
 
-app.get('/login', (req, res, next) => {
-  res.sendFile(__dirname + '/client/login.html');
+app.get('/userLogin', (req, res, next) => {
+  res.sendFile(__dirname + '/client/userLogin.html');
 });
 
-app.get('/dashboard', middleware.isLoggedIn, (req, res, next) => {
+app.get('/userDashboard', (req, res, next) => {
+  res.sendFile(__dirname + '/User/userDashboard.html');
+});
+
+app.get('/adminRegister', (req, res, next) => {
+  res.sendFile(__dirname + '/client/adminRegister.html');
+});
+
+app.get('/adminLogin', (req, res, next) => {
+  res.sendFile(__dirname + '/client/adminLogin.html');
+});
+
+app.get('/dashboard',middleware.isLoggedIn, (req, res, next) => {
   res.sendFile(__dirname + '/admin/dashboard.html');
 });
 
-app.get('/dashboardReports', middleware.isLoggedIn, (req, res, next) => {
+app.get('/dashboardReports',middleware.isLoggedIn, (req, res, next) => {
   res.sendFile(__dirname + '/admin/ReportsForAdmin.html');
 });
 

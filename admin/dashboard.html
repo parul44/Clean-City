@@ -323,9 +323,9 @@
         unseenText = document.getElementById('unseenText')
         seenText = document.getElementById('seenText')
         closedText = document.getElementById('closedText')
-        fetch("/user/count/?status=unseen").then(res => res.json()).then(data => {unseenText.textContent=data.count;})
-        fetch("/user/count/?status=seen").then(res => res.json()).then(data => {seenText.textContent=data.count;})
-        fetch("/user/count/?status=closed").then(res => res.json()).then(data => {closedText.textContent=data.count;})
+        fetch("/report/count/?status=unseen").then(res => res.json()).then(data => {unseenText.textContent=data.count;})
+        fetch("/report/count/?status=seen").then(res => res.json()).then(data => {seenText.textContent=data.count;})
+        fetch("/report/count/?status=closed").then(res => res.json()).then(data => {closedText.textContent=data.count;})
       </script>
 
     <!--Script for line chart for years-->
@@ -345,7 +345,7 @@
                 "translate(" + margin.left + "," + margin.top + ")");
       
       //Read the data
-      d3.json("/user/graph/?graphType=weekly").then(function(data) {
+      d3.json("/report/graph/?graphType=weekly").then(function(data) {
         console.log(data);
           // List of groups (here I have one group per column)s
           var allGroup = d3.map(data, function(d){return(d.reportType)}).keys()
@@ -452,7 +452,7 @@
       .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")");
   //Read the data
-  d3.json("/user/graph/?graphType=monthly").then(function(data) {
+  d3.json("/report/graph/?graphType=monthly").then(function(data) {
     console.log(data);
       console.log(d3.max(data,function(d){return d.month;}));
       // List of groups (here I have one group per column)
@@ -547,10 +547,10 @@
     <!-- SCRIPT FOR NOTIFICATION -->
     <!-- <script>
               var oldcount=0;
-              fetch("/user/count").then(res => res.json()).then(data => {oldcount=data.count;});
+              fetch("/report/count").then(res => res.json()).then(data => {oldcount=data.count;});
               setInterval(async function(){
                 var count,report;
-                fetch("/user/count").then(res => res.json()).then(data => {
+                fetch("/report/count").then(res => res.json()).then(data => {
                   count=data.count
                   report=data.report
                   if(count>oldcount){
@@ -591,39 +591,39 @@
                 case user.owner=='PWD':
                   map.addSource('Road', {
                     type: 'geojson',
-                    data: '/user/geojson/road'
+                    data: '/report/geojson/road'
                   });
                   break;
                 case user.owner=='DJB':
                   map.addSource('Water', {
                     type: 'geojson',
-                    data: '/user/geojson/water'
+                    data: '/report/geojson/water'
                   });
                   break;
                 case user.owner=='EDMC'||user.owner=='NDMC'||user.owner=='SDMC'||user.owner=='NewDMC':
                   map.addSource('Garbage', {
                     type: 'geojson',
-                    data: '/user/geojson/garbage'
+                    data: '/report/geojson/garbage'
                   });
 
                   map.addSource('Road', {
                     type: 'geojson',
-                    data: '/user/geojson/road'
+                    data: '/report/geojson/road'
                   });
                   
                   map.addSource('Water', {
                     type: 'geojson',
-                    data: '/user/geojson/water'
+                    data: '/report/geojson/water'
                   });
 
                   map.addSource('Electricity', {
                     type: 'geojson',
-                    data: '/user/geojson/electricity'
+                    data: '/report/geojson/electricity'
                   });
           
                   map.addSource('Crime', {
                     type: 'geojson',
-                    data: '/user/geojson/crime'
+                    data: '/report/geojson/crime'
                   });
                   break;
               }

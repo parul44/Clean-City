@@ -32,9 +32,17 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
+
+//passport for admin 
 passport.use(new LocalStrategy(Admin.authenticate()));
 passport.serializeUser(Admin.serializeUser());
 passport.deserializeUser(Admin.deserializeUser());
+
+//passport for user
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 
 // Routes
 // Report routes
@@ -98,27 +106,31 @@ app.get('/report/:id', async (req, res, next) => {
   }
 });
 
-app.get('/adminregister', (req, res, next) => {
-  res.sendFile(__dirname + '/client/adminRegister.html');
-});
-
-app.get('/adminlogin', (req, res, next) => {
-  res.sendFile(__dirname + '/client/adminLogin.html');
-});
-
-app.get('/register', (req, res, next) => {
+app.get('/userRegister', (req, res, next) => {
   res.sendFile(__dirname + '/client/userRegister.html');
 });
 
-app.get('/login', (req, res, next) => {
+app.get('/userLogin', (req, res, next) => {
   res.sendFile(__dirname + '/client/userLogin.html');
 });
 
-app.get('/dashboard', middleware.isLoggedIn, (req, res, next) => {
+app.get('/userDashboard', (req, res, next) => {
+  res.sendFile(__dirname + '/User/userDashboard.html');
+});
+
+app.get('/adminRegister', (req, res, next) => {
+  res.sendFile(__dirname + '/client/adminRegister.html');
+});
+
+app.get('/adminLogin', (req, res, next) => {
+  res.sendFile(__dirname + '/client/adminLogin.html');
+});
+
+app.get('/dashboard',middleware.isLoggedIn, (req, res, next) => {
   res.sendFile(__dirname + '/admin/dashboard.html');
 });
 
-app.get('/dashboardReports', middleware.isLoggedIn, (req, res, next) => {
+app.get('/dashboardReports',middleware.isLoggedIn, (req, res, next) => {
   res.sendFile(__dirname + '/admin/ReportsForAdmin.html');
 });
 

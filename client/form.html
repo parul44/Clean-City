@@ -116,7 +116,7 @@
             <form
               id="myForm"
               enctype="multipart/form-data"
-              action="/user/submit"
+              action="/report/submit"
               method="post"
             >
               <br />
@@ -130,6 +130,7 @@
                       placeholder=" Optional"
                       size="60"
                       name="name"
+                      minlength="1"
                     /><br />
                   </div>
                 </div>
@@ -142,6 +143,8 @@
                       placeholder=" Optional"
                       size="60"
                       name="contactNumber"
+                      maxlength="10"
+                      minlength="10"
                     /><br />
                   </div>
                 </div>
@@ -227,6 +230,12 @@
                   size="30"
                   name="latitude"
                   required
+                /><br />
+                <input
+                  type="hidden"
+                  id="username"
+                  placeholder="Press button to AutoDetect"
+                  name="username"
                 /><br />
               </div>
               <button
@@ -315,7 +324,23 @@
         </div>
       </div>
     </footer>
-
+    <script>
+      var user;
+      var $username = document.getElementById('username');
+      var $name = document.getElementById('name');
+      // var $contactNumber = document.getElementById('contactNumber');
+      fetch('/user/info')
+        .then(res => res.json())
+        .then(data => {
+          user = data;
+          $username.value = user.username;
+          $name.value = user.name;
+          // $contactNumber.value = user.contactNumber;
+          $name.readOnly = true;
+          // $contactNumber.disabled = 'true';
+        })
+        .catch(e => console.log);
+    </script>
     <!-- MAPBOX script -->
     <script>
       mapboxgl.accessToken =

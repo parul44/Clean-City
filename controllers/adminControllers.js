@@ -11,7 +11,7 @@ const register = (req, res, next) => {
       console.log(err);
     }
     passport.authenticate('admin')(req, res, function() {
-      res.redirect('/');
+      res.redirect('/dashboard');
     });
   });
 };

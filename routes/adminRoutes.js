@@ -8,8 +8,8 @@ router.post('/login', adminControllers.login, function(req, res) {
   res.redirect(`/dashboard`);
 });
 
-router.get('/info', adminControllers.getInfo);
-
 router.get('/logout', adminControllers.logout);
+
+router.get('/info', adminControllers.getInfo);
 
 module.exports = router;

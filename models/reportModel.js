@@ -4,12 +4,17 @@ const mongoose = require('mongoose');
 //Defining reportSchema
 const reportSchema = new mongoose.Schema(
   {
+    username: {
+      type: String,
+      trim: true
+    },
     name: {
       type: String,
       trim: true
     },
     contactNumber: {
-      type: Number
+      type: Number,
+      trim: true
     },
     reportType: {
       type: String,

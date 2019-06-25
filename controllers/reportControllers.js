@@ -1,6 +1,7 @@
 // name the controllers in this format '<method of request><Name of the route>'
 
 const Report = require('../models/reportModel');
+const User = require('../models/userModel');
 const multer = require('multer');
 const sharp = require('sharp');
 const fetch = require('node-fetch');
@@ -49,6 +50,18 @@ const postSubmitData = async (req, res) => {
 
     const report = new Report(req.body);
     await report.save();
+
+    if (req.user) {
+      let username = req.user.username;
+      User.updateOne({ username: username }, { $inc: { credits: 2 } }, function(
+        err
+      ) {
+        if (err) {
+          console.log(err);
+        }
+      });
+    }
+
     res.status(201).send(`Report added to DB! with id ${report._id}`);
   } catch (e) {
     res.status(400).send({ error: e.errmsg });

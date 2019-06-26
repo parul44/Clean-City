@@ -3,14 +3,15 @@ const User = require('../models/userModel');
 
 const register = (req, res, next) => {
   var newUser = new User({
-    username: req.body.username
+    username: req.body.username,
+    name: req.body.name
   });
   User.register(newUser, req.body.password, function(err, user) {
     if (err) {
       console.log(err);
     }
     passport.authenticate('user')(req, res, function() {
-      res.redirect('/');
+      res.redirect('/userDashboard');
     });
   });
 };
@@ -24,8 +25,13 @@ const logout = (req, res, next) => {
   res.redirect('/');
 };
 
+const getInfo = (req, res, next) => {
+  res.status(200).send(req.user);
+};
+
 module.exports = {
   register,
   login,
-  logout
+  logout,
+  getInfo
 };

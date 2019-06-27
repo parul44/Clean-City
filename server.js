@@ -161,7 +161,7 @@ app.get('/userLogin', (req, res, next) => {
 });
 
 app.get('/userDashboard', middleware.isLoggedInUser, (req, res, next) => {
-  res.sendFile(__dirname + '/user/userDashboard.html');
+  res.sendFile(__dirname + '/users/userDashboard.html');
 });
 
 app.get('/adminRegister', (req, res, next) => {
@@ -173,11 +173,11 @@ app.get('/adminLogin', (req, res, next) => {
 });
 
 app.get('/dashboard', middleware.isLoggedIn, (req, res, next) => {
-  res.sendFile(__dirname + '/admin/dashboard.html');
+  res.sendFile(__dirname + '/admins/dashboard.html');
 });
 
 app.get('/dashboardReports', middleware.isLoggedIn, (req, res, next) => {
-  res.sendFile(__dirname + '/admin/ReportsForAdmin.html');
+  res.sendFile(__dirname + '/admins/ReportsForAdmin.html');
 });
 
 app.get('/', (req, res, next) => {

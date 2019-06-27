@@ -8,7 +8,7 @@ const reportRoutes = require('./routes/reportRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const userRoutes = require('./routes/userRoutes');
 const Admin = require('./models/adminModel');
-const User = require('./models/userModel');
+const u = require('./models/userModel');
 const passport = require('passport');
 var LocalStrategy = require('passport-local');
 var middleware = require('./middleware/auth');
@@ -33,15 +33,15 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-//passport for admin 
-passport.use("admin",new LocalStrategy(Admin.authenticate()));
+//passport for admin
+passport.use('admin', new LocalStrategy(Admin.authenticate()));
 // passport.serializeUser(Admin.serializeUser());
 // passport.deserializeUser(Admin.deserializeUser());
 
 //passport for admin
-passport.use("user",new LocalStrategy(User.authenticate()));
-// passport.serializeUser(User.serializeUser());
-// passport.deserializeUser(User.deserializeUser());
+passport.use('user', new LocalStrategy(u.authenticate()));
+// passport.serializeUser(u.serializeUser());
+// passport.deserializeUser(u.deserializeUser());
 
 function SessionConstructor(userId, userGroup, details) {
   this.userId = userId;
@@ -49,40 +49,46 @@ function SessionConstructor(userId, userGroup, details) {
   this.details = details;
 }
 
-passport.serializeUser(function (userObject, done) {
+passport.serializeUser(function(userObject, done) {
   // userObject could be a Model1 or a Model2... or Model3, Model4, etc.
-  let userGroup = "admin";
-  let userPrototype =  Object.getPrototypeOf(userObject);
+  let userGroup = 'admin';
+  let userPrototype = Object.getPrototypeOf(userObject);
 
   if (userPrototype === Admin.prototype) {
-    userGroup = "admin";
-  } else if (userPrototype === User.prototype) {
-    userGroup = "user";
+    userGroup = 'admin';
+  } else if (userPrototype === u.prototype) {
+    userGroup = 'user';
   }
 
   let sessionConstructor = new SessionConstructor(userObject.id, userGroup, '');
-  done(null,sessionConstructor);
+  done(null, sessionConstructor);
 });
 
-passport.deserializeUser(function (sessionConstructor, done) {
-
+passport.deserializeUser(function(sessionConstructor, done) {
   if (sessionConstructor.userGroup == 'admin') {
-    Admin.findOne({
+    Admin.findOne(
+      {
         _id: sessionConstructor.userId
-    }, '-localStrategy.password', function (err, user) { // When using string syntax, prefixing a path with - will flag that path as excluded.
+      },
+      '-localStrategy.password',
+      function(err, user) {
+        // When using string syntax, prefixing a path with - will flag that path as excluded.
         done(err, user);
-    });
+      }
+    );
   } else if (sessionConstructor.userGroup == 'user') {
-    User.findOne({
+    u.findOne(
+      {
         _id: sessionConstructor.userId
-    }, '-localStrategy.password', function (err, user) { // When using string syntax, prefixing a path with - will flag that path as excluded.
+      },
+      '-localStrategy.password',
+      function(err, user) {
+        // When using string syntax, prefixing a path with - will flag that path as excluded.
         done(err, user);
-    });
-  } 
-
+      }
+    );
+  }
 });
-
-
 
 // Routes
 // Report routes
@@ -91,7 +97,7 @@ app.use('/report', reportRoutes);
 // Admin routes
 app.use('/admin', adminRoutes);
 
-// User routes
+// u routes
 app.use('/user', userRoutes);
 
 //html routes
@@ -154,8 +160,8 @@ app.get('/userLogin', (req, res, next) => {
   res.sendFile(__dirname + '/client/userLogin.html');
 });
 
-app.get('/userDashboard',middleware.isLoggedInUser, (req, res, next) => {
-  res.sendFile(__dirname + '/User/userDashboard.html');
+app.get('/userDashboard', middleware.isLoggedInUser, (req, res, next) => {
+  res.sendFile(__dirname + '/users/userDashboard.html');
 });
 
 app.get('/adminRegister', (req, res, next) => {
@@ -166,12 +172,12 @@ app.get('/adminLogin', (req, res, next) => {
   res.sendFile(__dirname + '/client/adminLogin.html');
 });
 
-app.get('/dashboard',middleware.isLoggedIn, (req, res, next) => {
-  res.sendFile(__dirname + '/admin/dashboard.html');
+app.get('/dashboard', middleware.isLoggedIn, (req, res, next) => {
+  res.sendFile(__dirname + '/admins/dashboard.html');
 });
 
-app.get('/dashboardReports',middleware.isLoggedIn, (req, res, next) => {
-  res.sendFile(__dirname + '/admin/ReportsForAdmin.html');
+app.get('/dashboardReports', middleware.isLoggedIn, (req, res, next) => {
+  res.sendFile(__dirname + '/admins/ReportsForAdmin.html');
 });
 
 app.get('/', (req, res, next) => {

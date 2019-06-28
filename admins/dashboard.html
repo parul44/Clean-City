@@ -1,4 +1,3 @@
- 
 <!DOCTYPE html>
 <html lang="en">
 
@@ -346,7 +345,6 @@
       
       //Read the data
       d3.json("/report/graph/?graphType=weekly").then(function(data) {
-        console.log(data);
           // List of groups (here I have one group per column)s
           var allGroup = d3.map(data, function(d){return(d.reportType)}).keys()
       
@@ -453,7 +451,6 @@
             "translate(" + margin.left + "," + margin.top + ")");
   //Read the data
   d3.json("/report/graph/?graphType=monthly").then(function(data) {
-    console.log(data);
       console.log(d3.max(data,function(d){return d.month;}));
       // List of groups (here I have one group per column)
       var allGroup = d3.map(data, function(d){return(d.reportType)}).keys()
@@ -544,29 +541,11 @@
         
     </script>
 
-    <!-- SCRIPT FOR NOTIFICATION -->
-    <!-- <script>
-              var oldcount=0;
-              fetch("/report/count").then(res => res.json()).then(data => {oldcount=data.count;});
-              setInterval(async function(){
-                var count,report;
-                fetch("/report/count").then(res => res.json()).then(data => {
-                  count=data.count
-                  report=data.report
-                  if(count>oldcount){
-                    nowuiDashboard.showNotification('bottom','center', report);
-                  }
-                  oldcount=count;
-                });
-              },4000);
-          
-    </script> -->
-
-    <!-- mapbox script -->
+<!-- mapbox script/notification -->
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.js'></script>
+    <script src="/socket.io/socket.io.js"></script>
     <script>
-      
-      var user={owner: '-' , username: '-'};
+      let user={owner: '-' , username: '-'};
       fetch("/admin/info").then(res => res.json()).then(data => {
         
         user=data;
@@ -582,10 +561,6 @@
             map.on('load', function() {
       
               //ADDING LAYER SOURCES
-              map.addSource('Sample', {
-                type: 'geojson',
-                data: 'sampleJson.geojson'
-              });
 
               switch (true) {
                 case user.owner=='PWD':
@@ -630,58 +605,7 @@
               
               
               //ADDING  HEATMAP LAYERS
-              map.addLayer({
-                id: 'Sample-heat',
-                type: 'heatmap',
-                source: 'Sample',
-                maxzoom: 15,
-                paint: {
-                  // increase weight as diameter breast height increases
-                  'heatmap-weight': {
-                    property: 'dbh',
-                    type: 'exponential',
-                    stops: [
-                      [1, 0],
-                      [62, 1]
-                    ]
-                  },
-                  // increase intensity as zoom level increases
-                  'heatmap-intensity': {
-                    stops: [
-                      [11, 1],
-                      [15, 3]
-                    ]
-                  },
-                  // assign color values be applied to points depending on their density
-                  'heatmap-color': [
-                    'interpolate',
-                    ['linear'],
-                    ['heatmap-density'],
-                    0, "rgba(33,102,172,0)",
-                    0.2, "rgb(103,169,207)",
-                    0.4, "rgb(209,229,240)",
-                    0.6, "rgb(253,219,199)",
-                    0.8, "rgb(239,138,98)",
-                    1, "rgb(178,24,43)"
-                  ],
-                  // increase radius as zoom increases
-                  'heatmap-radius': {
-                    stops: [
-                      [11, 15],
-                      [15, 20]
-                    ]
-                  },
-                  // decrease opacity to transition into the circle layer
-                  'heatmap-opacity': {
-                    default: 1,
-                    stops: [
-                      [14, 1],
-                      [15, 0]
-                    ]
-                  },
-                }
-              }, 'waterway-label');
-        
+          
               switch (true) {
                 case user.owner=='PWD':
                   map.addLayer({
@@ -1052,47 +976,8 @@
                   break;
               }
 
+
               //ADDING  POINTS LAYERS
-              map.addLayer({
-                id: 'Sample-point',
-                type: 'circle',
-                source: 'Sample',
-                minzoom: 14,
-                paint: {
-                  // increase the radius of the circle as the zoom level and dbh value increases
-                  'circle-radius': {
-                    property: 'dbh',
-                    type: 'exponential',
-                    stops: [
-                      [{ zoom: 15, value: 1 }, 5],
-                      [{ zoom: 15, value: 62 }, 10],
-                      [{ zoom: 22, value: 1 }, 20],
-                      [{ zoom: 22, value: 62 }, 50],
-                    ]
-                  },
-                  'circle-color': {
-                    property: 'dbh',
-                    type: 'exponential',
-                    stops: [
-                      [0, 'rgba(236,222,239,0)'],
-                      [10, 'rgb(236,222,239)'],
-                      [20, 'rgb(208,209,230)'],
-                      [30, 'rgb(166,189,219)'],
-                      [40, 'rgb(103,169,207)'],
-                      [50, 'rgb(28,144,153)'],
-                      [60, 'rgb(1,108,89)']
-                    ]
-                  },
-                  'circle-stroke-color': 'white',
-                  'circle-stroke-width': 1,
-                  'circle-opacity': {
-                    stops: [
-                      [14, 0],
-                      [15, 1]
-                    ]
-                  }
-                }
-              }, 'waterway-label');
               
               switch (true) {
                 case user.owner=='PWD':
@@ -1389,18 +1274,18 @@
                   break;
               }
               
-              
+        
               //On clicking point layers
               var pointLayerIds=[];
               switch (true) {
                 case user.owner=='PWD':
-                pointLayerIds = [ 'Sample-point', 'Road-point'];
+                pointLayerIds = ['Road-point'];
                   break;
                 case user.owner=='DJB':
-                  pointLayerIds = [ 'Sample-point', 'Water-point'];
+                  pointLayerIds = [ 'Water-point'];
                   break;
                 case user.owner=='EDMC'||user.owner=='NDMC'||user.owner=='SDMC'||user.owner=='NewDMC':
-                  pointLayerIds = [ 'Sample-point','Garbage-point', 'Road-point', 'Water-point', 'Electricity-point', 'Crime-point' ];
+                  pointLayerIds = ['Garbage-point', 'Road-point', 'Water-point', 'Electricity-point', 'Crime-point' ];
                   break;
               }
               
@@ -1432,16 +1317,16 @@
           var toggleableLayerIds=[];
           switch (true) {
             case user.owner=='PWD':
-              toggleableLayerIds = [ ['Sample-heat', 'Sample-point'], ['Road-heat', 'Road-point'] ];
+              toggleableLayerIds = [ ['Road-heat', 'Road-point'] ];
               break;
             case user.owner=='DJB':
-              toggleableLayerIds = [ ['Sample-heat', 'Sample-point'], ['Water-heat', 'Water-point'] ];
+              toggleableLayerIds = [ ['Water-heat', 'Water-point'] ];
               break;
             case user.owner=='EDMC'||user.owner=='NDMC'||user.owner=='SDMC'||user.owner=='NewDMC':
-              toggleableLayerIds = [ ['Sample-heat', 'Sample-point'],['Garbage-heat', 'Garbage-point'], ['Road-heat', 'Road-point'], ['Water-heat', 'Water-point'], ['Electricity-heat', 'Electricity-point'], ['Crime-heat', 'Crime-point'] ];
+              toggleableLayerIds = [ ['Garbage-heat', 'Garbage-point'], ['Road-heat', 'Road-point'], ['Water-heat', 'Water-point'], ['Electricity-heat', 'Electricity-point'], ['Crime-heat', 'Crime-point'] ];
           }
+
           for (var i = 0; i < toggleableLayerIds.length; i++) {
-            
             var link = document.createElement('a');
             link.href = '#';
             link.className = 'active';
@@ -1470,6 +1355,52 @@
             layers.appendChild(link);
           }
           
+          const socket = io();
+          function notifyMe() {
+            // Let's check if the browser supports notifications
+            if (!('Notification' in window)) {
+              alert('This browser does not support desktop notification');
+            }
+
+            // Let's check if the user is okay to get some notification
+            else if (Notification.permission === 'granted') {
+              // If it's okay let's create a notification
+              var notification = new Notification('Hi there!');
+            }
+
+            // Otherwise, we need to ask the user for permission
+            // Note, Chrome does not implement the permission static property
+            // So we have to check for NOT 'denied' instead of 'default'
+            else if (Notification.permission !== 'denied') {
+              Notification.requestPermission(function(permission) {
+                // Whatever the user answers, we make sure we store the information
+                if (!('permission' in Notification)) {
+                  Notification.permission = permission;
+                }
+
+                // If the user is okay, let's create a notification
+                if (permission === 'granted') {
+                  var notification = new Notification('Hi there!');
+                }
+              });
+            }
+          }
+          
+          switch(user.owner){
+            case 'PWD':
+              socket.on('reportAddedPWD', () => {
+                notifyMe();
+                console.log('reportAddedPWD Event trigerred');
+              });
+              break;
+            case 'DJB':
+              socket.on('reportAddedDJB', () => {
+                notifyMe();
+                console.log('reportAddedDJB Event trigerred');
+              });
+              break;
+          }
+
         })
 
     </script>

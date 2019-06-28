@@ -5,6 +5,7 @@ const User = require('../models/userModel');
 const multer = require('multer');
 const sharp = require('sharp');
 const fetch = require('node-fetch');
+const io = require('../socket');
 
 //controllers
 //Multer file upload controller
@@ -78,6 +79,17 @@ const postSubmitData = async (req, res) => {
           }
         );
       }
+    }
+    //Emit notification event according to report type/jurisdiction
+    switch (true) {
+      case report.reportType == 'road':
+        io.getIO().emit('reportAddedPWD');
+        console.log('reportAddedPWD Event emitted');
+        break;
+      case report.reportType == 'water':
+        io.getIO().emit('reportAddedDJB');
+        console.log('reportAddedDJB Event emitted');
+        break;
     }
 
     res.status(201).send(`Report added to DB! with id ${report._id}`);

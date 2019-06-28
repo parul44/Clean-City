@@ -29,9 +29,26 @@ const getInfo = (req, res, next) => {
   res.status(200).send(req.user);
 };
 
+const redeem = (req, res, next) => {
+  try {
+    let username = req.user.username;
+    User.updateOne({ username: username }, { $inc: { credits: -5 } }, function(
+      err
+    ) {
+      if (err) {
+        console.log(err);
+      }
+    });
+    res.status(200).send(`Redeemed`);
+  } catch (e) {
+    res.status(404).send(e);
+  }
+};
+
 module.exports = {
   register,
   login,
   logout,
-  getInfo
+  getInfo,
+  redeem
 };

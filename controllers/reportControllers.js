@@ -24,6 +24,7 @@ const upload = multer({
 //Image resizing - Saving in DB controller
 const postSubmitData = async (req, res) => {
   try {
+    var newReport = {};
     const buffer = await sharp(req.file.buffer)
       .resize(1920, 1920, {
         fit: 'inside',
@@ -31,11 +32,17 @@ const postSubmitData = async (req, res) => {
       })
       .toFormat('jpeg')
       .toBuffer();
-    req.body.imageBuffer = buffer;
-    req.body.properties = {
+    newReport.imageBuffer = buffer;
+    if (!req.body.name == '') newReport.name = req.body.name;
+    if (!req.body.contactNumber == null)
+      newReport.contactNumber = req.body.contactNumber;
+    newReport.reportType = req.body.reportType;
+    newReport.description = req.body.description;
+    newReport.location = req.body.location;
+    newReport.properties = {
       brief: req.body.description.slice(0, 100)
     };
-    req.body.geometry = {
+    newReport.geometry = {
       coordinates: [req.body.longitude, req.body.latitude]
     };
 
@@ -46,26 +53,31 @@ const postSubmitData = async (req, res) => {
     );
 
     const data = await response.json();
-    req.body.results = data.results[0];
+    newReport.results = data.results[0];
 
-    const report = new Report(req.body);
+    if (req.user) {
+      if (!req.user.owner) newReport.username = req.user.username;
+    }
+
+    const report = new Report(newReport);
     await report.save();
 
     //After saving report , checking user and updating user account
     if (req.user) {
-      let _id = req.user._id;
-      User.updateOne(
-        { _id: _id },
-        {
-          $inc: { credits: 2, submissions: 1 },
-          $push: { reportIDs: report._id }
-        },
-        function(err) {
-          if (err) {
-            console.log(err);
+      if (!req.user.owner) {
+        let _id = req.user._id;
+        User.updateOne(
+          { _id: _id },
+          {
+            $inc: { credits: 2, submissions: 1 }
+          },
+          function(err) {
+            if (err) {
+              console.log(err);
+            }
           }
-        }
-      );
+        );
+      }
     }
 
     res.status(201).send(`Report added to DB! with id ${report._id}`);
@@ -387,7 +399,6 @@ const getImage = async (req, res) => {
 
 const updateReports = (req, res) => {
   try {
-    console.log(req.user);
     let idarray = req.body.idarray;
     let status = req.body.status;
     Report.updateMany(

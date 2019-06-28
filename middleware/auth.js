@@ -1,6 +1,6 @@
 var middlewareobj = {};
 
-middlewareobj.isLoggedIn = function(req, res, next) {
+middlewareobj.isLoggedInAdmin = function(req, res, next) {
   if (req.isAuthenticated()) {
     if (req.user.owner) return next();
   }

@@ -13,12 +13,16 @@ const userSchema = new mongoose.Schema({
     trim: true,
     required: true
   },
-  contactNumber: {
-    type: String,
-    trim: true
-  },
+  // contactNumber: {
+  //   type: String,
+  //   trim: true
+  // },
   password: String,
   credits: {
+    type: Number,
+    default: 0
+  },
+  submissions: {
     type: Number,
     default: 0
   }

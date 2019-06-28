@@ -24,6 +24,7 @@ const upload = multer({
 //Image resizing - Saving in DB controller
 const postSubmitData = async (req, res) => {
   try {
+    var newReport = {};
     const buffer = await sharp(req.file.buffer)
       .resize(1920, 1920, {
         fit: 'inside',
@@ -31,11 +32,17 @@ const postSubmitData = async (req, res) => {
       })
       .toFormat('jpeg')
       .toBuffer();
-    req.body.imageBuffer = buffer;
-    req.body.properties = {
+    newReport.imageBuffer = buffer;
+    if (!req.body.name == '') newReport.name = req.body.name;
+    if (!req.body.contactNumber == null)
+      newReport.contactNumber = req.body.contactNumber;
+    newReport.reportType = req.body.reportType;
+    newReport.description = req.body.description;
+    newReport.location = req.body.location;
+    newReport.properties = {
       brief: req.body.description.slice(0, 100)
     };
-    req.body.geometry = {
+    newReport.geometry = {
       coordinates: [req.body.longitude, req.body.latitude]
     };
 
@@ -46,20 +53,31 @@ const postSubmitData = async (req, res) => {
     );
 
     const data = await response.json();
-    req.body.results = data.results[0];
-
-    const report = new Report(req.body);
-    await report.save();
+    newReport.results = data.results[0];
 
     if (req.user) {
-      let username = req.user.username;
-      User.updateOne({ username: username }, { $inc: { credits: 2 } }, function(
-        err
-      ) {
-        if (err) {
-          console.log(err);
-        }
-      });
+      if (!req.user.owner) newReport.username = req.user.username;
+    }
+
+    const report = new Report(newReport);
+    await report.save();
+
+    //After saving report , checking user and updating user account
+    if (req.user) {
+      if (!req.user.owner) {
+        let _id = req.user._id;
+        User.updateOne(
+          { _id: _id },
+          {
+            $inc: { credits: 2, submissions: 1 }
+          },
+          function(err) {
+            if (err) {
+              console.log(err);
+            }
+          }
+        );
+      }
     }
 
     res.status(201).send(`Report added to DB! with id ${report._id}`);
@@ -68,60 +86,65 @@ const postSubmitData = async (req, res) => {
   }
 };
 
+const adminFilter = user => {
+  var match = {};
+  switch (user.owner) {
+    case 'EDMC':
+      match['results.district'] = {
+        $in: ['Shahdara District', 'East District', 'North East District']
+      };
+      match.reportType = {
+        $in: ['garbage', 'road', 'water', 'electricity', 'crime']
+      };
+      break;
+    case 'SDMC':
+      match['results.district'] = {
+        $in: [
+          'South East Delhi District',
+          'South District',
+          'West District',
+          'South West District',
+          'Central District'
+        ]
+      };
+      match.reportType = {
+        $in: ['garbage', 'road', 'water', 'electricity', 'crime']
+      };
+      break;
+    case 'NDMC':
+      match['results.district'] = {
+        $in: ['North West District', 'North District', 'Central District']
+      };
+      match.reportType = {
+        $in: ['garbage', 'road', 'water', 'electricity', 'crime']
+      };
+      break;
+    case 'NewDMC':
+      match['results.district'] = {
+        $in: ['New Delhi District']
+      };
+      match.reportType = {
+        $in: ['garbage', 'road', 'water', 'electricity', 'crime']
+      };
+      break;
+    case 'DJB':
+      match.reportType = {
+        $in: ['water']
+      };
+      break;
+    case 'PWD':
+      match.reportType = {
+        $in: ['road']
+      };
+      break;
+  }
+
+  return match;
+};
+
 const userFilter = user => {
   var match = {};
-  if (user) {
-    switch (user.owner) {
-      case 'EDMC':
-        match['results.district'] = {
-          $in: ['Shahdara District', 'East District', 'North East District']
-        };
-        match.reportType = {
-          $in: ['garbage', 'road', 'water', 'electricity', 'crime']
-        };
-        break;
-      case 'SDMC':
-        match['results.district'] = {
-          $in: [
-            'South East Delhi District',
-            'South District',
-            'West District',
-            'South West District',
-            'Central District'
-          ]
-        };
-        match.reportType = {
-          $in: ['garbage', 'road', 'water', 'electricity', 'crime']
-        };
-        break;
-      case 'NDMC':
-        match['results.district'] = {
-          $in: ['North West District', 'North District', 'Central District']
-        };
-        match.reportType = {
-          $in: ['garbage', 'road', 'water', 'electricity', 'crime']
-        };
-        break;
-      case 'NewDMC':
-        match['results.district'] = {
-          $in: ['New Delhi District']
-        };
-        match.reportType = {
-          $in: ['garbage', 'road', 'water', 'electricity', 'crime']
-        };
-        break;
-      case 'DJB':
-        match.reportType = {
-          $in: ['water']
-        };
-        break;
-      case 'PWD':
-        match.reportType = {
-          $in: ['road']
-        };
-        break;
-    }
-  }
+  match.username = user.username;
   return match;
 };
 
@@ -129,7 +152,10 @@ const getGeojson = async (req, res) => {
   try {
     var match = {};
     if (!(req.query.user == 'public')) {
-      match = userFilter(req.user);
+      if (req.user) {
+        if (req.user.owner) match = adminFilter(req.user);
+        else match = userFilter(req.user);
+      }
     }
     match.reportType = req.params.reportType;
     match.status = { $nin: ['closed'] };
@@ -150,7 +176,10 @@ const getReports = async (req, res) => {
     var match = {};
     var options = { sort: {} };
     if (!(req.query.user == 'public')) {
-      match = userFilter(req.user);
+      if (req.user) {
+        if (req.user.owner) match = adminFilter(req.user);
+        else match = userFilter(req.user);
+      }
     }
 
     if (req.query.reportType) {
@@ -233,7 +262,10 @@ const getCount = async (req, res) => {
   try {
     var match = {};
     if (!(req.query.user == 'public')) {
-      match = userFilter(req.user);
+      if (req.user) {
+        if (req.user.owner) match = adminFilter(req.user);
+        else match = userFilter(req.user);
+      }
     }
     if (req.query.status) {
       match.status = `${req.query.status}`;
@@ -254,7 +286,10 @@ const getGraph = async (req, res) => {
     var match = {};
     var count;
     if (!(req.query.user == 'public')) {
-      match = userFilter(req.user);
+      if (req.user) {
+        if (req.user.owner) match = adminFilter(req.user);
+        else match = userFilter(req.user);
+      }
     }
     if (req.query.reportType) {
       if (req.query.reportType.length) match.reportType = req.query.reportType;
@@ -364,7 +399,6 @@ const getImage = async (req, res) => {
 
 const updateReports = (req, res) => {
   try {
-    console.log(req.user);
     let idarray = req.body.idarray;
     let status = req.body.status;
     Report.updateMany(

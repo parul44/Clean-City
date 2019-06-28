@@ -25,11 +25,15 @@ router.get('/count', reportControllers.getCount);
 
 router.get('/graph', reportControllers.getGraph);
 
-router.put('/reports', middleware.isLoggedIn, reportControllers.updateReports);
+router.put(
+  '/reports',
+  middleware.isLoggedInAdmin,
+  reportControllers.updateReports
+);
 
 router.delete(
   '/reports',
-  middleware.isLoggedIn,
+  middleware.isLoggedInAdmin,
   reportControllers.deleteReports
 );
 

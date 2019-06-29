@@ -1355,6 +1355,7 @@
             layers.appendChild(link);
           }
           
+          //Notification/Socket
           const socket = io();
           function notifyMe() {
             // Let's check if the browser supports notifications
@@ -1365,7 +1366,7 @@
             // Let's check if the user is okay to get some notification
             else if (Notification.permission === 'granted') {
               // If it's okay let's create a notification
-              var notification = new Notification('Hi there!');
+              var notification = new Notification('New Report!');
             }
 
             // Otherwise, we need to ask the user for permission
@@ -1388,15 +1389,45 @@
           
           switch(user.owner){
             case 'PWD':
-              socket.on('reportAddedPWD', () => {
+              socket.on('reportAddedPWD', (reportData) => {
                 notifyMe();
+                nowuiDashboard.showNotification('bottom','center', reportData);
                 console.log('reportAddedPWD Event trigerred');
               });
               break;
             case 'DJB':
-              socket.on('reportAddedDJB', () => {
+              socket.on('reportAddedDJB', (reportData) => {
                 notifyMe();
+                nowuiDashboard.showNotification('bottom','center', reportData);
                 console.log('reportAddedDJB Event trigerred');
+              });
+              break;
+            case 'EDMC':
+              socket.on('reportAddedEDMC', (reportData) => {
+                notifyMe();
+                nowuiDashboard.showNotification('bottom','center', reportData);
+                console.log('reportAddedEDMC Event trigerred');
+              });
+              break;
+            case 'NDMC':
+              socket.on('reportAddedNDMC', (reportData) => {
+                notifyMe();
+                nowuiDashboard.showNotification('bottom','center', reportData);
+                console.log('reportAddedNDMC Event trigerred');
+              });
+              break;
+            case 'SDMC':
+              socket.on('reportAddedSDMC', (reportData) => {
+                notifyMe();
+                nowuiDashboard.showNotification('bottom','center', reportData);
+                console.log('reportAddedSDMC Event trigerred');
+              });
+              break;
+            case 'NewDMC':
+              socket.on('reportAddedNewDMC', (reportData) => {
+                notifyMe();
+                nowuiDashboard.showNotification('bottom','center', reportData);
+                console.log('reportAddedNewDMC Event trigerred');
               });
               break;
           }

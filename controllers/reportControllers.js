@@ -81,15 +81,29 @@ const postSubmitData = async (req, res) => {
       }
     }
     //Emit notification event according to report type/jurisdiction
-    switch (true) {
-      case report.reportType == 'road':
-        io.getIO().emit('reportAddedPWD');
-        console.log('reportAddedPWD Event emitted');
-        break;
-      case report.reportType == 'water':
-        io.getIO().emit('reportAddedDJB');
-        console.log('reportAddedDJB Event emitted');
-        break;
+    var reportData = { _id: report._id, reportType: report.reportType };
+    // prettier-ignore
+    if(['garabge', 'road', 'water', 'electricity', 'crime'].includes(report.reportType)){
+        if (['Shahdara District', 'East District', 'North East District'].includes(report.results.district)){
+          io.getIO().emit('reportAddedEDMC', reportData);
+        }
+        if (['South East Delhi District', 'South District', 'West District', 'South West District', 'Central District'].includes(report.results.district)){
+          io.getIO().emit('reportAddedSDMC', reportData);
+        }
+        if (['North West District', 'North District', 'Central District'].includes(report.results.district)){
+          io.getIO().emit('reportAddedNDMC', reportData);
+        }
+        if (['New Delhi District'].includes(report.results.district)){
+          io.getIO().emit('reportAddedNewDMC', reportData);
+        }
+      }
+    // prettier-ignore
+    if (report.reportType == 'road') {
+      io.getIO().emit('reportAddedPWD', reportData);
+    }
+    // prettier-ignore
+    if (report.reportType == 'water') {
+      io.getIO().emit('reportAddedDJB', reportData);
     }
 
     res.status(201).send(`Report added to DB! with id ${report._id}`);

@@ -83,7 +83,7 @@ const postSubmitData = async (req, res) => {
     //Emit notification event according to report type/jurisdiction
     var reportData = { _id: report._id, reportType: report.reportType };
     // prettier-ignore
-    if(['garabge', 'road', 'water', 'electricity', 'crime'].includes(report.reportType)){
+    if(['garbage', 'road', 'water', 'electricity', 'crime'].includes(report.reportType)){
         if (['Shahdara District', 'East District', 'North East District'].includes(report.results.district)){
           io.getIO().emit('reportAddedEDMC', reportData);
         }

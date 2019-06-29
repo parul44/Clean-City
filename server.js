@@ -177,7 +177,7 @@ app.get('/dashboard', middleware.isLoggedInAdmin, (req, res, next) => {
 });
 
 app.get('/dashboardReports', middleware.isLoggedInAdmin, (req, res, next) => {
-  res.sendFile(__dirname + '/admins/ReportsForAdmin.html');
+  res.sendFile(__dirname + '/admins/dashboardReports.html');
 });
 
 app.get('/', (req, res, next) => {

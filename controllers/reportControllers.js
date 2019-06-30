@@ -22,6 +22,96 @@ const upload = multer({
   }
 });
 
+const adminFilter = owner => {
+  var match = {};
+  switch (owner) {
+    case 'EDMC':
+      match['results.district'] = {
+        $in: ['Shahdara District', 'East District', 'North East District']
+      };
+      match.reportType = {
+        $in: ['garbage', 'road', 'water', 'electricity', 'crime']
+      };
+      break;
+    case 'SDMC':
+      match['results.district'] = {
+        $in: [
+          'South East Delhi District',
+          'South District',
+          'West District',
+          'South West District',
+          'Central District'
+        ]
+      };
+      match.reportType = {
+        $in: ['garbage', 'road', 'water', 'electricity', 'crime']
+      };
+      break;
+    case 'NDMC':
+      match['results.district'] = {
+        $in: ['North West District', 'North District', 'Central District']
+      };
+      match.reportType = {
+        $in: ['garbage', 'road', 'water', 'electricity', 'crime']
+      };
+      break;
+    case 'NewDMC':
+      match['results.district'] = {
+        $in: ['New Delhi District']
+      };
+      match.reportType = {
+        $in: ['garbage', 'road', 'water', 'electricity', 'crime']
+      };
+      break;
+    case 'DJB':
+      match.reportType = {
+        $in: ['water']
+      };
+      break;
+    case 'PWD':
+      match.reportType = {
+        $in: ['road']
+      };
+      break;
+  }
+
+  return match;
+};
+
+const userFilter = user => {
+  var match = {};
+  match.username = user.username;
+  return match;
+};
+
+const findAdmins = report => {
+  var admins = [];
+  // prettier-ignore
+  if(['garbage', 'road', 'water', 'electricity', 'crime'].includes(report.reportType)){
+    if (['Shahdara District', 'East District', 'North East District'].includes(report.results.district)){
+      admins.push('EDMC')
+    }
+    if (['South East Delhi District', 'South District', 'West District', 'South West District', 'Central District'].includes(report.results.district)){
+      admins.push('SDMC')
+    }
+    if (['North West District', 'North District', 'Central District'].includes(report.results.district)){
+      admins.push('NDMC')
+    }
+    if (['New Delhi District'].includes(report.results.district)){
+      admins.push('NewDMC')
+    }
+  }
+  // prettier-ignore
+  if (report.reportType == 'road') {
+    admins.push('PWD')
+  }
+  // prettier-ignore
+  if (report.reportType == 'water') {
+    admins.push('DJB')
+  }
+  return admins;
+};
+
 //Image resizing - Saving in DB controller
 const postSubmitData = async (req, res) => {
   try {
@@ -83,28 +173,10 @@ const postSubmitData = async (req, res) => {
     //Emit notification event according to report type/jurisdiction
     var reportData = { _id: report._id, reportType: report.reportType };
     // prettier-ignore
-    if(['garbage', 'road', 'water', 'electricity', 'crime'].includes(report.reportType)){
-        if (['Shahdara District', 'East District', 'North East District'].includes(report.results.district)){
-          io.getIO().emit('reportAddedEDMC', reportData);
-        }
-        if (['South East Delhi District', 'South District', 'West District', 'South West District', 'Central District'].includes(report.results.district)){
-          io.getIO().emit('reportAddedSDMC', reportData);
-        }
-        if (['North West District', 'North District', 'Central District'].includes(report.results.district)){
-          io.getIO().emit('reportAddedNDMC', reportData);
-        }
-        if (['New Delhi District'].includes(report.results.district)){
-          io.getIO().emit('reportAddedNewDMC', reportData);
-        }
-      }
-    // prettier-ignore
-    if (report.reportType == 'road') {
-      io.getIO().emit('reportAddedPWD', reportData);
-    }
-    // prettier-ignore
-    if (report.reportType == 'water') {
-      io.getIO().emit('reportAddedDJB', reportData);
-    }
+    var adminsArray = findAdmins(report);
+    adminsArray.forEach(admin => {
+      io.getIO().emit(`reportAdded${admin}`, reportData);
+    });
 
     res.status(201).send(`Report added to DB! with id ${report._id}`);
   } catch (e) {
@@ -112,74 +184,12 @@ const postSubmitData = async (req, res) => {
   }
 };
 
-const adminFilter = user => {
-  var match = {};
-  switch (user.owner) {
-    case 'EDMC':
-      match['results.district'] = {
-        $in: ['Shahdara District', 'East District', 'North East District']
-      };
-      match.reportType = {
-        $in: ['garbage', 'road', 'water', 'electricity', 'crime']
-      };
-      break;
-    case 'SDMC':
-      match['results.district'] = {
-        $in: [
-          'South East Delhi District',
-          'South District',
-          'West District',
-          'South West District',
-          'Central District'
-        ]
-      };
-      match.reportType = {
-        $in: ['garbage', 'road', 'water', 'electricity', 'crime']
-      };
-      break;
-    case 'NDMC':
-      match['results.district'] = {
-        $in: ['North West District', 'North District', 'Central District']
-      };
-      match.reportType = {
-        $in: ['garbage', 'road', 'water', 'electricity', 'crime']
-      };
-      break;
-    case 'NewDMC':
-      match['results.district'] = {
-        $in: ['New Delhi District']
-      };
-      match.reportType = {
-        $in: ['garbage', 'road', 'water', 'electricity', 'crime']
-      };
-      break;
-    case 'DJB':
-      match.reportType = {
-        $in: ['water']
-      };
-      break;
-    case 'PWD':
-      match.reportType = {
-        $in: ['road']
-      };
-      break;
-  }
-
-  return match;
-};
-
-const userFilter = user => {
-  var match = {};
-  match.username = user.username;
-  return match;
-};
-
 const getGeojson = async (req, res) => {
   try {
     var match = {};
     if (!(req.query.user == 'public')) {
       if (req.user) {
-        if (req.user.owner) match = adminFilter(req.user);
+        if (req.user.owner) match = adminFilter(req.user.owner);
         else match = userFilter(req.user);
       }
     }
@@ -203,7 +213,7 @@ const getReports = async (req, res) => {
     var options = { sort: {} };
     if (!(req.query.user == 'public')) {
       if (req.user) {
-        if (req.user.owner) match = adminFilter(req.user);
+        if (req.user.owner) match = adminFilter(req.user.owner);
         else match = userFilter(req.user);
       }
     }
@@ -289,7 +299,7 @@ const getCount = async (req, res) => {
     var match = {};
     if (!(req.query.user == 'public')) {
       if (req.user) {
-        if (req.user.owner) match = adminFilter(req.user);
+        if (req.user.owner) match = adminFilter(req.user.owner);
         else match = userFilter(req.user);
       }
     }
@@ -313,7 +323,7 @@ const getGraph = async (req, res) => {
     var count;
     if (!(req.query.user == 'public')) {
       if (req.user) {
-        if (req.user.owner) match = adminFilter(req.user);
+        if (req.user.owner) match = adminFilter(req.user.owner);
         else match = userFilter(req.user);
       }
     }

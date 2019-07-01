@@ -26,7 +26,18 @@
   <style>
   .ToRchart svg{
     margin: -30 -30 0 0 !important;
+    
   }
+.notif{
+            height: 4.5rem;
+             font-size: 1.1rem;
+            width: 25rem;
+            border-radius: 6px;
+            background-color: aliceblue;
+        }
+        .notif .card-body{
+            padding: 6px;
+        }
   
   </style>
 </head>
@@ -1407,6 +1418,17 @@
                 notifyMe();
                 nowuiDashboard.showNotification('bottom','center', reportData);
                 console.log('reportAddedEDMC Event trigerred');
+                let d1 = Document.createElement('div')
+                d1.className = "card notif";
+                let d2 = document.createElement('div')
+                d2.className = "card-body"
+                d2.innerText = "this is some text within the body"
+                hr = document.createElement('hr')
+                d1.appendChild(d2)
+                d1.appendChild(hr)
+                
+
+
               });
               break;
             case 'NDMC':

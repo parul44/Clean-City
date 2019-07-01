@@ -160,7 +160,7 @@ const postSubmitData = async (req, res) => {
         User.updateOne(
           { _id: _id },
           {
-            $inc: { credits: 2, submissions: 1 }
+            $inc: { submissions: 1 }
           },
           function(err) {
             if (err) {
@@ -170,12 +170,39 @@ const postSubmitData = async (req, res) => {
         );
       }
     }
-    //Emit notification event according to report type/jurisdiction
-    var reportData = { _id: report._id, reportType: report.reportType };
+    //Emit notification event
+    var reportData = {
+      _id: report._id,
+      reportType: report.reportType,
+      pincode: report.results.pincode
+    };
     // prettier-ignore
     var adminsArray = findAdmins(report);
-    adminsArray.forEach(admin => {
+    adminsArray.forEach(async admin => {
+      //Report added notification
       io.getIO().emit(`reportAdded${admin}`, reportData);
+
+      //counting unseen reports of that pincode for the admin
+      var match = adminFilter(admin);
+      match.createdAt = {
+        $gt: new Date(new Date().getTime() - 1000 * 60 * 60 * 24)
+      };
+      match['results.pincode'] = report.results.pincode;
+      match.status = 'unseen';
+
+      let count = await Report.countDocuments(match, function(err, c) {
+        if (err) {
+          console.log(err);
+        }
+      });
+      console.log(count);
+
+      //High Priority Reports notification
+      if (count === 5) {
+        io.getIO().emit(`priority1Report${admin}`, reportData);
+      } else if (count === 3) {
+        io.getIO().emit(`priority2Report${admin}`, reportData);
+      }
     });
 
     res.status(201).send(`Report added to DB! with id ${report._id}`);
@@ -446,6 +473,13 @@ const updateReports = (req, res) => {
         }
       }
     );
+
+    // Crediting
+    if (status == 'closed') {
+      var set = {};
+      set.credited = true;
+    }
+
     res.status(200).send(`Reports updated`);
   } catch (e) {
     res.status(404).send(e);

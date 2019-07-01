@@ -160,15 +160,13 @@ nowuiDashboard = {
     navbar_menu_visible: 0
   },
 
-  showNotification: function(from, align, report) {
+  showNotification: function(from, align, message) {
     color = 'primary';
 
     $.notify(
       {
         icon: 'now-ui-icons ui-1_bell-53',
-        message: `New ${report.reportType} report was added! ID: ${
-          report._id
-        }  `
+        message: message
       },
       {
         type: color,

@@ -8,6 +8,10 @@ const reportSchema = new mongoose.Schema(
       type: String,
       trim: true
     },
+    credited: {
+      type: Boolean,
+      default: false
+    },
     name: {
       type: String,
       trim: true

@@ -8,7 +8,7 @@ const reportRoutes = require('./routes/reportRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const userRoutes = require('./routes/userRoutes');
 const Admin = require('./models/adminModel');
-const u = require('./models/userModel');
+const User = require('./models/userModel');
 const passport = require('passport');
 var LocalStrategy = require('passport-local');
 var middleware = require('./middleware/auth');
@@ -35,13 +35,9 @@ app.use(passport.session());
 
 //passport for admin
 passport.use('admin', new LocalStrategy(Admin.authenticate()));
-// passport.serializeUser(Admin.serializeUser());
-// passport.deserializeUser(Admin.deserializeUser());
 
 //passport for admin
-passport.use('user', new LocalStrategy(u.authenticate()));
-// passport.serializeUser(u.serializeUser());
-// passport.deserializeUser(u.deserializeUser());
+passport.use('user', new LocalStrategy(User.authenticate()));
 
 function SessionConstructor(userId, userGroup, details) {
   this.userId = userId;
@@ -56,7 +52,7 @@ passport.serializeUser(function(userObject, done) {
 
   if (userPrototype === Admin.prototype) {
     userGroup = 'admin';
-  } else if (userPrototype === u.prototype) {
+  } else if (userPrototype === User.prototype) {
     userGroup = 'user';
   }
 
@@ -77,7 +73,7 @@ passport.deserializeUser(function(sessionConstructor, done) {
       }
     );
   } else if (sessionConstructor.userGroup == 'user') {
-    u.findOne(
+    User.findOne(
       {
         _id: sessionConstructor.userId
       },
@@ -97,7 +93,7 @@ app.use('/report', reportRoutes);
 // Admin routes
 app.use('/admin', adminRoutes);
 
-// u routes
+// User routes
 app.use('/user', userRoutes);
 
 //html routes
@@ -183,9 +179,6 @@ app.get('/dashboardReports', middleware.isLoggedInAdmin, (req, res, next) => {
 app.get('/', (req, res, next) => {
   res.sendFile(__dirname + '/client/index.html');
 });
-
-// app.use(middleware.isLoggedInAdmin);
-// app.use(express.static(path.join(__dirname, 'admin')));
 
 const server = app.listen(PORT, () => {
   console.log(`Server has started on port ${PORT}`);

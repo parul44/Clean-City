@@ -5,6 +5,7 @@ const User = require('../models/userModel');
 const multer = require('multer');
 const sharp = require('sharp');
 const fetch = require('node-fetch');
+const io = require('../socket');
 
 //controllers
 //Multer file upload controller
@@ -21,74 +22,9 @@ const upload = multer({
   }
 });
 
-//Image resizing - Saving in DB controller
-const postSubmitData = async (req, res) => {
-  try {
-    var newReport = {};
-    const buffer = await sharp(req.file.buffer)
-      .resize(1920, 1920, {
-        fit: 'inside',
-        withoutEnlargement: true
-      })
-      .toFormat('jpeg')
-      .toBuffer();
-    newReport.imageBuffer = buffer;
-    if (!req.body.name == '') newReport.name = req.body.name;
-    if (!req.body.contactNumber == null)
-      newReport.contactNumber = req.body.contactNumber;
-    newReport.reportType = req.body.reportType;
-    newReport.description = req.body.description;
-    newReport.location = req.body.location;
-    newReport.properties = {
-      brief: req.body.description.slice(0, 100)
-    };
-    newReport.geometry = {
-      coordinates: [req.body.longitude, req.body.latitude]
-    };
-
-    const response = await fetch(
-      `http://apis.mapmyindia.com/advancedmaps/v1/${
-        process.env.API_KEY
-      }/rev_geocode?lat=${req.body.latitude}&lng=${req.body.longitude}`
-    );
-
-    const data = await response.json();
-    newReport.results = data.results[0];
-
-    if (req.user) {
-      if (!req.user.owner) newReport.username = req.user.username;
-    }
-
-    const report = new Report(newReport);
-    await report.save();
-
-    //After saving report , checking user and updating user account
-    if (req.user) {
-      if (!req.user.owner) {
-        let _id = req.user._id;
-        User.updateOne(
-          { _id: _id },
-          {
-            $inc: { credits: 2, submissions: 1 }
-          },
-          function(err) {
-            if (err) {
-              console.log(err);
-            }
-          }
-        );
-      }
-    }
-
-    res.status(201).send(`Report added to DB! with id ${report._id}`);
-  } catch (e) {
-    res.status(400).send({ error: e.errmsg });
-  }
-};
-
-const adminFilter = user => {
+const adminFilter = owner => {
   var match = {};
-  switch (user.owner) {
+  switch (owner) {
     case 'EDMC':
       match['results.district'] = {
         $in: ['Shahdara District', 'East District', 'North East District']
@@ -148,12 +84,112 @@ const userFilter = user => {
   return match;
 };
 
+const findAdmins = report => {
+  var admins = [];
+  // prettier-ignore
+  if(['garbage', 'road', 'water', 'electricity', 'crime'].includes(report.reportType)){
+    if (['Shahdara District', 'East District', 'North East District'].includes(report.results.district)){
+      admins.push('EDMC')
+    }
+    if (['South East Delhi District', 'South District', 'West District', 'South West District', 'Central District'].includes(report.results.district)){
+      admins.push('SDMC')
+    }
+    if (['North West District', 'North District', 'Central District'].includes(report.results.district)){
+      admins.push('NDMC')
+    }
+    if (['New Delhi District'].includes(report.results.district)){
+      admins.push('NewDMC')
+    }
+  }
+  // prettier-ignore
+  if (report.reportType == 'road') {
+    admins.push('PWD')
+  }
+  // prettier-ignore
+  if (report.reportType == 'water') {
+    admins.push('DJB')
+  }
+  return admins;
+};
+
+//Image resizing - Saving in DB controller
+const postSubmitData = async (req, res) => {
+  try {
+    var newReport = {};
+    const buffer = await sharp(req.file.buffer)
+      .resize(1920, 1920, {
+        fit: 'inside',
+        withoutEnlargement: true
+      })
+      .toFormat('jpeg')
+      .toBuffer();
+    newReport.imageBuffer = buffer;
+    if (!req.body.name == '') newReport.name = req.body.name;
+    if (!req.body.contactNumber == null)
+      newReport.contactNumber = req.body.contactNumber;
+    newReport.reportType = req.body.reportType;
+    newReport.description = req.body.description;
+    newReport.location = req.body.location;
+    newReport.properties = {
+      brief: req.body.description.slice(0, 100)
+    };
+    newReport.geometry = {
+      coordinates: [req.body.longitude, req.body.latitude]
+    };
+
+    const response = await fetch(
+      `http://apis.mapmyindia.com/advancedmaps/v1/${
+        process.env.API_KEY
+      }/rev_geocode?lat=${req.body.latitude}&lng=${req.body.longitude}`
+    );
+
+    const data = await response.json();
+    newReport.results = data.results[0];
+
+    if (req.user) {
+      if (!req.user.owner) newReport.username = req.user.username;
+    }
+
+    const report = new Report(newReport);
+    await report.save();
+
+    //After saving report , checking user and updating user account
+    if (req.user) {
+      if (!req.user.owner) {
+        let _id = req.user._id;
+        User.updateOne(
+          { _id: _id },
+          {
+            $inc: { credits: 2, submissions: 1 }
+          },
+          function(err) {
+            if (err) {
+              console.log(err);
+            }
+          }
+        );
+      }
+    }
+    //Emit notification event according to report type/jurisdiction
+    var reportData = { _id: report._id, reportType: report.reportType };
+    // prettier-ignore
+    var adminsArray = findAdmins(report);
+    adminsArray.forEach(admin => {
+      io.getIO().emit(`reportAdded${admin}`, reportData);
+    });
+
+    res.status(201).send(`Report added to DB! with id ${report._id}`);
+  } catch (e) {
+    res.status(400).send({ error: e.errmsg });
+  }
+};
+
 const getGeojson = async (req, res) => {
   try {
     var match = {};
     if (!(req.query.user == 'public')) {
       if (req.user) {
-        if (req.user.owner) match = adminFilter(req.user);
+        if (req.user.owner) match = adminFilter(req.user.owner);
         else match = userFilter(req.user);
       }
     }
@@ -177,7 +213,7 @@ const getReports = async (req, res) => {
     var options = { sort: {} };
     if (!(req.query.user == 'public')) {
       if (req.user) {
-        if (req.user.owner) match = adminFilter(req.user);
+        if (req.user.owner) match = adminFilter(req.user.owner);
         else match = userFilter(req.user);
       }
     }
@@ -263,7 +299,7 @@ const getCount = async (req, res) => {
     var match = {};
     if (!(req.query.user == 'public')) {
       if (req.user) {
-        if (req.user.owner) match = adminFilter(req.user);
+        if (req.user.owner) match = adminFilter(req.user.owner);
         else match = userFilter(req.user);
       }
     }
@@ -287,7 +323,7 @@ const getGraph = async (req, res) => {
     var count;
     if (!(req.query.user == 'public')) {
       if (req.user) {
-        if (req.user.owner) match = adminFilter(req.user);
+        if (req.user.owner) match = adminFilter(req.user.owner);
         else match = userFilter(req.user);
       }
     }

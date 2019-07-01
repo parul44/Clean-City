@@ -177,7 +177,7 @@ app.get('/dashboard', middleware.isLoggedInAdmin, (req, res, next) => {
 });
 
 app.get('/dashboardReports', middleware.isLoggedInAdmin, (req, res, next) => {
-  res.sendFile(__dirname + '/admins/ReportsForAdmin.html');
+  res.sendFile(__dirname + '/admins/dashboardReports.html');
 });
 
 app.get('/', (req, res, next) => {
@@ -187,6 +187,11 @@ app.get('/', (req, res, next) => {
 // app.use(middleware.isLoggedInAdmin);
 // app.use(express.static(path.join(__dirname, 'admin')));
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server has started on port ${PORT}`);
+});
+
+const io = require('./socket').init(server);
+io.on('connection', socket => {
+  console.log('New client connected');
 });

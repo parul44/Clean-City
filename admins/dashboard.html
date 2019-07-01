@@ -131,19 +131,10 @@
                   </p>
                 </a>
               </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="now-ui-icons ui-1_bell-53"></i>
-                  <p>
-                    <span class="d-lg-none d-md-block">Some Actions</span>
-                  </p>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" href="#">Action</a>
-                  <a class="dropdown-item" href="#">Another action</a>
-                  <a class="dropdown-item" href="#">Something else here</a>
-                </div>
+              <li class="nav-item" id = "dropdown">
+                  
               </li>
+             
               
               <li class="nav-item">
                 <a class="nav-link" href="#pablo">
@@ -1404,6 +1395,18 @@
                 notifyMe(`New Report`);
                 nowuiDashboard.showNotification('bottom','center', `New Report ID: ${reportData._id}`);
                 console.log('reportAddedPWD Event trigerred');
+                let d1 = Document.createElement('div')
+                d1.className = "card notif";
+                let d2 = document.createElement('div')
+                d2.className = "card-body"
+                d2.innerText = "this is some text within the body"
+                hr = document.createElement('hr')
+                d1.appendChild(d2)
+                d1.appendChild(hr)
+                let d = getElementById("dropdown")
+                d.appendChild(d1)
+                
+
               });
               socket.on('priority1ReportPWD', (reportData) => {
                 notifyMe(`More than 4 reports from Pincode: ${reportData.pincode} in 24h`);
@@ -1422,6 +1425,18 @@
                 notifyMe(`New Report`);
                 nowuiDashboard.showNotification('bottom','center', `New Report ID: ${reportData._id}`);
                 console.log('reportAddedDJB Event trigerred');
+                let d1 = Document.createElement('div')
+                d1.className = "card notif";
+                let d2 = document.createElement('div')
+                d2.className = "card-body"
+                d2.innerText = "this is some text within the body"
+                hr = document.createElement('hr')
+                d1.appendChild(d2)
+                d1.appendChild(hr)
+                let d = getElementById("dropdown")
+                d.appendChild(d1)
+                
+
               });
               socket.on('priority1ReportDJB', (reportData) => {
                 notifyMe(`More than 4 reports from Pincode: ${reportData.pincode} in 24h`);
@@ -1448,6 +1463,8 @@
                 hr = document.createElement('hr')
                 d1.appendChild(d2)
                 d1.appendChild(hr)
+                let d = getElementById("dropdown")
+                d.appendChild(d1)
                 
 
 
@@ -1469,6 +1486,18 @@
                 notifyMe(`New Report`);
                 nowuiDashboard.showNotification('bottom','center', `New Report ID: ${reportData._id}`);
                 console.log('reportAddedNDMC Event trigerred');
+                let d1 = Document.createElement('div')
+                d1.className = "card notif";
+                let d2 = document.createElement('div')
+                d2.className = "card-body"
+                d2.innerText = "this is some text within the body"
+                hr = document.createElement('hr')
+                d1.appendChild(d2)
+                d1.appendChild(hr)
+                let d = getElementById("dropdown")
+                d.appendChild(d1)
+                
+
               });
               socket.on('priority1ReportNDMC', (reportData) => {
                 notifyMe(`More than 4 reports from Pincode: ${reportData.pincode} in 24h`);
@@ -1487,6 +1516,18 @@
                 notifyMe(`New Report`);
                 nowuiDashboard.showNotification('bottom','center', `New Report ID: ${reportData._id}`);
                 console.log('reportAddedSDMC Event trigerred');
+                let d1 = Document.createElement('div')
+                d1.className = "card notif";
+                let d2 = document.createElement('div')
+                d2.className = "card-body"
+                d2.innerText = "this is some text within the body"
+                hr = document.createElement('hr')
+                d1.appendChild(d2)
+                d1.appendChild(hr)
+                let d = getElementById("dropdown")
+                d.appendChild(d1)
+                
+
               });
               socket.on('priority1ReportSDMC', (reportData) => {
                 notifyMe(`More than 4 reports from Pincode: ${reportData.pincode} in 24h`);
@@ -1505,6 +1546,18 @@
                 notifyMe(`New Report`);
                 nowuiDashboard.showNotification('bottom','center', `New Report ID: ${reportData._id}`);
                 console.log('reportAddedNewDMC Event trigerred');
+                let d1 = Document.createElement('div')
+                d1.className = "card notif";
+                let d2 = document.createElement('div')
+                d2.className = "card-body"
+                d2.innerText = "this is some text within the body"
+                hr = document.createElement('hr')
+                d1.appendChild(d2)
+                d1.appendChild(hr)
+                let d = getElementById("dropdown")
+                d.appendChild(d1)
+                
+
               });
               socket.on('priority1ReportNewDMC', (reportData) => {
                 notifyMe(`More than 4 reports from Pincode: ${reportData.pincode} in 24h`);

@@ -131,19 +131,10 @@
                   </p>
                 </a>
               </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="now-ui-icons ui-1_bell-53"></i>
-                  <p>
-                    <span class="d-lg-none d-md-block">Some Actions</span>
-                  </p>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" href="#">Action</a>
-                  <a class="dropdown-item" href="#">Another action</a>
-                  <a class="dropdown-item" href="#">Something else here</a>
-                </div>
+              <li class="nav-item" id = "dropdown">
+                  
               </li>
+             
               
               <li class="nav-item">
                 <a class="nav-link" href="#pablo">
@@ -1404,6 +1395,18 @@
                 notifyMe();
                 nowuiDashboard.showNotification('bottom','center', reportData);
                 console.log('reportAddedPWD Event trigerred');
+                let d1 = Document.createElement('div')
+                d1.className = "card notif";
+                let d2 = document.createElement('div')
+                d2.className = "card-body"
+                d2.innerText = "this is some text within the body"
+                hr = document.createElement('hr')
+                d1.appendChild(d2)
+                d1.appendChild(hr)
+                let d = getElementById("dropdown")
+                d.appendChild(d1)
+                
+
               });
               break;
             case 'DJB':
@@ -1411,6 +1414,18 @@
                 notifyMe();
                 nowuiDashboard.showNotification('bottom','center', reportData);
                 console.log('reportAddedDJB Event trigerred');
+                let d1 = Document.createElement('div')
+                d1.className = "card notif";
+                let d2 = document.createElement('div')
+                d2.className = "card-body"
+                d2.innerText = "this is some text within the body"
+                hr = document.createElement('hr')
+                d1.appendChild(d2)
+                d1.appendChild(hr)
+                let d = getElementById("dropdown")
+                d.appendChild(d1)
+                
+
               });
               break;
             case 'EDMC':
@@ -1426,6 +1441,8 @@
                 hr = document.createElement('hr')
                 d1.appendChild(d2)
                 d1.appendChild(hr)
+                let d = getElementById("dropdown")
+                d.appendChild(d1)
                 
 
 
@@ -1436,6 +1453,18 @@
                 notifyMe();
                 nowuiDashboard.showNotification('bottom','center', reportData);
                 console.log('reportAddedNDMC Event trigerred');
+                let d1 = Document.createElement('div')
+                d1.className = "card notif";
+                let d2 = document.createElement('div')
+                d2.className = "card-body"
+                d2.innerText = "this is some text within the body"
+                hr = document.createElement('hr')
+                d1.appendChild(d2)
+                d1.appendChild(hr)
+                let d = getElementById("dropdown")
+                d.appendChild(d1)
+                
+
               });
               break;
             case 'SDMC':
@@ -1443,6 +1472,18 @@
                 notifyMe();
                 nowuiDashboard.showNotification('bottom','center', reportData);
                 console.log('reportAddedSDMC Event trigerred');
+                let d1 = Document.createElement('div')
+                d1.className = "card notif";
+                let d2 = document.createElement('div')
+                d2.className = "card-body"
+                d2.innerText = "this is some text within the body"
+                hr = document.createElement('hr')
+                d1.appendChild(d2)
+                d1.appendChild(hr)
+                let d = getElementById("dropdown")
+                d.appendChild(d1)
+                
+
               });
               break;
             case 'NewDMC':
@@ -1450,6 +1491,18 @@
                 notifyMe();
                 nowuiDashboard.showNotification('bottom','center', reportData);
                 console.log('reportAddedNewDMC Event trigerred');
+                let d1 = Document.createElement('div')
+                d1.className = "card notif";
+                let d2 = document.createElement('div')
+                d2.className = "card-body"
+                d2.innerText = "this is some text within the body"
+                hr = document.createElement('hr')
+                d1.appendChild(d2)
+                d1.appendChild(hr)
+                let d = getElementById("dropdown")
+                d.appendChild(d1)
+                
+
               });
               break;
           }

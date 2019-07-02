@@ -29,14 +29,29 @@
     
   }
 .notif{
-            height: 4.5rem;
+            height: 4.2rem;
              font-size: 1.1rem;
             width: 25rem;
-            border-radius: 6px;
-            background-color: aliceblue;
+            /* border-radius: 6px; */
+            margin: 0 !important;
+            
         }
         .notif .card-body{
+          
             padding: 6px;
+            font-weight: 600;
+        }
+        .critical{
+          background-color:rgb(235, 44, 19);
+        }
+        .medium{
+          /* background-color:rgb(235, 176, 66);
+           */
+           background-color: orange;
+        }
+        .light{
+          background-color:rgb(255,255,0);
+          
         }
   
   </style>
@@ -131,8 +146,37 @@
                   </p>
                 </a>
               </li>
-              <li class="nav-item" id = "dropdown">
+              <li class="nav-item dropdown">
+                 <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="now-ui-icons ui-1_bell-53"></i>
+                  <!-- <p>
+                    <span class="d-lg-none d-md-block">Some Actions</span>
+                  </p>-->
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink" id="drpdwn"> 
+                 <!-- <a class="dropdown-item" href="#">Action</a>
+                  <a class="dropdown-item" href="#">Another action</a>-->
+                  <!-- <div class = "card border-0 notif critical"> 
+                    <div class = "card-body">
+                      text 1
+                    </div>
+                
+                  </div>
+                  <div class = "card border-0 notif medium"> 
+                    <div class = "card-body">
+                      text 1
+                    </div>
+                    
+                  </div>
                   
+                  <div class = "card border-0 notif light"> 
+                    <div class = "card-body">
+                      text 1
+                    </div>
+                    
+                  </div> -->
+                  </div>
+                <!-- </div> -->
               </li>
              
               
@@ -1395,18 +1439,7 @@
                 notifyMe(`New Report`);
                 nowuiDashboard.showNotification('bottom','center', `New Report ID: ${reportData._id}`);
                 console.log('reportAddedPWD Event trigerred');
-                let d1 = Document.createElement('div')
-                d1.className = "card notif";
-                let d2 = document.createElement('div')
-                d2.className = "card-body"
-                d2.innerText = "this is some text within the body"
-                hr = document.createElement('hr')
-                d1.appendChild(d2)
-                d1.appendChild(hr)
-                let d = getElementById("dropdown")
-                d.appendChild(d1)
-                
-
+             
               });
               socket.on('priority1ReportPWD', (reportData) => {
                 notifyMe(`More than 4 reports from Pincode: ${reportData.pincode} in 24h`);
@@ -1425,16 +1458,6 @@
                 notifyMe(`New Report`);
                 nowuiDashboard.showNotification('bottom','center', `New Report ID: ${reportData._id}`);
                 console.log('reportAddedDJB Event trigerred');
-                let d1 = Document.createElement('div')
-                d1.className = "card notif";
-                let d2 = document.createElement('div')
-                d2.className = "card-body"
-                d2.innerText = "this is some text within the body"
-                hr = document.createElement('hr')
-                d1.appendChild(d2)
-                d1.appendChild(hr)
-                let d = getElementById("dropdown")
-                d.appendChild(d1)
                 
 
               });
@@ -1455,16 +1478,6 @@
                 notifyMe(`New Report`);
                 nowuiDashboard.showNotification('bottom','center', `New Report ID: ${reportData._id}`);
                 console.log('reportAddedEDMC Event trigerred');
-                let d1 = document.createElement('div')
-                d1.className = "card notif";
-                let d2 = document.createElement('div')
-                d2.className = "card-body"
-                d2.innerText = "this is some text within the body"
-                hr = document.createElement('hr')
-                d1.appendChild(d2)
-                d1.appendChild(hr)
-                let d = getElementById("dropdown")
-                d.appendChild(d1)
                 
 
 
@@ -1473,11 +1486,29 @@
                 notifyMe(`More than 4 reports from Pincode: ${reportData.pincode} in 24h`);
                 nowuiDashboard.showNotification('top','centre', `More than 4 reports from Pincode: ${reportData.pincode} in last 24 hours`);
                 console.log('priority1ReportEDMC Event trigerred');
+                let d1 = document.createElement('div')
+                d1.className = "card notif critical border-0";
+                let d2 = document.createElement('div')
+                d2.className = "card-body"
+                d2.innerText = "This report needs urgent Attention"
+                d1.appendChild(d2)
+                let d = document.getElementById("drpdwn")
+                d.appendChild(d1)
+                
               });
               socket.on('priority2ReportEDMC', (reportData) => {
                 notifyMe(`More than 2 reports from Pincode: ${reportData.pincode} in 24h`);
                 nowuiDashboard.showNotification('top','center', `More than 2 reports from Pincode: ${reportData.pincode} in last 24 hours`);
                 console.log('priority2ReportEDMC Event trigerred');
+                let d1 = document.createElement('div')
+                d1.className = "card notif light border-0";
+                let d2 = document.createElement('div')
+                d2.className = "card-body"
+                d2.innerText = "This report doesn't need much attention"
+                d1.appendChild(d2)
+                let d = document.getElementById("drpdwn")
+                d.appendChild(d1)
+                
               });
               break;
 
@@ -1486,16 +1517,6 @@
                 notifyMe(`New Report`);
                 nowuiDashboard.showNotification('bottom','center', `New Report ID: ${reportData._id}`);
                 console.log('reportAddedNDMC Event trigerred');
-                let d1 = Document.createElement('div')
-                d1.className = "card notif";
-                let d2 = document.createElement('div')
-                d2.className = "card-body"
-                d2.innerText = "this is some text within the body"
-                hr = document.createElement('hr')
-                d1.appendChild(d2)
-                d1.appendChild(hr)
-                let d = getElementById("dropdown")
-                d.appendChild(d1)
                 
 
               });
@@ -1516,16 +1537,6 @@
                 notifyMe(`New Report`);
                 nowuiDashboard.showNotification('bottom','center', `New Report ID: ${reportData._id}`);
                 console.log('reportAddedSDMC Event trigerred');
-                let d1 = Document.createElement('div')
-                d1.className = "card notif";
-                let d2 = document.createElement('div')
-                d2.className = "card-body"
-                d2.innerText = "this is some text within the body"
-                hr = document.createElement('hr')
-                d1.appendChild(d2)
-                d1.appendChild(hr)
-                let d = getElementById("dropdown")
-                d.appendChild(d1)
                 
 
               });
@@ -1546,16 +1557,7 @@
                 notifyMe(`New Report`);
                 nowuiDashboard.showNotification('bottom','center', `New Report ID: ${reportData._id}`);
                 console.log('reportAddedNewDMC Event trigerred');
-                let d1 = Document.createElement('div')
-                d1.className = "card notif";
-                let d2 = document.createElement('div')
-                d2.className = "card-body"
-                d2.innerText = "this is some text within the body"
-                hr = document.createElement('hr')
-                d1.appendChild(d2)
-                d1.appendChild(hr)
-                let d = getElementById("dropdown")
-                d.appendChild(d1)
+             
                 
 
               });

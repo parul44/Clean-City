@@ -1490,7 +1490,13 @@
                 d1.className = "card notif critical border-0";
                 let d2 = document.createElement('div')
                 d2.className = "card-body"
-                d2.innerText = "This report needs urgent Attention"
+                let im = document.createElement("img")
+                im.setAttribute("src","alert.png")
+               let d3  = document.createElement("span")
+                d3.innerText = "this is some"
+                d2.appendChild(im)
+                d2.appendChild(d3)
+               
                 d1.appendChild(d2)
                 let d = document.getElementById("drpdwn")
                 d.appendChild(d1)

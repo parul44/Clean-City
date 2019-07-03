@@ -23,6 +23,8 @@ router.get('/image/:id', reportControllers.getImage);
 
 router.get('/count', reportControllers.getCount);
 
+router.get('/priorityCount', reportControllers.getPriorityCount);
+
 router.get('/graph', reportControllers.getGraph);
 
 router.put(

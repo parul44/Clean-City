@@ -345,6 +345,55 @@ const getCount = async (req, res) => {
   }
 };
 
+const getPriorityCount = async (req, res) => {
+  try {
+    var match = {};
+    if (!(req.query.user == 'public')) {
+      if (req.user) {
+        if (req.user.owner) match = adminFilter(req.user.owner);
+        else match = userFilter(req.user);
+      }
+    }
+    match.createdAt = {
+      $gt: new Date(new Date().getTime() - 1000 * 60 * 60 * 24)
+    };
+    match.status = 'unseen';
+
+    let count = await Report.aggregate(
+      [
+        {
+          $match: match
+        },
+        {
+          $project: {
+            pincode: '$results.pincode',
+            reportType: 1,
+            _id: 0
+          }
+        },
+        {
+          $group: {
+            _id: { pincode: '$pincode', reportType: '$reportType' },
+            count: { $sum: 1 }
+          }
+        },
+        {
+          $match: { count: { $gt: 2 } }
+        }
+      ],
+      function(err, c) {
+        if (err) {
+          console.log(err);
+        }
+      }
+    );
+
+    res.status(200).send(count);
+  } catch (e) {
+    res.status(404).send(e);
+  }
+};
+
 const getGraph = async (req, res) => {
   try {
     var match = {};
@@ -509,6 +558,7 @@ module.exports = {
   getReportsID,
   getImage,
   getCount,
+  getPriorityCount,
   getGraph,
   updateReports,
   deleteReports

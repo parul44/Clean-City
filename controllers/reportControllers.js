@@ -182,12 +182,13 @@ const postSubmitData = async (req, res) => {
       //Report added notification
       io.getIO().emit(`reportAdded${admin}`, reportData);
 
-      //counting unseen reports of that pincode for the admin
+      //counting unseen reports in 24h of that pincode/reportType for the admin
       var match = adminFilter(admin);
       match.createdAt = {
         $gt: new Date(new Date().getTime() - 1000 * 60 * 60 * 24)
       };
       match['results.pincode'] = report.results.pincode;
+      match.reportType = report.reportType;
       match.status = 'unseen';
 
       let count = await Report.countDocuments(match, function(err, c) {

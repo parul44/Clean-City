@@ -182,12 +182,13 @@ const postSubmitData = async (req, res) => {
       //Report added notification
       io.getIO().emit(`reportAdded${admin}`, reportData);
 
-      //counting unseen reports of that pincode for the admin
+      //counting unseen reports in 24h of that pincode/reportType for the admin
       var match = adminFilter(admin);
       match.createdAt = {
         $gt: new Date(new Date().getTime() - 1000 * 60 * 60 * 24)
       };
       match['results.pincode'] = report.results.pincode;
+      match.reportType = report.reportType;
       match.status = 'unseen';
 
       let count = await Report.countDocuments(match, function(err, c) {
@@ -339,6 +340,57 @@ const getCount = async (req, res) => {
       }
     });
     res.status(200).send({ count: count });
+  } catch (e) {
+    res.status(404).send(e);
+  }
+};
+
+const getPriorityCount = async (req, res) => {
+  try {
+    var match = {};
+    if (!(req.query.user == 'public')) {
+      if (req.user) {
+        if (req.user.owner) match = adminFilter(req.user.owner);
+        else match = userFilter(req.user);
+      }
+    }
+    match.createdAt = {
+      $gt: new Date(new Date().getTime() - 1000 * 60 * 60 * 24)
+    };
+    if (req.query.status) {
+      if (req.query.status.length) match.status = req.query.status;
+    }
+
+    let count = await Report.aggregate(
+      [
+        {
+          $match: match
+        },
+        {
+          $project: {
+            pincode: '$results.pincode',
+            reportType: 1,
+            _id: 0
+          }
+        },
+        {
+          $group: {
+            _id: { pincode: '$pincode', reportType: '$reportType' },
+            count: { $sum: 1 }
+          }
+        },
+        {
+          $match: { count: { $gt: 2 } }
+        }
+      ],
+      function(err, c) {
+        if (err) {
+          console.log(err);
+        }
+      }
+    );
+
+    res.status(200).send(count);
   } catch (e) {
     res.status(404).send(e);
   }
@@ -508,6 +560,7 @@ module.exports = {
   getReportsID,
   getImage,
   getCount,
+  getPriorityCount,
   getGraph,
   updateReports,
   deleteReports

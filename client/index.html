@@ -7,27 +7,27 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Clean City</title>
     <link rel="stylesheet" type="text/css" href="main.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.css' rel='stylesheet' />
     <link rel="stylesheet" type="text/css" href="mapbox.css">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" 
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="main.js"></script>
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.js'></script>
 </head>
 
 <body>
-    
+
     <header>
         <nav class="navbar navbar-expand-lg navbar-light " >
-            
+
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
-          
+
             <div class="collapse navbar-collapse" id="navbarSupportedContent" >
               <ul class="navbar-nav mr-auto">
                 <li class="nav-item active ">
@@ -42,7 +42,7 @@
                 <li class="nav-item active">
                     <a class="nav-link   " style="color:whitesmoke;font-size:1.1em;font-weight: bold;" href="about.html"> ABOUT </a>
                   </li>
-                
+
               </ul>
               <ul class="navbar-nav navbar-right">
                 <li class="nav-item active">
@@ -64,25 +64,31 @@
 <section id="home">
     <div id="poster">
         <div id="carousel" data-interval="2500" class="carousel slide" data-ride="carousel">
-            
+
             <div class="carousel-inner">
               <div class="carousel-item active" >
-                <img src="images/slides/04.jpg" class="d-block w-100" alt="...">
+                <img src="22.jpg" class="d-block w-100" alt="...">
               </div>
               <div class="carousel-item">
-                <img src="images/slides/05.jpg" class="d-block w-100" alt="...">
+                <img src="55.jpg" class="d-block w-100" alt="...">
               </div>
               <div class="carousel-item">
-                <img src="images/slides/04.jpg" class="d-block w-100" alt="...">
+                <img src="67.jpg" class="d-block w-100" alt="...">
+              </div>
+              <div class="carousel-item">
+                <img src="88.jpg" class="d-block w-100" alt="...">
+              </div>
+              <div class="carousel-item">
+                <img src="876.png" class="d-block w-100" alt="...">
               </div>
             </div>
         </div>
       <div >
         <div class="cleancitytext" >Clean</div>
         <div class="cleancitytext2" >City<i class="fa fa-leaf" aria-hidden="true"></i></div>
-            <div class="subtext">Lorem ipsum dolor sit amet
-              <br> Sea et meliore maluisset consequuntur.
-              <br> Aeque luptatum scribentur ex mel</div>
+            <div class="subtext">We deal with all type of issues.
+              <br>  You can lodge your complaints here.
+              <br>  Join us to make everyone aware.</div>
               <button id="explorebtn" onclick="window.location.href = 'form.html';">Upload Report</button>
       </div>
     </div>
@@ -189,12 +195,12 @@
                         <h4 style="color: #2b4d38">Crime</h4>
                            <p>Crime reports </p>
                            <button type="button" class="btn btn-secondary" onclick='window.location = "crime.html"'>View Reports</button>
-              
+
                           </div>
                   </div>
                   <br><br><br>
   </section>
-                    
+
               </div>
               </div>
 </section>
@@ -205,7 +211,7 @@
         <h3>Develop<span>HowTo</span></h3>
 
         <p class="footer-links">
-          
+
           <a href="#">Garbage</a>
           ·
           <a href="#">Electricity</a>
@@ -267,7 +273,7 @@
         center: [77.146721,28.644800],
         zoom: 11
       });
-      
+
       map.on('load', function() {
 
         //ADDING LAYER SOURCES
@@ -301,7 +307,7 @@
         data: '/report/geojson/crime?user=public'
         });
 
-        
+
         //ADDING  HEATMAP LAYERS
         map.addLayer({
           id: 'Sample-heat',
@@ -354,7 +360,7 @@
             },
           }
         }, 'waterway-label');
-  
+
         map.addLayer({
         id: 'Road-heat',
         type: 'heatmap',
@@ -656,7 +662,7 @@
             }
           }
         }, 'waterway-label');
-        
+
         map.addLayer({
           id: 'Road-point',
           type: 'circle',
@@ -738,7 +744,7 @@
             }
           }
         }, 'waterway-label');
-        
+
         map.addLayer({
           id: 'Water-point',
           type: 'circle',
@@ -779,7 +785,7 @@
             }
           }
         }, 'waterway-label');
-        
+
         map.addLayer({
           id: 'Electricity-point',
           type: 'circle',
@@ -820,7 +826,7 @@
             }
           }
         }, 'waterway-label');
-        
+
         map.addLayer({
           id: 'Crime-point',
           type: 'circle',
@@ -864,7 +870,7 @@
 
         //On clicking point layers
         var pointLayerIds = [ 'Sample-point','Garbage-point', 'Road-point', 'Water-point', 'Electricity-point', 'Crime-point' ];
-        
+
         pointLayerIds.forEach(function(layer) {
           // Popup on click
           map.on('click', `${layer}`, function(e) {
@@ -880,34 +886,34 @@
           map.on('mouseenter', `${layer}` , function () {
             map.getCanvas().style.cursor = 'pointer';
           });
-          
+
           // Change it back to a pointer when it leaves.
           map.on('mouseleave',  `${layer}` , function () {
             map.getCanvas().style.cursor = '';
           });
         });
 
-    }); 
+    });
 
     //LAYER TOGGLE MENU
     var toggleableLayerIds = [ ['Sample-heat', 'Sample-point'],['Garbage-heat', 'Garbage-point'], ['Road-heat', 'Road-point'], ['Water-heat', 'Water-point'], ['Electricity-heat', 'Electricity-point'], ['Crime-heat', 'Crime-point'] ];
 
     for (var i = 0; i < toggleableLayerIds.length; i++) {
-      
+
       var link = document.createElement('a');
       link.href = '#';
       link.className = 'active';
       link.textContent = toggleableLayerIds[i][0];
       link.layers= toggleableLayerIds[i];
-        
+
       link.onclick = function (e) {
         this.layers.forEach((layer) => {
           var clickedLayer = layer;
           e.preventDefault();
           e.stopPropagation();
-            
+
           var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
-            
+
           if (visibility === 'visible') {
             map.setLayoutProperty(clickedLayer, 'visibility', 'none');
             this.className = '';
@@ -917,11 +923,11 @@
           }
         });
       };
-        
+
       var layers = document.getElementById('menu');
       layers.appendChild(link);
     }
-    
+
     </script>
     <!-- fetching latest6 reports script -->
     <script>
@@ -939,12 +945,12 @@
             date= new Date(data[i].createdAt)
             text2[i].innerHTML = `${date.toLocaleString()}`
           }
-          
+
         });
       }).catch(console.log());
-      
+
     </script>
   </body>
-  
+
 </body>
 </html>

@@ -36,6 +36,55 @@
             margin: 0 !important;
             
         }
+
+        #analysisTiles .col{
+              height: 70px;
+            margin: 40px 10px 0 0;
+            background-color: slategrey;
+            font-size: 1.3rem;
+            box-shadow: 0 
+            
+  
+          }
+          .notification:after {
+    content: "";
+    display: block;
+    position: relative;
+    width: 8px;
+    height: 8px;
+    background: rgb(96, 136, 114);
+    top: 0;
+    right: 0;
+    border-radius: 50%;
+}
+          #analysisTiles{
+            background-color: cornsilk
+          }
+         .icon1 {
+  padding: 10px;
+  background: red;
+  color: white;
+  height: 70px;
+  width: 70px;
+  align-content: left;
+  margin-left: 10px;
+}
+  .icon2 {
+  padding: 10px;
+  background: blue;
+  color: white;
+  height: 70px;
+  width: 70px;
+  align-content: left;
+}
+  .icon3 {
+  padding: 10px;
+  background: grey;
+  color: white;
+  height: 70px;
+  width: 70px;
+  align-content: left;
+}
         .notif .card-body{
           
             padding: 6px;
@@ -198,43 +247,7 @@
       <!-- End Navbar -->
       <br><br>
       <style>
-          #analysisTiles .col{
-              height: 70px;
-            margin: 40px 10px 0 0;
-            background-color: slategrey;
-            font-size: 1.3rem;
-            box-shadow: 0 
-            
-  
-          }
-          #analysisTiles{
-            background-color: cornsilk
-          }
-         .icon1 {
-  padding: 10px;
-  background: red;
-  color: white;
-  height: 70px;
-  width: 70px;
-  align-content: left;
-  margin-left: 10px;
-}
-  .icon2 {
-  padding: 10px;
-  background: blue;
-  color: white;
-  height: 70px;
-  width: 70px;
-  align-content: left;
-}
-  .icon3 {
-  padding: 10px;
-  background: grey;
-  color: white;
-  height: 70px;
-  width: 70px;
-  align-content: left;
-}
+ 
       
             </style>
 
@@ -374,14 +387,23 @@
         //navbar notif(priority)
         function priority1Notif(message){
             let d1 = document.createElement('div')
-            d1.className = "card notif critical border-0";
-            let d2 = document.createElement('div')
-            d2.className = "card-body"
-            d2.innerText = message;
-            d1.appendChild(d2)
-            let d = document.getElementById("drpdwn")
-            // d.appendChild(d1)
-            d.insertBefore(d1, d.firstChild);
+                d1.className = "card notif critical border-0";
+                let d2 = document.createElement('div')
+                d2.className = "card-body"
+                let im = document.createElement("img")
+                im.setAttribute("src","../assets/img/alert.png")
+               let d3  = document.createElement("span")
+                d3.innerText = message
+                d2.appendChild(im)
+                d2.appendChild(d3)
+               
+                d1.appendChild(d2)
+                let d = document.getElementById("drpdwn")
+                // d.appendChild(d1)
+                d.insertBefore(d1, d.firstChild);
+
+                let bell = document.getElementsByClassName("now-ui-icons ui-1_bell-53")
+                bell.className = "now-ui-icons ui-1_bell-53 notification"
           }
           
         function priority2Notif(message){
@@ -1516,7 +1538,6 @@
                 nowuiDashboard.showNotification('top','centre', `More than 4 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
                 priority1Notif(`More than 4 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
                 console.log('priority1ReportEDMC Event trigerred');
-        
               });
               socket.on('priority2ReportEDMC', (reportData) => {
                 notifyMe(`More than 2 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);

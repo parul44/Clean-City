@@ -363,7 +363,7 @@
       </div>
     </div>
     <!-- SCRIPTS -->
-    <!-- SCRIPT FOR No. of reports -->
+    <!-- SCRIPT FOR No. of reports/navbar notif -->
     <script>
         unseenText = document.getElementById('unseenText')
         seenText = document.getElementById('seenText')
@@ -371,6 +371,38 @@
         fetch("/report/count/?status=unseen").then(res => res.json()).then(data => {unseenText.textContent=data.count;})
         fetch("/report/count/?status=seen").then(res => res.json()).then(data => {seenText.textContent=data.count;})
         fetch("/report/count/?status=closed").then(res => res.json()).then(data => {closedText.textContent=data.count;})
+        //navbar notif(priority)
+        function priority1Notif(message){
+            let d1 = document.createElement('div')
+            d1.className = "card notif critical border-0";
+            let d2 = document.createElement('div')
+            d2.className = "card-body"
+            d2.innerText = message;
+            d1.appendChild(d2)
+            let d = document.getElementById("drpdwn")
+            // d.appendChild(d1)
+            d.insertBefore(d1, d.firstChild);
+          }
+          
+        function priority2Notif(message){
+            let d1 = document.createElement('div')
+            d1.className = "card notif light border-0";
+            let d2 = document.createElement('div')
+            d2.className = "card-body"
+            d2.innerText = message;
+            d1.appendChild(d2)
+            let d = document.getElementById("drpdwn")
+            // d.appendChild(d1)
+            d.insertBefore(d1, d.firstChild);
+          }
+
+        fetch("/report/priorityCount/?status=unseen").then(res => res.json()).then(data => {
+          console.log(data)
+          data.forEach((element)=>{
+            if(element.count>4)
+            console.log(`More than 4 ${element._id.reportType} reports from Pincode: ${element._id.pincode} in last 24hrs`)
+          })
+        })
       </script>
 
     <!--Script for line chart for years-->
@@ -586,7 +618,7 @@
         
     </script>
 
-<!-- mapbox script/notification -->
+<!-- mapbox script/socket notifications -->
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.js'></script>
     <script src="/socket.io/socket.io.js"></script>
     <script>
@@ -1432,7 +1464,7 @@
               });
             }
           }
-          
+
           switch(user.owner){
             case 'PWD':
               socket.on('reportAddedPWD', (reportData) => {
@@ -1478,37 +1510,19 @@
                 notifyMe(`New Report`);
                 nowuiDashboard.showNotification('bottom','center', `New Report ID: ${reportData._id}`);
                 console.log('reportAddedEDMC Event trigerred');
-                
-
-
               });
               socket.on('priority1ReportEDMC', (reportData) => {
-                notifyMe(`More than 4 ${report.reportType} reports from Pincode: ${reportData.pincode} in 24h`);
-                nowuiDashboard.showNotification('top','centre', `More than 4 ${report.reportType} reports from Pincode: ${reportData.pincode} in last 24 hours`);
+                notifyMe(`More than 4 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+                nowuiDashboard.showNotification('top','centre', `More than 4 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+                priority1Notif(`More than 4 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
                 console.log('priority1ReportEDMC Event trigerred');
-                let d1 = document.createElement('div')
-                d1.className = "card notif critical border-0";
-                let d2 = document.createElement('div')
-                d2.className = "card-body"
-                d2.innerText = `More than 4 ${report.reportType} reports from Pincode: ${reportData.pincode} in 24h`
-                d1.appendChild(d2)
-                let d = document.getElementById("drpdwn")
-                d.appendChild(d1)
-                
+        
               });
               socket.on('priority2ReportEDMC', (reportData) => {
-                notifyMe(`More than 2 ${report.reportType} reports from Pincode: ${reportData.pincode} in 24h`);
-                nowuiDashboard.showNotification('top','center', `More than 2 ${report.reportType} reports from Pincode: ${reportData.pincode} in last 24 hours`);
+                notifyMe(`More than 2 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+                nowuiDashboard.showNotification('top','center', `More than 2 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+                priority2Notif(`More than 2 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
                 console.log('priority2ReportEDMC Event trigerred');
-                let d1 = document.createElement('div')
-                d1.className = "card notif light border-0";
-                let d2 = document.createElement('div')
-                d2.className = "card-body"
-                d2.innerText = `More than 2 ${report.reportType} reports from Pincode: ${reportData.pincode} in 24h`
-                d1.appendChild(d2)
-                let d = document.getElementById("drpdwn")
-                d.appendChild(d1)
-                
               });
               break;
 

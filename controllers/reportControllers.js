@@ -357,7 +357,9 @@ const getPriorityCount = async (req, res) => {
     match.createdAt = {
       $gt: new Date(new Date().getTime() - 1000 * 60 * 60 * 24)
     };
-    match.status = 'unseen';
+    if (req.query.status) {
+      if (req.query.status.length) match.status = req.query.status;
+    }
 
     let count = await Report.aggregate(
       [

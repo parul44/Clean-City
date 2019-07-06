@@ -391,11 +391,9 @@
         //navbar notif(priority)
         //function to change icon class
         function fun(){
-            let d = document.getElementById("bell2");
-            d.classList.remove("fas");
-            d.classList.remove("color");
-            d.classList.add("far");
-            d.classList.add("fa-bell");
+            let d = document.getElementById("bell1");
+            d.className = "fas fa-bell ";
+            
         }
 
         function priority1Notif(message){
@@ -417,7 +415,6 @@
 
                 let bell = document.getElementById("bell1");
                 bell.className = "fas fa-bell color";
-                bell.id = "bell2";
                 bell.addEventListener("click",fun());
           }
           

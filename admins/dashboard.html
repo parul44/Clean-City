@@ -202,7 +202,7 @@
               <li class="nav-item dropdown">
                  <a class="nav-link dropdown-toggle"  id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 
-                  <i class="fas fa-bell" id ="bell1" style="font-size:24px" ></i> 
+                  <i class="fas fa-bell" id ="bell" style="font-size:24px" ></i> 
                   
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink" id="drpdwn"> 
@@ -391,8 +391,8 @@
         //navbar notif(priority)
         //function to change icon class
         function fun(){
-            let d = document.getElementById("bell1");
-            d.className = "fas fa-bell ";
+            let d = document.getElementById("bell");
+            d.classList.remove("color");
             
         }
 
@@ -413,7 +413,7 @@
                 // d.appendChild(d1)
                 d.insertBefore(d1, d.firstChild);
 
-                let bell = document.getElementById("bell1");
+                let bell = document.getElementById("bell");
                 bell.className = "fas fa-bell color";
                 bell.addEventListener("click",fun());
           }
@@ -429,9 +429,8 @@
             // d.appendChild(d1)
             d.insertBefore(d1, d.firstChild);
 
-            let bell = document.getElementById("bell1");
+            let bell = document.getElementById("bell");
                 bell.className = "fas fa-bell color";
-                bell.id = "bell2";
                 bell.addEventListener("click",fun());
             
           }

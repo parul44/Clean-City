@@ -46,7 +46,8 @@
             
   
           }
-          .notification:after {
+         
+          .notification{
     content: "";
     display: block;
     position: relative;
@@ -101,6 +102,9 @@
         .light{
           background-color:rgb(255,255,0);
           
+        }
+        .color{
+          color: red;
         }
   
   </style>
@@ -196,11 +200,10 @@
                 </a>
               </li>
               <li class="nav-item dropdown">
-                 <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="now-ui-icons ui-1_bell-53"></i>
-                  <!-- <p>
-                    <span class="d-lg-none d-md-block">Some Actions</span>
-                  </p>-->
+                 <a class="nav-link dropdown-toggle"  id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                
+                  <i class="fas fa-bell" id ="bell1" style="font-size:24px" ></i> 
+                  
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink" id="drpdwn"> 
                  <!-- <a class="dropdown-item" href="#">Action</a>
@@ -378,6 +381,7 @@
     <!-- SCRIPTS -->
     <!-- SCRIPT FOR No. of reports/navbar notif -->
     <script>
+    
         unseenText = document.getElementById('unseenText')
         seenText = document.getElementById('seenText')
         closedText = document.getElementById('closedText')
@@ -402,8 +406,6 @@
                 // d.appendChild(d1)
                 d.insertBefore(d1, d.firstChild);
 
-                let bell = document.getElementsByClassName("now-ui-icons ui-1_bell-53")
-                bell.className = "now-ui-icons ui-1_bell-53 notification"
           }
           
         function priority2Notif(message){
@@ -417,25 +419,23 @@
             // d.appendChild(d1)
             d.insertBefore(d1, d.firstChild);
             
-            let bell = document.getElementsByClassName("now-ui-icons ui-1_bell-53")
-                bell.className = "now-ui-icons ui-1_bell-53 notification"
+            
           }
 
         fetch("/report/priorityCount/?status=unseen").then(res => res.json()).then(data => {
           console.log(data)
           data.forEach((element)=>{
-            if(element.count>4){
-              priority1Notif(`More than 4 ${element._id.reportType} reports from Pincode: ${element._id.pincode} in last 24hrs`)
-            }
-            else if(element.count>2){
-              priority2Notif(`More than 2 ${element._id.reportType} reports from Pincode: ${element._id.pincode} in last 24hrs`)
-            }
+
+            if(element.count>4)
+            console.log(`More than 4 ${element._id.reportType} reports from Pincode: ${element._id.pincode} in last 24hrs`)
+
           })
         })
       </script>
 
     <!--Script for line chart for years-->
     <script>
+    
       // set the dimensions and margins of the graph
       var margin = {top: 10, right: 30, bottom: 30, left: 60},
           width = 460 - margin.left - margin.right,
@@ -1460,7 +1460,12 @@
             var layers = document.getElementById('menu');
             layers.appendChild(link);
           }
-          
+          function fun(){
+            let d = document.getElementById("bell2");
+            d.classList.remove("fas");
+            d.classList.remove("color");
+            d.classList.add("far fa-bell")
+          }
           //Notification/Socket
           const socket = io();
           
@@ -1539,18 +1544,30 @@
                 notifyMe(`New Report`);
                 nowuiDashboard.showNotification('bottom','center', `New Report ID: ${reportData._id}`);
                 console.log('reportAddedEDMC Event trigerred');
-              });
+               });
               socket.on('priority1ReportEDMC', (reportData) => {
                 notifyMe(`More than 4 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
                 nowuiDashboard.showNotification('top','centre', `More than 4 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
                 priority1Notif(`More than 4 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
                 console.log('priority1ReportEDMC Event trigerred');
+                
+                let bell = document.getElementById("bell1");
+                bell.className = "fas fa-bell color";
+                bell.id = "bell2";
+                bell.addEventListener("click",fun());
+                
+            
               });
               socket.on('priority2ReportEDMC', (reportData) => {
                 notifyMe(`More than 2 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
                 nowuiDashboard.showNotification('top','center', `More than 2 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
                 priority2Notif(`More than 2 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
                 console.log('priority2ReportEDMC Event trigerred');
+                let bell = document.getElementById("bell1");
+                bell.className = "fas fa-bell color";
+                bell.id = "bell2";
+                bell.addEventListener("click",fun());
+            
               });
               break;
 

@@ -16,24 +16,26 @@
   }
   
   </style>
-  <a class="nav-link dropdown-toggle btn btn-primary"  onclick="fun3()" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      <i class="fas fa-bell"  id = "bell1"  ></i>
+  <a class="nav-link dropdown-toggle btn btn-primary"    id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <i class="fas fa-bell" onclick="f4()" id = "bell1" ></i>
     </a>
 
 
     <script>
+function f4(){
 
-      function fun3(){
-
-        let bell = document.getElementById("bell1");
-        //bell.className = "fal fa-bell-exclamation"
-        bell.className = "fas fa-bell color";
-        console.log("color changed")
-
-
-
+let bell = document.getElementById("bell1");
+                bell.className = "fas fa-bell color";
+                console.log(bell.id)
+               bell.addEventListener("click",fun());}
+      function fun(){
+        let b = document.getElementById("bell1");
+        b.className = "fas fa-bell"
       }
-      </script>
+
+      
+    
+       </script>
   
 </body>
 </html>

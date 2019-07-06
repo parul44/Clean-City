@@ -9,91 +9,31 @@
     <title>Document</title><link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
-    <style>
-    .notif{
-            height: 4.2rem;
-             font-size: 1.1rem;
-            width: 25rem;
-            /* border-radius: 6px; */
-            margin: 0 !important;
-            
-        }
-     
-        .notif .card-body{
-          
-            padding: 6px;
-            font-weight: 600;
-        }
-        .critical{
-          background-color:rgb(235, 44, 19);
-        }
-        .medium{
-          /* background-color:rgb(235, 176, 66);
-           */
-           background-color: orange;
-        }
-        .light{
-          background-color:rgb(255,255,0);
-          
-        }</style>
-<button onclick="fun()">abc</button>
-<div class = "card border-0 notif medium" id="bla"> 
-
-        <div class = "card-body">
-            <img src="alert.png">
-              <span>yr</span>
-        </div>
-  </div>
-
-  <button type="button" class="btn btn-primary" onclick="fun3()">
-    Notifications <span class="badge badge-light" id="count">4</span>
-  </button>
-  </div>
-
-
-    <i class="now-ui-icons ui-1_bell-53"></i>
-    <i class="far fa-bell notification fa-2x"></i>
-
-    
-
-
-
+   
+<style>
+  .color{
+    color: red;
+  }
+  
+  </style>
+  <a class="nav-link dropdown-toggle btn btn-primary"  onclick="fun3()" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <i class="fas fa-bell"  id = "bell1"  ></i>
+    </a>
 
 
     <script>
 
-
       function fun3(){
 
-        let d = document.getElementById("count")
-        let x = d.innerText;
-        let n = parseInt(x);
-        d.innerText = n+1;
+        let bell = document.getElementById("bell1");
+        //bell.className = "fal fa-bell-exclamation"
+        bell.className = "fas fa-bell color";
+        console.log("color changed")
 
 
-      }
-      function fun(){
-          let d1  = document.createElement("div")
-          d1.className = "card-body"
-          let im = document.createElement("img")
-          im.setAttribute("src","alert.png")
-          let d3  = document.createElement("span")
-        d3.innerText = "this is some"
-          d1.appendChild(im)
-        d1.appendChild(d3)
-          //d1.innerText = "ths is some text"
-          console.log("hm")
-          document.getElementById("bla").appendChild(d1)
+
       }
       </script>
-    <a onclick="fun2()">
-
-      <i class="fa fa-bell" aria-hidden="true"></i>
-    </a>
-<script>
-function fun2(){
-
-}
-</script>
+  
 </body>
 </html>

@@ -425,9 +425,10 @@
         fetch("/report/priorityCount/?status=unseen").then(res => res.json()).then(data => {
           console.log(data)
           data.forEach((element)=>{
+
             if(element.count>4)
             console.log(`More than 4 ${element._id.reportType} reports from Pincode: ${element._id.pincode} in last 24hrs`)
-          
+
           })
         })
       </script>

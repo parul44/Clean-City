@@ -391,8 +391,8 @@
         //navbar notif(priority)
         //function to change icon class
         function fun(){
-            let d = document.getElementById("bell1");
-            d.className = "fas fa-bell ";
+            let d = document.getElementById("bell");
+            d.classList.remove("color");
             
         }
 
@@ -429,9 +429,8 @@
             // d.appendChild(d1)
             d.insertBefore(d1, d.firstChild);
 
-            let bell = document.getElementById("bell1");
+            let bell = document.getElementById("bell");
                 bell.className = "fas fa-bell color";
-                bell.id = "bell2";
                 bell.addEventListener("click",fun());
             
           }

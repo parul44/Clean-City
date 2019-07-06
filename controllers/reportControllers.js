@@ -156,9 +156,9 @@ const postSubmitData = async (req, res) => {
     //After saving report , checking user and updating user account
     if (req.user) {
       if (!req.user.owner) {
-        let _id = req.user._id;
+        let username = req.user.username;
         User.updateOne(
-          { _id: _id },
+          { username: username },
           {
             $inc: { submissions: 1 }
           },
@@ -182,12 +182,13 @@ const postSubmitData = async (req, res) => {
       //Report added notification
       io.getIO().emit(`reportAdded${admin}`, reportData);
 
-      //counting unseen reports of that pincode for the admin
+      //counting unseen reports in 24h of that pincode/reportType for the admin
       var match = adminFilter(admin);
       match.createdAt = {
         $gt: new Date(new Date().getTime() - 1000 * 60 * 60 * 24)
       };
       match['results.pincode'] = report.results.pincode;
+      match.reportType = report.reportType;
       match.status = 'unseen';
 
       let count = await Report.countDocuments(match, function(err, c) {
@@ -195,7 +196,6 @@ const postSubmitData = async (req, res) => {
           console.log(err);
         }
       });
-      console.log(count);
 
       //High Priority Reports notification
       if (count === 5) {
@@ -344,6 +344,57 @@ const getCount = async (req, res) => {
   }
 };
 
+const getPriorityCount = async (req, res) => {
+  try {
+    var match = {};
+    if (!(req.query.user == 'public')) {
+      if (req.user) {
+        if (req.user.owner) match = adminFilter(req.user.owner);
+        else match = userFilter(req.user);
+      }
+    }
+    match.createdAt = {
+      $gt: new Date(new Date().getTime() - 1000 * 60 * 60 * 24)
+    };
+    if (req.query.status) {
+      if (req.query.status.length) match.status = req.query.status;
+    }
+
+    let count = await Report.aggregate(
+      [
+        {
+          $match: match
+        },
+        {
+          $project: {
+            pincode: '$results.pincode',
+            reportType: 1,
+            _id: 0
+          }
+        },
+        {
+          $group: {
+            _id: { pincode: '$pincode', reportType: '$reportType' },
+            count: { $sum: 1 }
+          }
+        },
+        {
+          $match: { count: { $gt: 2 } }
+        }
+      ],
+      function(err, c) {
+        if (err) {
+          console.log(err);
+        }
+      }
+    );
+
+    res.status(200).send(count);
+  } catch (e) {
+    res.status(404).send(e);
+  }
+};
+
 const getGraph = async (req, res) => {
   try {
     var match = {};
@@ -460,25 +511,58 @@ const getImage = async (req, res) => {
   }
 };
 
-const updateReports = (req, res) => {
+const updateReports = async (req, res) => {
   try {
     let idarray = req.body.idarray;
     let status = req.body.status;
     Report.updateMany(
       { _id: { $in: idarray } },
       { $set: { status: status } },
-      function(err) {
+      async function(err) {
+        // CREDITING PROCESS
+        if (status == 'closed') {
+          //Finidng Non-credited , Non-anonymous Reports
+          var reports = await Report.find(
+            {
+              _id: { $in: idarray },
+              credited: false,
+              username: { $exists: true }
+            },
+            { username: 1 }
+          );
+          //For each such report, Crediting the linked user and Setting 'credited' field to true
+          reports.forEach(report => {
+            //Crediting the linked user
+            User.updateOne(
+              { username: report.username },
+              {
+                $inc: { credits: 2 }
+              },
+              function(err) {
+                // Setting 'credited' field to true
+                Report.updateOne(
+                  { _id: report._id },
+                  {
+                    $set: { credited: true }
+                  },
+                  function(err) {
+                    if (err) {
+                      console.log(err);
+                    }
+                  }
+                );
+                if (err) {
+                  console.log(err);
+                }
+              }
+            );
+          });
+        }
         if (err) {
           console.log(err);
         }
       }
     );
-
-    // Crediting
-    if (status == 'closed') {
-      var set = {};
-      set.credited = true;
-    }
 
     res.status(200).send(`Reports updated`);
   } catch (e) {
@@ -508,6 +592,7 @@ module.exports = {
   getReportsID,
   getImage,
   getCount,
+  getPriorityCount,
   getGraph,
   updateReports,
   deleteReports

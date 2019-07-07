@@ -389,13 +389,7 @@
         fetch("/report/count/?status=seen").then(res => res.json()).then(data => {seenText.textContent=data.count;})
         fetch("/report/count/?status=closed").then(res => res.json()).then(data => {closedText.textContent=data.count;})
         //navbar notif(priority)
-        //function to change icon class
-        function fun(){
-            let d = document.getElementById("bell");
-            d.classList.remove("color");
-            
-        }
-
+        
         function priority1Notif(message){
             let d1 = document.createElement('div')
                 d1.className = "card notif critical border-0";
@@ -415,8 +409,11 @@
 
                 let bell = document.getElementById("bell");
                 bell.className = "fas fa-bell color";
-                bell.addEventListener("click",fun());
-          }
+                bell.addEventListener("click",function (){
+                    let d = document.getElementById("bell");
+                    d.classList.remove("color");
+                });
+        }
           
         function priority2Notif(message){
             let d1 = document.createElement('div')
@@ -431,9 +428,11 @@
 
             let bell = document.getElementById("bell");
                 bell.className = "fas fa-bell color";
-                bell.addEventListener("click",fun());
-            
-          }
+                bell.addEventListener("click",function (){
+                    let d = document.getElementById("bell");
+                    d.classList.remove("color");
+                });
+        }
 
           fetch("/report/priorityCount/?status=unseen").then(res => res.json()).then(data => {
           console.log(data)

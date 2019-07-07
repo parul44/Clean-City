@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/DevelopHowTo/Clean-City#readme",
   "dependencies": {
+    "@sendgrid/mail": "^6.4.0",
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "express-session": "^1.16.1",

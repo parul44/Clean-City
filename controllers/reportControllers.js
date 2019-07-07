@@ -4,9 +4,19 @@ const Report = require('../models/reportModel');
 const User = require('../models/userModel');
 const multer = require('multer');
 const sharp = require('sharp');
+const sgMail = require('@sendgrid/mail');
 const fetch = require('node-fetch');
 const io = require('../socket');
 
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+const msg = {
+  to: 'errahulgupta93@gmail.com',
+  from: 'errahulgupta93@gmail.com',
+  subject: 'More than 4 reports!!!',
+  text: 'More than 4 reports have been added from same area , Please pay attention...',
+  html: '<strong>More than 4 reports have been added from same area , Please pay attention...</strong>',
+};
 //controllers
 //Multer file upload controller
 const upload = multer({
@@ -170,6 +180,7 @@ const postSubmitData = async (req, res) => {
         );
       }
     }
+
     //Emit notification event
     var reportData = {
       _id: report._id,
@@ -181,7 +192,6 @@ const postSubmitData = async (req, res) => {
     adminsArray.forEach(async admin => {
       //Report added notification
       io.getIO().emit(`reportAdded${admin}`, reportData);
-
       //counting unseen reports in 24h of that pincode/reportType for the admin
       var match = adminFilter(admin);
       match.createdAt = {
@@ -200,6 +210,7 @@ const postSubmitData = async (req, res) => {
       //High Priority Reports notification
       if (count === 5) {
         io.getIO().emit(`priority1Report${admin}`, reportData);
+        sgMail.send(msg);
       } else if (count === 3) {
         io.getIO().emit(`priority2Report${admin}`, reportData);
       }

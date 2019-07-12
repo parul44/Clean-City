@@ -931,7 +931,7 @@
     </script>
     <!-- fetching latest6 reports script -->
     <script>
-      fetch('/report/reports?user=public&limit=6&sortBy=createdAt:desc')
+      fetch('/report/reports?user=public&status=seen&limit=6&sortBy=createdAt:desc')
       .then(res => {
         res.json().then(data => {
 

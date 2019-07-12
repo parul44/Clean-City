@@ -237,7 +237,7 @@
     </footer>
     <script>
       fetch(
-        '/report/reports?user=public&reportType=garbage&limit=6&sortBy=createdAt:desc'
+        '/report/reports?user=public&reportType=garbage&status=seen&limit=6&sortBy=createdAt:desc'
       ).then(res => {
         res.json().then(data => {
           cardimg = document.getElementsByClassName('card-img-top');
@@ -247,9 +247,8 @@
           for (i = 0; i < length; i++) {
             cardimg[i].src = `/report/image/${data[i]._id}`;
             date = new Date(data[i].createdAt);
-            cardsmall[i].innerHTML = `${date.toLocaleString()} <br> ${
-              data[i].location
-            }`;
+            cardsmall[i].innerHTML = `${date.toLocaleString()} <br>
+            ${data[i].results.locality} , ${data[i].results.district}`;
             cardtext[i].innerHTML = `${data[i].description}`;
           }
         });

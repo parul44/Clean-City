@@ -115,7 +115,7 @@ app.get('/report/:id', async (req, res, next) => {
     date1 = new Date(report.createdAt);
     date2 = new Date(report.updatedAt);
     res.status(200).send(`
-      <h1>REPORT ID : ${report._id}</h1>
+      <h1>SUBMITTED REPORT ID : ${report._id}</h1>
       <h5>Created on: ${date1.toLocaleString('en-GB')}</h5>
       <h5>Updated on: ${date2.toLocaleString('en-GB')}</h5>
       <h5> Status : ${report.status}</h5>
@@ -128,6 +128,7 @@ app.get('/report/:id', async (req, res, next) => {
           report.geometry.coordinates[1]
         },${report.geometry.coordinates[0]}' target=_blank>Click here</a>
 
+        <b>Uploader Username:</b> <i>${report.username}</i>
         <b>Uploader Name:</b> <i>${report.name}</i>
         <b>Uploader Contact No.:</b> <i>${report.contactNumber}</i>
 

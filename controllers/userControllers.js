@@ -32,14 +32,18 @@ const getInfo = (req, res, next) => {
 const redeem = (req, res, next) => {
   try {
     let username = req.user.username;
-    User.updateOne({ username: username }, { $inc: { credits: -5 } }, function(
-      err
-    ) {
-      if (err) {
-        console.log(err);
+    var creditsToRedeem = 5;
+    User.updateOne(
+      { username: username, credits: { $gte: creditsToRedeem } },
+      { $inc: { credits: -creditsToRedeem } },
+      function(err) {
+        //Proceed with offer Redemption here
+        if (err) {
+          console.log(err);
+        }
       }
-    });
-    res.status(200).send(`Redeemed`);
+    );
+    res.status(200).send(`OK`);
   } catch (e) {
     res.status(404).send(e);
   }

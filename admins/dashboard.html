@@ -26,6 +26,7 @@
   <style>
   .ToRchart svg{
     margin: -30 -30 0 0 !important;
+    width: 80%;
     
   }
 .notif{
@@ -689,7 +690,7 @@
 <!-- mapbox script/socket notifications -->
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.js'></script>
     <script src="/socket.io/socket.io.js"></script>
-    //Main script
+    <!--Main Script-->
     <script>
       let user={owner: '-' , username: '-'};
       fetch("/admin/info").then(res => res.json()).then(data => {

@@ -26,6 +26,7 @@
   <style>
   .ToRchart svg{
     margin: -30 -30 0 0 !important;
+    width: 80%;
     
   }
 .notif{
@@ -315,7 +316,7 @@
           <svg class="chart"></svg>
           <div class='button-area'>
           </div>
-          <div class="card-group text-center">
+          <!-- <div class="card-group text-center">
             <div class="card border-0">
              <div class="card-body"><p>chart1</p>
       
@@ -328,8 +329,8 @@
                      </div>
           </div>
           </div>
-          
-          <div class="card-group">
+           -->
+          <!-- <div class="card-group">
             <div class="card border-0">
                <div class="card-body">
                  <p>chart3</p>
@@ -340,7 +341,7 @@
                     <p>chart4</p>
                  </div>
               </div>
-            </div>
+            </div> -->
           
         </section>
              <br> <br> <br> <br>
@@ -689,7 +690,11 @@
 <!-- mapbox script/socket notifications -->
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.js'></script>
     <script src="/socket.io/socket.io.js"></script>
+<<<<<<< HEAD
     <!-- Main script -->
+=======
+    <!--Main Script-->
+>>>>>>> 3e9b045a597589cb507d132503c822a931ffccea
     <script>
       let user={owner: '-' , username: '-'};
       fetch("/admin/info").then(res => res.json()).then(data => {

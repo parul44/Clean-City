@@ -931,7 +931,7 @@
     </script>
     <!-- fetching latest6 reports script -->
     <script>
-      fetch('/report/reports?user=public&limit=6&sortBy=createdAt:desc')
+      fetch('/report/reports?user=public&status=seen&limit=6&sortBy=createdAt:desc')
       .then(res => {
         res.json().then(data => {
 
@@ -940,7 +940,7 @@
           text2 = document.getElementsByClassName("text2");
           length=data.length;
           for(i=0;i<length;i++){
-            latest6[i].src=`/report/image/${data[i]._id}`
+            latest6[i].src=`${data[i].imageUrl}`
             text1[i].innerHTML = `${data[i].results.locality} , ${data[i].results.district}`
             date= new Date(data[i].createdAt)
             text2[i].innerHTML = `${date.toLocaleString()}`

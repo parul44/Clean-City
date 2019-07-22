@@ -35,9 +35,6 @@
       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
       crossorigin="anonymous"
     />
-    <script>
-        
-      </script>
   </head>
 
   <body class="">
@@ -338,6 +335,8 @@
       </div>
     </div>
     <!-- set options/set user on sidebar -->
+    <!-- Main script -->
+    <script src="/socket.io/socket.io.js"></script>
     <script>
       var user={owner: '-' , username: '-'};
         fetch("/admin/info").then(res => res.json()).then(data => {
@@ -385,6 +384,256 @@
               types.appendChild(crime)
               break;
           }
+
+          //navbar notif(priority)
+        
+        function priority1Notif(message){
+            let d1 = document.createElement('div')
+                d1.className = "card notif critical border-0";
+                let d2 = document.createElement('div')
+                d2.className = "card-body"
+                let im = document.createElement("img")
+                im.setAttribute("src","../assets/img/alert.png")
+               let d3  = document.createElement("span")
+               d3.setAttribute("style","font-size:10px")
+                d3.innerText = message
+                d2.appendChild(im)
+                d2.appendChild(d3)
+               
+                d1.appendChild(d2)
+                let d = document.getElementById("drpdwn")
+                // d.appendChild(d1)
+                d.insertBefore(d1, d.firstChild);
+
+                let bell = document.getElementById("bell");
+                bell.className = "fas fa-bell color";
+                bell.addEventListener("click",function (){
+                    let d = document.getElementById("bell");
+                    d.classList.remove("color");
+                });
+        }
+          
+        function priority2Notif(message){
+            let d1 = document.createElement('div')
+            d1.className = "card notif medium border-0";
+            let d2 = document.createElement('div')
+            d2.className = "card-body"
+            d2.setAttribute("style","font-size:10px")
+            d2.innerText = message;
+            d1.appendChild(d2)
+            let d = document.getElementById("drpdwn")
+            // d.appendChild(d1)
+            d.insertBefore(d1, d.firstChild);
+
+            let bell = document.getElementById("bell");
+                bell.className = "fas fa-bell color";
+                bell.addEventListener("click",function (){
+                    let d = document.getElementById("bell");
+                    d.classList.remove("color");
+                });
+        }
+
+        function priority3Notif(message){
+            let d1 = document.createElement('div')
+            d1.className = "card notif light border-0";
+            let d2 = document.createElement('div')
+            d2.className = "card-body"
+            d2.setAttribute("style","font-size:10px")
+            d2.innerText = message;
+            d1.appendChild(d2)
+            let d = document.getElementById("drpdwn")
+            // d.appendChild(d1)
+            d.insertBefore(d1, d.firstChild);
+
+            let bell = document.getElementById("bell");
+                bell.className = "fas fa-bell color";
+                bell.addEventListener("click",function (){
+                    let d = document.getElementById("bell");
+                    d.classList.remove("color");
+                });
+        }
+
+          fetch("/report/priorityCount/?status=unseen").then(res => res.json()).then(data => {
+          data.forEach((element)=>{
+            if(element.count>20){
+              priority1Notif(`More than 20 ${element._id.reportType} reports from Pincode: ${element._id.pincode} in last 24hrs`)
+            }
+            else if(element.count>15){
+              priority2Notif(`More than 15 ${element._id.reportType} reports from Pincode: ${element._id.pincode} in last 24hrs`)
+            }
+            else if(element.count>10){
+              priority2Notif(`More than 10 ${element._id.reportType} reports from Pincode: ${element._id.pincode} in last 24hrs`)
+            }
+          })
+        })
+        
+          //Notification/Socket
+          const socket = io();
+          
+          function notifyMe(message) {
+            // Let's check if the browser supports notifications
+            if (!('Notification' in window)) {
+              alert('This browser does not support desktop notification');
+            }
+
+            // Let's check if the user is okay to get some notification
+            else if (Notification.permission === 'granted') {
+              // If it's okay let's create a notification
+              var notification = new Notification(message);
+            }
+
+            // Otherwise, we need to ask the user for permission
+            // Note, Chrome does not implement the permission static property
+            // So we have to check for NOT 'denied' instead of 'default'
+            else if (Notification.permission !== 'denied') {
+              Notification.requestPermission(function(permission) {
+                // Whatever the user answers, we make sure we store the information
+                if (!('permission' in Notification)) {
+                  Notification.permission = permission;
+                }
+
+                // If the user is okay, let's create a notification
+                if (permission === 'granted') {
+                  var notification = new Notification(message);
+                }
+              });
+            }
+          }
+
+          switch(user.owner){
+            case 'PWD':
+            socket.on('reportAddedPWD', (reportData) => {
+                notifyMe(`New Report`);
+                nowuiDashboard.showNotification('bottom','center', `New Report ID: ${reportData._id}`);
+               });
+              socket.on('priority1ReportPWD', (reportData) => {
+                notifyMe(`More than 20 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+                nowuiDashboard.showNotification('top','centre', `More than 20 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+                priority1Notif(`More than 20 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+              });
+              socket.on('priority2ReportPWD', (reportData) => {
+                notifyMe(`More than 15 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+                nowuiDashboard.showNotification('top','center', `More than 15 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+                priority2Notif(`More than 15 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+              });
+              socket.on('priority3ReportPWD', (reportData) => {
+                notifyMe(`More than 10 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+                nowuiDashboard.showNotification('top','center', `More than 10 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+                priority3Notif(`More than 10 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+              });
+              break;
+
+            case 'DJB':
+            socket.on('reportAddedDJB', (reportData) => {
+                notifyMe(`New Report`);
+                nowuiDashboard.showNotification('bottom','center', `New Report ID: ${reportData._id}`);
+               });
+              socket.on('priority1ReportDJB', (reportData) => {
+                notifyMe(`More than 20 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+                nowuiDashboard.showNotification('top','centre', `More than 20 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+                priority1Notif(`More than 20 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+              });
+              socket.on('priority2ReportDJB', (reportData) => {
+                notifyMe(`More than 15 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+                nowuiDashboard.showNotification('top','center', `More than 15 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+                priority2Notif(`More than 15 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+              });
+              socket.on('priority3ReportDJB', (reportData) => {
+                notifyMe(`More than 10 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+                nowuiDashboard.showNotification('top','center', `More than 10 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+                priority3Notif(`More than 10 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+              });
+              break;
+
+            case 'EDMC':
+              socket.on('reportAddedEDMC', (reportData) => {
+                notifyMe(`New Report`);
+                nowuiDashboard.showNotification('bottom','center', `New Report ID: ${reportData._id}`);
+               });
+              socket.on('priority1ReportEDMC', (reportData) => {
+                notifyMe(`More than 20 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+                nowuiDashboard.showNotification('top','centre', `More than 20 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+                priority1Notif(`More than 20 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+              });
+              socket.on('priority2ReportEDMC', (reportData) => {
+                notifyMe(`More than 15 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+                nowuiDashboard.showNotification('top','center', `More than 15 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+                priority2Notif(`More than 15 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+              });
+              socket.on('priority3ReportEDMC', (reportData) => {
+                notifyMe(`More than 10 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+                nowuiDashboard.showNotification('top','center', `More than 10 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+                priority3Notif(`More than 10 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+              });
+              break;
+
+            case 'NDMC':
+            socket.on('reportAddedNDMC', (reportData) => {
+                notifyMe(`New Report`);
+                nowuiDashboard.showNotification('bottom','center', `New Report ID: ${reportData._id}`);
+               });
+              socket.on('priority1ReportNDMC', (reportData) => {
+                notifyMe(`More than 20 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+                nowuiDashboard.showNotification('top','centre', `More than 20 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+                priority1Notif(`More than 20 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+              });
+              socket.on('priority2ReportNDMC', (reportData) => {
+                notifyMe(`More than 15 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+                nowuiDashboard.showNotification('top','center', `More than 15 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+                priority2Notif(`More than 15 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+              });
+              socket.on('priority3ReportNDMC', (reportData) => {
+                notifyMe(`More than 10 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+                nowuiDashboard.showNotification('top','center', `More than 10 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+                priority3Notif(`More than 10 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+              });
+              break;
+
+            case 'SDMC':
+            socket.on('reportAddedSDMC', (reportData) => {
+                notifyMe(`New Report`);
+                nowuiDashboard.showNotification('bottom','center', `New Report ID: ${reportData._id}`);
+               });
+              socket.on('priority1ReportSDMC', (reportData) => {
+                notifyMe(`More than 20 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+                nowuiDashboard.showNotification('top','centre', `More than 20 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+                priority1Notif(`More than 20 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+              });
+              socket.on('priority2ReportSDMC', (reportData) => {
+                notifyMe(`More than 15 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+                nowuiDashboard.showNotification('top','center', `More than 15 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+                priority2Notif(`More than 15 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+              });
+              socket.on('priority3ReportSDMC', (reportData) => {
+                notifyMe(`More than 10 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+                nowuiDashboard.showNotification('top','center', `More than 10 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+                priority3Notif(`More than 10 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+              });
+              break;
+
+            case 'NewDMC':
+            socket.on('reportAddedEDMC', (reportData) => {
+                notifyMe(`New Report`);
+                nowuiDashboard.showNotification('bottom','center', `New Report ID: ${reportData._id}`);
+               });
+              socket.on('priority1ReportNewDMC', (reportData) => {
+                notifyMe(`More than 20 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+                nowuiDashboard.showNotification('top','centre', `More than 20 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+                priority1Notif(`More than 20 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+              });
+              socket.on('priority2ReportNewDMC', (reportData) => {
+                notifyMe(`More than 15 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+                nowuiDashboard.showNotification('top','center', `More than 15 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+                priority2Notif(`More than 15 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+              });
+              socket.on('priority3ReportNewDMC', (reportData) => {
+                notifyMe(`More than 10 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+                nowuiDashboard.showNotification('top','center', `More than 10 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+                priority3Notif(`More than 10 ${reportData.reportType} reports from Pincode: ${reportData.pincode} within 24hrs`);
+              });
+              break;
+          }
+
         })
     </script>
     <!--get/filter reports-->
@@ -570,7 +819,7 @@
     <script src="../assets/js/plugins/bootstrap-notify.js"></script>
     <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
     <script
-      src="../assets/js/now-ui-dashboard.min.js?v=1.3.0"
+      src="../assets/js/now-ui-dashboard.js?v=1.3.0"
       type="text/javascript"
     ></script>
   </body>

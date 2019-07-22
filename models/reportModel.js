@@ -42,9 +42,6 @@ const reportSchema = new mongoose.Schema(
     imageUrl: {
       type: String
     },
-    imageBuffer: {
-      type: Buffer
-    },
     properties: {
       brief: {
         type: String,

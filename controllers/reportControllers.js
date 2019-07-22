@@ -3,6 +3,8 @@
 const Report = require('../models/reportModel');
 const User = require('../models/userModel');
 const multer = require('multer');
+const aws = require('aws-sdk');
+const multerS3 = require('multer-s3');
 const sharp = require('sharp');
 const sgMail = require('@sendgrid/mail');
 const fetch = require('node-fetch');
@@ -21,16 +23,38 @@ const msg = {
 };
 //controllers
 //Multer file upload controller
+aws.config.update({
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  region: 'us-east-2'
+});
+
+const s3 = new aws.S3();
+
 const upload = multer({
+  storage: multerS3({
+    acl: 'public-read',
+    s3,
+    bucket: 'clean-city-uploads',
+    contentType: multerS3.AUTO_CONTENT_TYPE,
+    key: function(req, file, cb) {
+      cb(null, Date.now().toString());
+    }
+  }),
   limits: {
-    fileSize: 5000000
+    fileSize: 4 * 1024 * 1024
   },
   fileFilter(req, file, cb) {
-    if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
-      return cb(new Error('Please upload an image'));
+    if (
+      file.originalname.match(/\.(jpg|jpeg|png)$/i) &&
+      (file.mimetype === 'image/jpg' ||
+        file.mimetype === 'image/jpeg' ||
+        file.mimetype === 'image/png')
+    ) {
+      cb(null, true);
+    } else {
+      cb(new Error('Please upload an image'), false);
     }
-
-    cb(undefined, true);
   }
 });
 
@@ -125,23 +149,24 @@ const findAdmins = report => {
 };
 
 //Image resizing - Saving in DB controller
-const postSubmitData = async (req, res) => {
+const postSubmitData = async (req, res, next) => {
   try {
     var newReport = {};
-    const buffer = await sharp(req.file.buffer)
-      .resize(1920, 1920, {
-        fit: 'inside',
-        withoutEnlargement: true
-      })
-      .toFormat('jpeg')
-      .toBuffer();
-    newReport.imageBuffer = buffer;
+    // const buffer = await sharp(req.file.buffer)
+    //   .resize(1920, 1920, {
+    //     fit: 'inside',
+    //     withoutEnlargement: true
+    //   })
+    //   .toFormat('jpeg')
+    //   .toBuffer();
+    // newReport.imageBuffer = buffer;
     if (!req.body.name == '') newReport.name = req.body.name;
     if (!req.body.contactNumber == null)
       newReport.contactNumber = req.body.contactNumber;
     newReport.reportType = req.body.reportType;
     newReport.description = req.body.description;
     newReport.location = req.body.location;
+    newReport.imageUrl = req.file.location;
     newReport.properties = {
       brief: req.body.description.slice(0, 100)
     };
@@ -222,8 +247,9 @@ const postSubmitData = async (req, res) => {
     });
 
     res.status(201).redirect(`/report/${report._id}`);
-  } catch (e) {
-    res.status(400).send({ error: e.errmsg });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ error: err.message });
   }
 };
 
@@ -246,7 +272,8 @@ const getGeojson = async (req, res) => {
     };
     res.status(200).json(featurecollection);
   } catch (e) {
-    res.status(400).send(e);
+    console.log(e);
+    res.status(500).send(e.message);
   }
 };
 
@@ -324,16 +351,16 @@ const getReports = async (req, res) => {
             rank: { $indexOfArray: [order, '$results.pincode'] }
           }
         },
-        { $sort: options.sort },
-        { $project: { imageBuffer: 0 } }
+        { $sort: options.sort }
       ]);
       res.status(200).send(reports);
     } else {
-      var reports = await Report.find(match, '-imageBuffer', options);
+      var reports = await Report.find(match, options);
       res.status(200).send(reports);
     }
   } catch (e) {
-    res.status(404).send(e);
+    console.log(e);
+    res.status(500).send(e.message);
   }
 };
 
@@ -356,7 +383,8 @@ const getCount = async (req, res) => {
     });
     res.status(200).send({ count: count });
   } catch (e) {
-    res.status(404).send(e);
+    console.log(e);
+    res.status(500).send(e.message);
   }
 };
 
@@ -407,7 +435,8 @@ const getPriorityCount = async (req, res) => {
 
     res.status(200).send(count);
   } catch (e) {
-    res.status(404).send(e);
+    console.log(e);
+    res.status(500).send(e.message);
   }
 };
 
@@ -495,35 +524,22 @@ const getGraph = async (req, res) => {
     }
     res.status(200).send(count);
   } catch (e) {
-    res.status(404).send(e);
+    console.log(e);
+    res.status(500).send(e.message);
   }
 };
 
 const getReportsID = async (req, res) => {
   const _id = req.params.id;
   try {
-    const report = await Report.findOne({ _id }, '-imageBuffer');
+    const report = await Report.findOne({ _id });
     if (!report) {
       return res.status(404).json({ error: 'Report not found' });
     }
     res.send(report);
   } catch (e) {
-    res.status(404).send();
-  }
-};
-
-const getImage = async (req, res) => {
-  try {
-    const report = await Report.findById(req.params.id);
-
-    if (!report || !report.imageBuffer) {
-      throw new Error();
-    }
-
-    res.set('Content-Type', 'image/jpg');
-    res.send(report.imageBuffer);
-  } catch (e) {
-    res.status(404).send(e);
+    console.log(e);
+    res.status(500).send(e.message);
   }
 };
 
@@ -582,7 +598,8 @@ const updateReports = async (req, res) => {
 
     res.status(200).send(`Reports updated`);
   } catch (e) {
-    res.status(404).send(e);
+    console.log(e);
+    res.status(500).send(e.message);
   }
 };
 
@@ -596,7 +613,8 @@ const deleteReports = (req, res) => {
     });
     res.status(200).send(`Reports deleted`);
   } catch (e) {
-    res.status(404).send(e);
+    console.log(e);
+    res.status(500).send(e.message);
   }
 };
 
@@ -606,7 +624,6 @@ module.exports = {
   getGeojson,
   getReports,
   getReportsID,
-  getImage,
   getCount,
   getPriorityCount,
   getGraph,

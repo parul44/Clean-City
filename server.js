@@ -108,7 +108,7 @@ app.get('/form', (req, res, next) => {
 app.get('/report/:id', async (req, res, next) => {
   const _id = req.params.id;
   try {
-    const report = await Report.findOne({ _id }, '-imageBuffer');
+    const report = await Report.findOne({ _id });
     if (!report) {
       return res.status(404).send({ error: 'Report not found' });
     }
@@ -121,8 +121,8 @@ app.get('/report/:id', async (req, res, next) => {
       <h5> Status : ${report.status}</h5>
       <pre>
         <p> 
-        <b>View Image:</b> <a href='/report/image/${
-          report._id
+        <b>View Image:</b> <a href='${
+          report.imageUrl
         }' target=_blank>Click here</a>
         <b>View Location on Google Map:</b> <a href='https://www.google.com/maps/dir/${
           report.geometry.coordinates[1]

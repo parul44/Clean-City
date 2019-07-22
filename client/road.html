@@ -245,7 +245,7 @@
           cardsmall = document.getElementsByClassName('text-muted');
           length = data.length;
           for (i = 0; i < length; i++) {
-            cardimg[i].src = `/report/image/${data[i]._id}`;
+            cardimg[i].src = `${data[i].imageUrl}`;
             date = new Date(data[i].createdAt);
             cardsmall[i].innerHTML = `${date.toLocaleString()} <br> 
             ${data[i].results.locality} , ${data[i].results.district}`;

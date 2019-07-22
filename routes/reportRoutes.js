@@ -9,7 +9,7 @@ router.post(
   reportControllers.upload.single('image'),
   reportControllers.postSubmitData,
   (error, req, res, next) => {
-    res.status(400).send({ error: error.message });
+    res.status(error.statusCode).send({ error: error });
   }
 );
 
@@ -18,8 +18,6 @@ router.get('/geojson/:reportType', reportControllers.getGeojson);
 router.get('/reports', reportControllers.getReports);
 
 router.get('/reports/:id', reportControllers.getReportsID);
-
-router.get('/image/:id', reportControllers.getImage);
 
 router.get('/count', reportControllers.getCount);
 

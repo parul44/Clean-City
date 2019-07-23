@@ -45,16 +45,11 @@ const upload = multer({
     fileSize: 4 * 1024 * 1024
   },
   fileFilter(req, file, cb) {
-    if (
-      file.originalname.match(/\.(jpg|jpeg|png)$/i) &&
-      (file.mimetype === 'image/jpg' ||
-        file.mimetype === 'image/jpeg' ||
-        file.mimetype === 'image/png')
-    ) {
-      cb(null, true);
-    } else {
-      cb(new Error('Please upload an image'), false);
+    if (!(file.originalname.match(/\.(jpg|jpeg|png)$/i)&&(file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg' ||
+    file.mimetype === 'image/png'))) {
+      return cb(new Error('Please upload an image'));
     }
+    cb(undefined, true);
   }
 });
 
@@ -355,7 +350,7 @@ const getReports = async (req, res) => {
       ]);
       res.status(200).send(reports);
     } else {
-      var reports = await Report.find(match, options);
+      var reports = await Report.find(match,{},options);
       res.status(200).send(reports);
     }
   } catch (e) {

@@ -4,7 +4,7 @@ const Report = require('../models/reportModel');
 const User = require('../models/userModel');
 const multer = require('multer');
 const aws = require('aws-sdk');
-const multerS3 = require('multer-s3');
+const multerS3 = require('multer-s3-transform');
 const sharp = require('sharp');
 const sgMail = require('@sendgrid/mail');
 const fetch = require('node-fetch');
@@ -37,12 +37,26 @@ const upload = multer({
     s3,
     bucket: 'clean-city-uploads',
     contentType: multerS3.AUTO_CONTENT_TYPE,
-    key: function(req, file, cb) {
-      cb(null, Date.now().toString());
-    }
+    shouldTransform: function (req, file, cb) {
+      cb(null, /^image/i.test(file.mimetype))
+    },
+    transforms: [{
+      id: 'original',
+      key: function (req, file, cb) {
+        cb(null, Date.now().toString())
+      },
+      transform: function (req, file, cb) {
+        cb(null, sharp()
+        .resize(1920, 1920, {
+          fit: 'inside',
+          withoutEnlargement: true
+        }).toFormat('jpeg')
+        )
+      }
+    }]
   }),
   limits: {
-    fileSize: 4 * 1024 * 1024
+    fileSize: 6 * 1024 * 1024
   },
   fileFilter(req, file, cb) {
     if (!(file.originalname.match(/\.(jpg|jpeg|png)$/i)&&(file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg' ||
@@ -147,21 +161,13 @@ const findAdmins = report => {
 const postSubmitData = async (req, res, next) => {
   try {
     var newReport = {};
-    // const buffer = await sharp(req.file.buffer)
-    //   .resize(1920, 1920, {
-    //     fit: 'inside',
-    //     withoutEnlargement: true
-    //   })
-    //   .toFormat('jpeg')
-    //   .toBuffer();
-    // newReport.imageBuffer = buffer;
     if (!req.body.name == '') newReport.name = req.body.name;
     if (!req.body.contactNumber == null)
       newReport.contactNumber = req.body.contactNumber;
     newReport.reportType = req.body.reportType;
     newReport.description = req.body.description;
     newReport.location = req.body.location;
-    newReport.imageUrl = req.file.location;
+    newReport.imageUrl = req.file.transforms[0].location;
     newReport.properties = {
       brief: req.body.description.slice(0, 100)
     };

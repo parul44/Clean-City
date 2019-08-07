@@ -123,7 +123,7 @@
                 </a>
               </li>
               <li class="nav-item active">
-                  <a class="nav-link " style="color:green;font-size:1.1em;font-weight: bold;" href="/form" target="_blank"> Upload </a>
+                  <a class="nav-link " style="color:rgb(255, 255, 255);font-size:1.1em;font-weight: bold;" href="/form" target="_blank"> Upload </a>
                 </li>
               <li class="nav-item active">
                   <a class="nav-link " style="color:rgb(194, 192, 192);font-size:1.1em;font-weight: bold;" href="/user/logout"> Logout</a>
@@ -422,9 +422,6 @@
             </div>
           </div>
       </div>
-
-
-      
       <footer class="footer footer-black  footer-white ">
         <div class="container-fluid">
           <div class="row">
@@ -454,68 +451,17 @@
       </footer>
     </div>
   </div>
-  <script>
-    var user;
-    var $userdiv = document.getElementById('user');
-    var $submissions = document.getElementById('submissions');
-    var $unseen = document.getElementById('unseen');
-    var $seen = document.getElementById('seen');
-    var $closed = document.getElementById('closed');
-    var $credits = document.getElementById('credits');
-
-
-    fetch("/admin/info").then(res => res.json()).then(data => {
-        user=data;
-        $userdiv.textContent=` ${user.username} : ${user.name}`
-        $submissions.textContent=` ${user.submissions}`
-        fetch("/report/count/?status=unseen").then(res => res.json()).then(data => {$unseen.textContent=data.count;})
-        fetch("/report/count/?status=seen").then(res => res.json()).then(data => {$seen.textContent=data.count;})
-        fetch("/report/count/?status=closed").then(res => res.json()).then(data => {$closed.textContent=data.count;})
-        $credits.textContent=` ${user.credits}`
-    });
-  </script>
-  <!-- script for redeem buttons -->
-  <script>
-    function redeem(){
-      fetch(`/user/redeem`, {
-          method: 'put',
-          // body: JSON.stringify(body),
-          headers: { 'Content-type': 'application/json' }
-        })
-          .then(
-            alert('Msg for redemption/failure')
-          )
-          .catch(function(error) {
-            console.log(error);
-          });
-    }
-    var $redeemButtons = document.querySelectorAll('.redeem');
-    $redeemButtons.forEach($redeemButton=>{
-      $redeemButton.addEventListener("click", redeem);
-    })
-
-  </script>
+  <script src="../assets2/js/userDashboard.js"></script>
   <!--   Core JS Files   -->
   <script src="../assets2/js/core/jquery.min.js"></script>
   <script src="../assets2/js/core/popper.min.js"></script>
   <script src="../assets2/js/core/bootstrap.min.js"></script>
   <script src="../assets2/js/plugins/perfect-scrollbar.jquery.min.js"></script>
-  <!--  Google Maps Plugin    -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
   <!-- Chart JS -->
   <script src="../assets2/js/plugins/chartjs.min.js"></script>
   <!--  Notifications Plugin    -->
   <script src="../assets2/js/plugins/bootstrap-notify.js"></script>
   <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="../assets2/js/paper-dashboard.min.js?v=2.0.0" type="text/javascript"></script>
-  <!-- Paper Dashboard DEMO methods, don't include it in your project! -->
-  <script src="../assets2/demo/demo.js"></script>
-  <script>
-    $(document).ready(function() {
-      // Javascript method's body can be found in assets2/assets2-for-demo/js/demo.js
-      demo.initChartsPages();
-    });
-  </script>
 </body>
-
 </html>

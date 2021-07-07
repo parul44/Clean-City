@@ -210,6 +210,92 @@ textarea,
   text-shadow: 3px 3px 8px rgb(0, 0, 0);
 }
 
+/* CSS for dashboard notif */
+  .ToRchart svg{
+    margin: -30 -30 0 0 !important;
+    width: 80%;
+    
+  }
+.notif{
+            height: 4.2rem;
+             font-size: 1.1rem;
+            width: 25rem;
+            /* border-radius: 6px; */
+            margin: 0 !important;
+            
+        }
+
+        #analysisTiles .col{
+              height: 70px;
+            margin: 40px 10px 0 0;
+            background-color: slategrey;
+            font-size: 1.3rem;
+            box-shadow: 0 
+            
+  
+          }
+         
+          .notification{
+    content: "";
+    display: block;
+    position: relative;
+    width: 8px;
+    height: 8px;
+    background: rgb(96, 136, 114);
+    top: 0;
+    right: 0;
+    border-radius: 50%;
+}
+          #analysisTiles{
+            background-color: cornsilk
+          }
+         .icon1 {
+  padding: 10px;
+  background: red;
+  color: white;
+  height: 70px;
+  width: 70px;
+  align-content: left;
+  margin-left: 10px;
+}
+  .icon2 {
+  padding: 10px;
+  background: blue;
+  color: white;
+  height: 70px;
+  width: 70px;
+  align-content: left;
+}
+  .icon3 {
+  padding: 10px;
+  background: grey;
+  color: white;
+  height: 70px;
+  width: 70px;
+  align-content: left;
+}
+        .notif .card-body{
+          
+            padding: 6px;
+            font-weight: 600;
+        }
+        .critical{
+          background-color:rgb(235, 44, 19);
+        }
+        .medium{
+          /* background-color:rgb(235, 176, 66);
+           */
+           background-color: orange;
+        }
+        .light{
+          background-color:rgb(255,255,0);
+          
+        }
+        .color{
+          color: red;
+        }
+/* END */
+
 @media only screen and (max-width: 1024px) {
   #carousel img {
     height: 400px;
@@ -562,4 +648,8 @@ textarea,
   .footer-distributed .footer-center i {
     margin-left: 0;
   }
+}
+
+.bar {
+  fill: green;
 }

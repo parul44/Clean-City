@@ -4,16 +4,29 @@ const mongoose = require('mongoose');
 //Defining reportSchema
 const reportSchema = new mongoose.Schema(
   {
+    username: {
+      type: String,
+      trim: true
+    },
+    credited: {
+      type: Boolean,
+      default: false
+    },
     name: {
       type: String,
       trim: true
     },
     contactNumber: {
-      type: Number
+      type: Number,
+      trim: true
     },
     reportType: {
       type: String,
       required: true
+    },
+    status: {
+      type: String,
+      default: 'unseen'
     },
     description: {
       type: String,
@@ -28,9 +41,6 @@ const reportSchema = new mongoose.Schema(
     },
     imageUrl: {
       type: String
-    },
-    imageBuffer: {
-      type: Buffer
     },
     properties: {
       brief: {

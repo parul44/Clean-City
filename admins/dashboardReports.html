@@ -5,9 +5,9 @@
     <link
       rel="apple-touch-icon"
       sizes="76x76"
-      href="assets/img/apple-icon.png"
+      href="../assets/img/apple-icon.png"
     />
-    <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+    <link rel="icon" type="image/png" href="../assets/img/favicon.png" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>
       Clean City Dashboard
@@ -28,7 +28,7 @@
       crossorigin="anonymous"
     />
     <!-- CSS Files -->
-    <link href="assets/css/now-ui-dashboard.css?v=1.3.0" rel="stylesheet" />
+    <link href="../assets/css/now-ui-dashboard.css?v=1.3.0" rel="stylesheet" />
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -44,52 +44,52 @@
         Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red | yellow"
     -->
         <div class="logo">
-          <a href="http://www.creative-tim.com" class="simple-text logo-mini">
-            CT
+          <a href="/" target="_blank" class="simple-text logo-mini">
+            <i class="fa fa-leaf" style="color:white" aria-hidden="true"></i>
           </a>
-          <a href="http://www.creative-tim.com" class="simple-text logo-normal">
+          <a href="/" target="_blank" class="simple-text logo-normal">
             Clean City
           </a>
         </div>
+        <div id="user" class="logo" style="color:white" >
+            
+        </div>
         <div class="sidebar-wrapper" id="sidebar-wrapper">
           <ul class="nav">
-            <li>
-              <a href="./dashboard.html">
+            <li class="active ">
+              <a href="/dashboard">
                 <i class="now-ui-icons design_app"></i>
-                <p>Dashboard</p>
+                <p>Quick Glance</p>
               </a>
             </li>
-            <li class="active ">
-              <a href="./icons.html">
+            <li>
+              <a href="/dashboard#heatmap2">
+                <i class="now-ui-icons location_map-big"></i>
+                <p>Heat Map </p>
+              </a>
+            </li>
+            <li>
+              <a href=./dashboardReports>
                 <i class="now-ui-icons education_atom"></i>
                 <p>Latest Reports</p>
               </a>
             </li>
+           
+           
             <li>
-              <a href="./map.html">
-                <i class="now-ui-icons location_map-big"></i>
-                <p>Heat Map</p>
-              </a>
-            </li>
-
-            <li>
-              <a href="./user.html">
-                <i class="now-ui-icons users_single-02"></i>
-                <p>User Profile</p>
-              </a>
-            </li>
-            <li>
-              <a href="./tables.html">
+              <a href="/dashboard#charts">
                 <i class="now-ui-icons design_bullet-list-67"></i>
                 <p>Analytics</p>
               </a>
             </li>
+                
+            
           </ul>
         </div>
       </div>
       <div class="main-panel" id="main-panel">
         <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg bg-warning  navbar-absolute">
+        <nav class="navbar sticky-top navbar-expand-lg bg-warning navbar-absolute">
           <div class="container-fluid">
             <div class="navbar-wrapper">
               <div class="navbar-toggle">
@@ -99,25 +99,24 @@
                   <span class="navbar-toggler-bar bar3"></span>
                 </button>
               </div>
-              <a class="navbar-brand" href="#pablo">Latest Reports</a>
+              <a class="navbar-brand" href="#pablo">Quick Glance</a>
             </div>
-            <button
-              class="navbar-toggler"
-              type="button"
-              data-toggle="collapse"
-              data-target="#navigation"
-              aria-controls="navigation-index"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-            >
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-bar navbar-kebab"></span>
               <span class="navbar-toggler-bar navbar-kebab"></span>
               <span class="navbar-toggler-bar navbar-kebab"></span>
             </button>
-            <div
-              class="collapse navbar-collapse justify-content-end"
-              id="navigation"
-            >
+            <div class="collapse navbar-collapse justify-content-end" id="navigation">
+              <!-- <form>
+                <div class="input-group no-border">
+                  <input type="text" value="" class="form-control" placeholder="Search...">
+                  <div class="input-group-append">
+                    <div class="input-group-text">
+                      <i class="now-ui-icons ui-1_zoom-bold"></i>
+                    </div>
+                  </div>
+                </div>
+              </form> -->
               <ul class="navbar-nav">
                 <li class="nav-item">
                   <a class="nav-link" href="#pablo">
@@ -127,28 +126,10 @@
                     </p>
                   </a>
                 </li>
-                <li class="nav-item dropdown">
-                  <a
-                    class="nav-link dropdown-toggle"
-                    id="navbarDropdownMenuLink"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
-                    <i class="now-ui-icons location_world"></i>
-                    <p>
-                      <span class="d-lg-none d-md-block">Some Actions</span>
-                    </p>
-                  </a>
-                  <div
-                    class="dropdown-menu dropdown-menu-right"
-                    aria-labelledby="navbarDropdownMenuLink"
-                  >
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                  </div>
+                <li class="nav-item" id = "dropdown">
+                  
                 </li>
+                
                 <li class="nav-item">
                   <a class="nav-link" href="#pablo">
                     <i class="now-ui-icons users_single-02"></i>
@@ -157,6 +138,9 @@
                     </p>
                   </a>
                 </li>
+                <li class="nav-item active">
+                    <a class="nav-link " style="color:whitesmoke;font-size:1.1em;font-weight: bold;" href="/admin/logout"> Logout</a>
+                  </li>
               </ul>
             </div>
           </div>
@@ -239,14 +223,17 @@
 
             <div class="form-row">
               <div class="form-group col-4 col-md-4">
-                <label for="inputState">SELECT TYPE OF REPORT</label>
-                <select id="inputState" class="form-control" name="reportType">
+                <label for="inputState">TYPE OF REPORT</label>
+                <select id="inputState1" class="form-control" name="reportType">
+                </select>
+              </div>
+              <div class="form-group col-4 col-md-4">
+                <label for="inputState">REPORT STATUS</label>
+                <select id="inputState" class="form-control" name="status">
+                  <option value="unseen">Unseen</option>
+                  <option value="seen">Seen(Under Process)</option>
+                  <option value="closed">Closed</option>
                   <option value="">All</option>
-                  <option value="garbage">Garbage Heap</option>
-                  <option value="accident">Accident</option>
-                  <option value="water">Water Shortage</option>
-                  <option value="electricity">Electricity cut off</option>
-                  <option value="crime">Crime</option>
                 </select>
               </div>
               <div class="form-group col-4 col-md-4">
@@ -254,8 +241,12 @@
                 <select id="inputState" class="form-control" name="sortBy">
                   <option value="createdAt:desc">Latest Reports</option>
                   <option value="createdAt:asc">Oldest Reports</option>
-                  <option value="pincode:desc">Pincode:Descending</option>
-                  <option value="pincode:asc">Pincode:Ascending</option>
+                  <option value="rank:asc">Most reported Pincode</option>
+                  <option value="rank:desc">Least reported Pincode</option>
+                  <option value="results.pincode:desc"
+                    >Pincode:Descending</option
+                  >
+                  <option value="results.pincode:asc">Pincode:Ascending</option>
                 </select>
               </div>
             </div>
@@ -269,18 +260,25 @@
                 RESET
               </button>
               <button
-                onclick="fetchReports(); return false;"
+                onclick="getReports(); return false;"
                 id="btnUpdateReports"
                 class="btn transparent btn-primary col-2  mx-2"
               >
                 GET REPORTS
               </button>
               <button
-                onclick="deleteMarked(); return false;"
+                onclick="closeTicked(); return false;"
                 id="btnClear"
-                class="btn transparent btn-danger col-1  mx-2"
+                class="btn transparent btn-danger col-2  mx-2"
               >
-                DELETE MARKED
+                CLOSE-TICKED
+              </button>
+              <button
+                onclick="seenTicked(); return false;"
+                id="btnClear"
+                class="btn transparent btn-danger col-2  mx-2"
+              >
+                SEEN-TICKED
               </button>
             </div>
           </form>
@@ -289,8 +287,7 @@
           <div class="row my-2">
             <div class="col mx-4">
               <ul class=" list-group transparent" id="reportList">
-                <!--               
-                <li class="list-group-item">
+                <!-- <li class="list-group-item">
                   <div class="row">
                     <div class="div2">
                       <span class="reporttitle col col-6 py-1"
@@ -301,7 +298,7 @@
                     </div>
                     <img src="images.png" />
                   </div>
-                </li>-->
+                </li> -->
               </ul>
             </div>
           </div>
@@ -337,128 +334,20 @@
         </div>
       </div>
     </div>
-    <!--fetch reports-->
-    <script>
-      async function fetchReports() {
-        var form = document.getElementById('myForm');
-        var fetchURL = `/user/reports?location=${
-          form.location.value
-        }&description=${form.description.value}&reportType=${
-          form.reportType.value
-        }&sortBy=${form.sortBy.value}`;
-        var data = await fetch(fetchURL)
-          .then(res => res.json())
-          .catch(function(error) {
-            console.log(error);
-          });
-        var ul = document.getElementById('reportList');
-        while (ul.lastChild) {
-          ul.removeChild(ul.lastChild);
-        }
-
-        length = data.length;
-        for (i = 0; i < length; i++) {
-          let li = document.createElement('li');
-          let div1 = document.createElement('div');
-          let div2 = document.createElement('div');
-          let span = document.createElement('span');
-          let btnDone = document.createElement('button');
-          let btnDelete = document.createElement('button');
-          // let img = document.createElement('img')
-
-          li.className = 'list-group-item';
-          li.setAttribute('id', `${data[i]._id}`);
-          div2.className = 'div2';
-          div2.setAttribute('dispaly', 'inline-block');
-          span.className = 'reporttitle col col-6 py-1';
-          btnDone.className = 'btn col-6 mx-2 transparent';
-          btnDelete.className = 'btn btn-danger col-6 mx-2';
-          // img.setAttribute("width","200px")
-          // img.setAttribute("height","150px");
-          // img.setAttribute("style", "margin:-50px 0 0 0");
-          // img.setAttribute('src',`/user/image/${data[i]._id}`)
-          date = new Date(data[i].createdAt);
-          span.innerText = `ID: ${data[i]._id}
-            ${date.toLocaleString()}
-            ${data[i].results.locality} , ${data[i].results.pincode}`;
-          // btnDone.setAttribute('done', false);
-          btnDone.innerText = this.done ? '❌' : '✔';
-          div1.className = this.done ? 'row done' : 'row';
-          btnDelete.innerText = 'DELETE';
-
-          btnDone.onclick = function() {
-            this.done = !this.done;
-            this.innerText = this.done ? '❌' : '✔';
-            this.parentElement.parentElement.className = this.done
-              ? 'row done'
-              : 'row';
-          };
-
-          btnDelete.onclick = function() {
-            let id = this.parentElement.parentElement.parentElement.id;
-            let body = { idarray: [id] };
-            fetch(`/user/reports`, {
-              method: 'delete',
-              body: JSON.stringify(body),
-              headers: { 'Content-type': 'application/json' }
-            })
-              .then(document.getElementById(`${id}`).remove())
-              .catch(function(error) {
-                console.log(error);
-              });
-          };
-
-          div2.appendChild(span);
-          div2.appendChild(btnDone);
-          div2.appendChild(btnDelete);
-          div1.appendChild(div2);
-          // div1.appendChild(img)
-          li.appendChild(div1);
-          reportList.appendChild(li);
-        }
-      }
-
-      async function deleteMarked() {
-        var ul = document.getElementById('reportList');
-        var idarray = [];
-        for (i = 0; i < ul.children.length; i++) {
-          if (
-            ul.children[i].children[0].children[0].children[1].innerText ===
-            '❌'
-          ) {
-            let id = ul.children[i].id;
-            idarray.push(id);
-          }
-        }
-        var body = { idarray: idarray };
-        fetch(`/user/reports`, {
-          method: 'delete',
-          body: JSON.stringify(body),
-          headers: { 'Content-type': 'application/json' }
-        })
-          .then(
-            idarray.forEach(id => {
-              document.getElementById(id).remove();
-            })
-          )
-          .catch(function(error) {
-            console.log(error);
-          });
-      }
-      fetchReports();
-    </script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="../assets/js/dashboardReports.js"></script>
     <!--   Core JS Files   -->
-    <script src="assets/js/core/jquery.min.js"></script>
-    <script src="assets/js/core/popper.min.js"></script>
-    <script src="assets/js/core/bootstrap.min.js"></script>
-    <script src="assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+    <script src="../assets/js/core/jquery.min.js"></script>
+    <script src="../assets/js/core/popper.min.js"></script>
+    <script src="../assets/js/core/bootstrap.min.js"></script>
+    <script src="../assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
     <!-- Chart JS -->
-    <script src="assets/js/plugins/chartjs.min.js"></script>
+    <script src="../assets/js/plugins/chartjs.min.js"></script>
     <!--  Notifications Plugin    -->
-    <script src="assets/js/plugins/bootstrap-notify.js"></script>
+    <script src="../assets/js/plugins/bootstrap-notify.js"></script>
     <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
     <script
-      src="assets/js/now-ui-dashboard.min.js?v=1.3.0"
+      src="../assets/js/now-ui-dashboard.js?v=1.3.0"
       type="text/javascript"
     ></script>
   </body>

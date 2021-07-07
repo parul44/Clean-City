@@ -1,0 +1,20 @@
+<h1>Admin Sign up!</h1>
+<form action="/admin/register" method="POST">
+  <input
+    type="text"
+    name="username"
+    placeholder="username"
+    pattern="[A-Za-z0-9]+"
+    minlength="1"
+    required
+  />
+  <input type="text" name="owner" placeholder="owner" minlength="1" required />
+  <input
+    type="password"
+    name="password"
+    placeholder="password"
+    minlength="1"
+    required
+  />
+  <button>Sign up!</button>
+</form>

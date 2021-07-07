@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+
+form {
+  border: 3px solid #f1f1f1;
+margin-left:200px;
+margin-right:200px;
+}
+
+input[type=text], input[type=password] {
+  width: 37%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+
+}
+
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 50%;
+}
+
+/* Add a hover effect for buttons */
+button:hover {
+  opacity: 0.8;
+}
+
+
+.cancelbtn {
+  width: 25%;
+  padding: 10px 18px;
+  background-color: #f44336;
+margin-left:190px;
+}
+.loginbtn {
+  width: 30%;
+  padding: 10px 18px;
+  background-color: #4CAF50;
+margin-left:65px;
+}
+
+
+
+.imgcontainer {
+  text-align: center;
+  margin: 10px 0 12px 0;
+}
+
+
+img.avatar {
+  width: 20%;
+  border-radius: 20%;
+}
+
+
+.container {
+  padding: 10px;
+}
+.checkbox{
+margin-left:190px;
+}
+.psw{
+margin-right:190px;
+}
+
+
+span.psw {
+  float: right;
+  padding-top: 16px;
+}
+
+
+@media screen and (max-width: 300px) {
+  span.psw {
+    display: block;
+    float: none;
+  }
+  .cancelbtn {
+    width: 100%;
+  }
+.loginbtn {
+    width: 100%;
+  }
+}
+</style>
+</head>
+<h1> <br></h1>
+<body>
+<form action="/user/login" method="POST">
+  <div class="imgcontainer">
+<h1><b>User Login</b></h1>
+    <img src="images.png" alt="Login" class="avatar">
+  </div>
+
+  <div class="container">
+    <div class="inp" style="text-align:center"><label for="uname"><b>Username</b></label>
+    <input type="text" placeholder="Enter Username" name="username" required>
+<br>
+    <label for="psw"><b>Password</b></label>
+    <input type="password" placeholder="Enter Password" name="password" required>
+<br>
+
+<button type="submit" class="loginbtn">Login</button>
+
+<br>
+</div>
+
+  </div>
+
+  <div class="container" style="background-color:#f1f1f1">
+    <button type="button" class="cancelbtn">Cancel</button>
+    <span class="psw"><a href="#">Forgot password?</a></span>
+  </div>
+
+</body>
+</form>
+<html>
